@@ -12,6 +12,12 @@ import models.Module;
 
 public class ModuleConnector implements ConnectorInterface<Module> {
 
+	/*
+	 * add : This will add a module into the database reffered by the year and semester
+	 * @params {Module}
+	 * @return {boolen} returns true if the module was added to the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean add(Module module) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -35,6 +41,12 @@ public class ModuleConnector implements ConnectorInterface<Module> {
 		return false;
 	}
 
+	/*
+	 * update : This will update a paticular module reffered by the module id
+	 * @params {Module}
+	 * @return {boolen} returns true if the module was updated to the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean update(Module module) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -58,6 +70,12 @@ public class ModuleConnector implements ConnectorInterface<Module> {
 		return false;
 	}
 
+	/*
+	 * remove : This will remove a paticular module from the database along with the associated exams and submissions related to it
+	 * @params {Module}
+	 * @return {boolen} returns true if the module was removed from the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean remove(Module module) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -77,6 +95,12 @@ public class ModuleConnector implements ConnectorInterface<Module> {
 		return false;
 	}
 
+	/*
+	 * get : retrieves a paticular module by its id
+	 * @params {Module} obtains module id from the module object
+	 * @return {Module} returns a module object if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public Module get(Module module) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -103,6 +127,11 @@ public class ModuleConnector implements ConnectorInterface<Module> {
 		return null;
 	}
 
+	/*
+	 * getAll : retrieves all available modules
+	 * @return {List<Module>} returns a list of modules if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public List<Module> getAll() throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {

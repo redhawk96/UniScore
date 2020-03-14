@@ -12,6 +12,12 @@ import models.Exam;
 
 public class ExamConnector implements ConnectorInterface<Exam> {
 
+	/*
+	 * add : This is will add a new exam into the database reffered to a paticular module
+	 * @params {Exam}
+	 * @return {boolen} returns true if the exam was added to the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean add(Exam exam) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -35,6 +41,12 @@ public class ExamConnector implements ConnectorInterface<Exam> {
 		return false;
 	}
 
+	/*
+	 * update : This will update a paticular exam reffered by the exam id
+	 * @params {Exam} 
+	 * @return {boolen} returns true if the exam was updated to the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean update(Exam exam) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -59,6 +71,12 @@ public class ExamConnector implements ConnectorInterface<Exam> {
 		return false;
 	}
 
+	/*
+	 * remove : This will remove a paticular exam from the databse along with all the submission related to it
+	 * @params {Exam}
+	 * @return {boolen} returns true if the exam was added removed from the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean remove(Exam exam) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -78,6 +96,12 @@ public class ExamConnector implements ConnectorInterface<Exam> {
 		return false;
 	}
 
+	/*
+	 * get : retrieves a paticular exam by its id
+	 * @params {Exam} obtains exam id from exam object
+	 * @return {Exam} returns an exam object if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public Exam get(Exam exam) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -105,12 +129,88 @@ public class ExamConnector implements ConnectorInterface<Exam> {
 		return null;
 	}
 
+	/*
+	 * getAll : retrieves all available exams
+	 * @params {} obtains module id from exam object
+	 * @return {List<Exam>} returns a list of exams if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public List<Exam> getAll() throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
 			String sql = "SELECT * FROM `exams`";
 			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			List<Exam> examList = new ArrayList<>();
+
+			while (rs.next()) {
+				Exam e = new Exam();
+
+				e.setExamId(rs.getInt(1));
+				e.setExamName(rs.getString(2));
+				e.setModuleId(rs.getString(3));
+				e.setDuration(rs.getInt(4));
+				e.setEnrollmentKey(rs.getString(5));
+				e.setStatus(rs.getString(6));
+				e.setCreatedAt(rs.getTimestamp(7));
+				e.setUpdatedAt(rs.getTimestamp(8));
+
+				examList.add(e);
+			}
+			return examList;
+		}
+		return null;
+	}
+	
+	/*
+	 * getByAvailability : retrieves all available exams filtered by a paticular module and active status
+	 * @params {Exam} obtains module id and status from exam object
+	 * @return {List<Exam>} returns a list of exams of a paticular module with an active status if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public List<Exam> getByAvailability(Exam exam) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT * FROM `exams`  WHERE `exams`.`examId` = 'active' AND `exams`.`moduleId` = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, exam.getModuleId());
+			ResultSet rs = ps.executeQuery();
+
+			List<Exam> examList = new ArrayList<>();
+
+			while (rs.next()) {
+				Exam e = new Exam();
+
+				e.setExamId(rs.getInt(1));
+				e.setExamName(rs.getString(2));
+				e.setModuleId(rs.getString(3));
+				e.setDuration(rs.getInt(4));
+				e.setEnrollmentKey(rs.getString(5));
+				e.setStatus(rs.getString(6));
+				e.setCreatedAt(rs.getTimestamp(7));
+				e.setUpdatedAt(rs.getTimestamp(8));
+
+				examList.add(e);
+			}
+			return examList;
+		}
+		return null;
+	}
+	
+	/*
+	 * getByModule : retrieves all available exams filtered by a paticular module
+	 * @params {Exam} obtains module id from exam object
+	 * @return {List<Exam>} returns a list of exams of a paticular module if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public List<Exam> getByModule(Exam exam) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT * FROM `exams` WHERE `exams`.`moduleId` = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, exam.getModuleId());
 			ResultSet rs = ps.executeQuery();
 
 			List<Exam> examList = new ArrayList<>();

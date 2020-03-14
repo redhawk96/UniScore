@@ -12,6 +12,13 @@ import models.User;
 
 public class UserConnector implements ConnectorInterface<User> {
 
+	/*
+	 * add : This will add a user into the databse and will not have any refference tables
+	 * @params {User}
+	 * @return {boolen} returns true if the user was added to the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	@Override
 	public boolean add(User user) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
@@ -40,6 +47,12 @@ public class UserConnector implements ConnectorInterface<User> {
 		return false;
 	}
 
+	/*
+	 * update : This will update a paticular user reffered by the user id
+	 * @params {User} 
+	 * @return {boolen} returns true if the user was updated to the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean update(User user) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -85,6 +98,12 @@ public class UserConnector implements ConnectorInterface<User> {
 		return false;
 	}
 
+	/*
+	 * remove : This will a paticular user from the databse along with all the related submissions
+	 * @params {User}
+	 * @return {boolen} returns true if the user was removed from the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean remove(User user) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -104,6 +123,12 @@ public class UserConnector implements ConnectorInterface<User> {
 		return false;
 	}
 
+	/*
+	 * get : retrieves a paticular user by its id
+	 * @params {User} obtains user id from the user object
+	 * @return {User} returns a user object if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public User get(User user) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -135,6 +160,11 @@ public class UserConnector implements ConnectorInterface<User> {
 		return null;
 	}
 
+	/*
+	 * getAll : retrieves all available users
+	 * @return {List<User>} returns a list of users if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public List<User> getAll() throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
