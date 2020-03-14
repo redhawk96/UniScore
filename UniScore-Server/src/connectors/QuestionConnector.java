@@ -12,6 +12,12 @@ import models.Question;
 
 public class QuestionConnector implements ConnectorInterface<Question> {
 
+	/*
+	 * add : This will add a question into the databse reffered by a module
+	 * @params {Question}
+	 * @return {boolen} returns true if the question was added to the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean add(Question question) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -37,6 +43,12 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 		return false;
 	}
 
+	/*
+	 * update : This will update a paticular question reffered by the question id
+	 * @params {Question} 
+	 * @return {boolen} returns true if the question was updated to the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean update(Question question) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -63,6 +75,12 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 		return false;
 	}
 
+	/*
+	 * remove : This will remove a paticular question from the database
+	 * @params {Question}
+	 * @return {boolen} returns true if the question was removed from the database and false if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public boolean remove(Question question) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -82,6 +100,12 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 		return false;
 	}
 	
+	/*
+	 * get : retrieves a paticular question by its id
+	 * @params {Question} obtains questions id from the question object
+	 * @return {Question} returns question object if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public Question get(Question question) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -109,6 +133,11 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 		return null;
 	}
 
+	/*
+	 * getAll : retrieves all available questions
+	 * @return {List<Question>} returns a list of questions if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
 	@Override
 	public List<Question> getAll() throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
@@ -137,8 +166,13 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 		return null;
 	}
 	
-	
-	public List<Question> getExaminationQuestionSet(Question question) throws ClassNotFoundException, SQLException {
+	/*
+	 * getByExamination : retrieves all available questions for the paticular exam
+	 * @params {Question} Obtains exam id from question object
+	 * @return {List<Question>} returns a list of questions for a paticular exam if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public List<Question> getByExamination(Question question) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
 			String sql = "SELECT * FROM `questions` WHERE `questions`.`examId` = ?";
