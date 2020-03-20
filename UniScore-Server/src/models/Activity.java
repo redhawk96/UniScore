@@ -1,3 +1,12 @@
+/*
+ * Institute	: SLIIT
+ * Module		: Comparative Integrated Systems
+ * Project Name	: UniScore
+ * Project		: Online Examination Management System
+ * Group		: 19
+ * Author		: Uditha Silva (UOB-1938086)
+ */
+
 package models;
 
 import java.io.Serializable;
