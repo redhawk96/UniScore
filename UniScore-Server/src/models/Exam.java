@@ -1,8 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Exam {
+@SuppressWarnings("serial")
+public class Exam implements Serializable{
 
 	private int examId, duration;
 	private String examName, moduleId, enrollmentKey, status;

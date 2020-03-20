@@ -1,9 +1,15 @@
 package connectivity;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import main.panels.LoginPanel;
+import models.User;
 
 public class UniScoreServer {
 
+	public static UniScoreInterface uniscoreInterface;
+	public static User authUser = null;
+	public static LoginPanel loginPanel;
+	
 	public static void main(String[] args) {
 
 		try {
@@ -24,6 +30,15 @@ public class UniScoreServer {
 			// Creating a proxy for data communication
 			registry.bind("rmi://localhost/UniScoreServer", stub);
 			System.out.println("Server is ready");
+			
+			if(stub.getServer()) {
+				UniScoreServer.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
+				/*
+				 * Opening login panel
+				 */
+				loginPanel = new LoginPanel();
+				loginPanel.setVisible(true);
+			}
 			
 			/* 
 			 * Run following on cmd to find the pid of the process occuping the port
