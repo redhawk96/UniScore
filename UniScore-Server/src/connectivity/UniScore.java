@@ -8,6 +8,7 @@ import java.util.List;
 import connectors.ActivityConnector;
 import connectors.ExamConnector;
 import connectors.GradeConnector;
+import connectors.LoginConnector;
 import connectors.ModuleConnector;
 import connectors.QuestionConnector;
 import connectors.SubmissionConnector;
@@ -443,6 +444,17 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 		UserConnector uc = new UserConnector();
 		return uc.get(user);
 	}
+	
+	/*
+	 * getUserByCredentials : retrieves a paticular user by his/her username and password
+	 * @params {User} obtains username and password from the user object
+	 * @return {User} returns a user object if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public User getUserByCredentials(User user) throws RemoteException, ClassNotFoundException, SQLException{
+		UserConnector uc = new UserConnector();
+		return uc.getbyCredentials(user);
+	}
 
 	/*
 	 * getUsers : retrieves all available users
@@ -455,5 +467,26 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 		return uc.getAll();
 	}
 
+	/*
+	 * getUsersByType : retrieves all available users filtered by either students, lecturers or administrators
+	 * @params {User} obtains user role from the user object
+	 * @return {List<User>} returns a list of filtered users by type if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public List<User> getUsersByType(User user) throws RemoteException, ClassNotFoundException, SQLException{
+		UserConnector uc = new UserConnector();
+		return uc.getByType(user);
+	}
+	
+	/*
+	 * isUserAvailable : retrieves a boolean to whether a paticular user by his/her username and password
+	 * @params {User} obtains username and password from the user object
+	 * @return {boolean} returns a user object if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public boolean isUserAvailable(User user) throws ClassNotFoundException, SQLException{
+		LoginConnector lc = new LoginConnector();
+		return lc.authenticateUser(user);
+	}
 	
 }

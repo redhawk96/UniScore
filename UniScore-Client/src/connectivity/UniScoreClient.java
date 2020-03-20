@@ -9,7 +9,7 @@ import models.Question;
 
 public class UniScoreClient {
 
-	UniScoreInterface uniscoreInterface;
+	public static UniScoreInterface uniscoreInterface;
 
 	public UniScoreClient() {
 		try {
@@ -22,15 +22,15 @@ public class UniScoreClient {
 			System.out.println("Searching server");
 			Registry registry = LocateRegistry.getRegistry(1417); 
 			System.out.println("Registry located");
-			this.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
+			UniScoreClient.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
 			System.out.println("Server located");
 			
-			if(this.uniscoreInterface.getServer()) {
+			if(UniScoreClient.uniscoreInterface.getServer()) {
 			
 				/*
 				 * Test retrieving from the database
 				 */
-				List<Question> list = (List<Question>)this.uniscoreInterface.getQuestions(); 
+				List<Question> list = (List<Question>)UniScoreClient.uniscoreInterface.getQuestions(); 
 				for(Question q : list) {
 					System.out.println("ID: " + q.getQuestionId()); 
 				}

@@ -1,8 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class User {
+@SuppressWarnings("serial")
+public class User implements Serializable{
 
 	private String userId, firstName, lastName, gender, email, nic, address, avatar, role, password, status;
 	private int phone;
