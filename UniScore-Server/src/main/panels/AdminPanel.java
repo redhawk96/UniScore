@@ -8,6 +8,7 @@ import com.utils.UI;
 
 import admin.panels.content.DashboardContentPanel;
 import admin.panels.navigation.DashboardNavigationPanel;
+import admin.panels.navigation.LogoutNavigationPanel;
 import admin.panels.navigation.NavigationUserAvatar;
 import connectivity.UniScoreServer;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-@SuppressWarnings({ "serial", "unused" })
+@SuppressWarnings({ "serial" })
 public class AdminPanel extends JFrame{
 
 	/*
@@ -23,6 +24,7 @@ public class AdminPanel extends JFrame{
 	 * To identify the active navigation, NavigationPanel type arraylist(navigationPanelList) is implemented
 	 */
 	private DashboardNavigationPanel dashboardNavigationPanel = new DashboardNavigationPanel();
+	private LogoutNavigationPanel logoutNavigationPanel = new LogoutNavigationPanel(); 
 	private NavigationUserAvatar navigationUserAvatar = new NavigationUserAvatar();
 	private static ArrayList<NavigationPanel> navigationPanelList;
 	public static NavigationPanel selectedNavigation;
@@ -45,18 +47,33 @@ public class AdminPanel extends JFrame{
 	public AdminPanel() {
 
 		/*
+		 * Setting JFrame title text
+		 */
+		setTitle("UNISCORE | Admin");
+		
+		/*
 		 * Setting the size of the application screen
 		 */
-		setSize(1091, 672);
+		setSize(UI.APPLICATION_WIDTH, UI.APPLICATION_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
+		
+		/*
+		 * Disabling frame resizing
+		 */
+		setResizable(false);
+		
+		/*
+		 * setLocationRelativeTo set to null inorder to start the application center of the screen
+		 */
+		setLocationRelativeTo(null); 
 
 		/*
 		 * Adding left-side JPanel which is on the left side of the application. Used as the application's navigation panel
 		 */
 		JPanel leftSidePanel = new JPanel();
 		leftSidePanel.setBackground(UI.NAVIGATION_PANEL_COLOR);
-		leftSidePanel.setBounds(0, 0, 223, 633);
+		leftSidePanel.setBounds(UI.LEFT_SIDE_PANEL_X_AXIS, UI.LEFT_SIDE_PANEL_Y_AXIS, UI.LEFT_SIDE_PANEL_WIDTH, UI.LEFT_SIDE_PANEL_HEIGHT);
 		getContentPane().add(leftSidePanel);
 		leftSidePanel.setLayout(null);
 
@@ -72,12 +89,14 @@ public class AdminPanel extends JFrame{
 		 */
 		navigationPanelList = new ArrayList<NavigationPanel>();
 		navigationPanelList.add(dashboardNavigationPanel);
+		navigationPanelList.add(logoutNavigationPanel);
 
 		/*
 		 * Adding navigation JPanels to left-side JPanel
 		 */
-		leftSidePanel.add(dashboardNavigationPanel.getNavigation());
 		leftSidePanel.add(navigationUserAvatar.getAvatar());
+		leftSidePanel.add(dashboardNavigationPanel.getNavigation());
+		leftSidePanel.add(logoutNavigationPanel.getNavigation());
 		
 		/*
 		 * Setting auth user's first name by cookie
@@ -93,7 +112,7 @@ public class AdminPanel extends JFrame{
 		 * Adding left-side JPanel which is on the right side of the application. Used as the application's content panel
 		 */
 		JPanel rightSidePanel = new JPanel();
-		rightSidePanel.setBounds(223, 0, 852, 633);
+		rightSidePanel.setBounds(UI.RIGHT_SIDE_PANEL_X_AXIS, UI.RIGHT_SIDE_PANEL_Y_AXIS, UI.RIGHT_SIDE_PANEL_WIDTH, UI.RIGHT_SIDE_PANEL_HEIGHT);
 		getContentPane().add(rightSidePanel);
 		rightSidePanel.setLayout(null);
 		

@@ -12,13 +12,32 @@ public class LoginPanel extends JFrame{
 	private ContentPanel contentPanel = new LoginContentPanel();
 	
 	public LoginPanel() {
+		
+		/*
+		 * Setting JFrame title text
+		 */
+		setTitle("UNISCORE | Login");
+		
 		/*
 		 * Setting the size of the application screen
 		 */
-		setTitle("UNISCORE | Admin");
 		setSize(UI.APPLICATION_WIDTH, UI.APPLICATION_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
+		
+		/*
+		 * setLocationRelativeTo set to null inorder to start the application center of the screen
+		 */
+		setLocationRelativeTo(null); 
+		
+		/*
+		 * Disabling frame resizing
+		 */
+		setResizable(false);
+		
+		/*
+		 * Adding login screen to JFrame
+		 */
 		getContentPane().add(contentPanel.getContent());
 	}
 	

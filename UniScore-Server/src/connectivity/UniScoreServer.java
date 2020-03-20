@@ -1,6 +1,8 @@
 package connectivity;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+
+import main.panels.AdminPanel;
 import main.panels.LoginPanel;
 import models.User;
 
@@ -9,6 +11,7 @@ public class UniScoreServer {
 	public static UniScoreInterface uniscoreInterface;
 	public static User authUser = null;
 	public static LoginPanel loginPanel;
+	public static AdminPanel adminPanel;
 	
 	public static void main(String[] args) {
 

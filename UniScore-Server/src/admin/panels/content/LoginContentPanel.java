@@ -45,7 +45,7 @@ public class LoginContentPanel  extends ContentPanel{
 		 */
 		contentPanel.setName("login");
 		contentPanel.setLayout(null);
-		contentPanel.setBounds(UI.CONTENT_PANEL__X_AXIS, UI.CONTENT_PANEL__Y_AXIS, UI.APPLICATION_WIDTH, UI.APPLICATION_HEIGHT);
+		contentPanel.setBounds(0, 0, UI.APPLICATION_WIDTH, UI.APPLICATION_HEIGHT);
 		contentPanel.setBackground(Color.WHITE);
 		
 		/*
@@ -170,8 +170,8 @@ public class LoginContentPanel  extends ContentPanel{
 						UniScoreServer.authUser = (User)UniScoreServer.uniscoreInterface.getUser(user);
 						loadingLabel.setVisible(false);
 						UniScoreServer.loginPanel.dispose();
-						AdminPanel adminPanel = new AdminPanel();
-						adminPanel.setVisible(true);
+						UniScoreServer.adminPanel = new AdminPanel();
+						UniScoreServer.adminPanel.setVisible(true);
 					}else {
 						/*
 						 * If provided credentials are incorrect
