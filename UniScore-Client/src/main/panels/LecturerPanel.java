@@ -14,6 +14,7 @@ import lecturer.panels.content.SettingsContentPanel;
 import lecturer.panels.content.StudentContentPanel;
 import lecturer.panels.navigation.DashboardNavigationPanel;
 import lecturer.panels.navigation.ExamNavigationPanel;
+import lecturer.panels.navigation.LogoutNavigationPanel;
 import lecturer.panels.navigation.ModuleNavigationPanel;
 import lecturer.panels.navigation.NavigationUserAvatar;
 import lecturer.panels.navigation.QuestionNavigationPanel;
@@ -37,6 +38,7 @@ public class LecturerPanel extends JFrame implements ActionListener {
 	private NavigationPanel questionNavigationPanel = new QuestionNavigationPanel();
 	private NavigationPanel examNavigationPanel = new ExamNavigationPanel();
 	private NavigationPanel settingsNavigationPanel = new SettingsNavigationPanel();
+	private NavigationPanel logoutNavigationPanel = new LogoutNavigationPanel();
 	private static ArrayList<NavigationPanel> navigationPanelList;
 	public static NavigationPanel selectedNavigation;
 	
@@ -66,6 +68,16 @@ public class LecturerPanel extends JFrame implements ActionListener {
 		setSize(1091, 672);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
+		
+		/*
+		 * setLocationRelativeTo set to null inorder to start the application center of the screen
+		 */
+		setLocationRelativeTo(null); 
+		
+		/*
+		 * Disabling frame resizing
+		 */
+		setResizable(false);
 
 		/*
 		 * Adding left-side JPanel which is on the left side of the application. Used as the application's navigation panel
@@ -93,7 +105,8 @@ public class LecturerPanel extends JFrame implements ActionListener {
 		navigationPanelList.add(questionNavigationPanel);
 		navigationPanelList.add(examNavigationPanel);
 		navigationPanelList.add(settingsNavigationPanel);
-
+		navigationPanelList.add(logoutNavigationPanel);
+		
 		/*
 		 * Adding navigation JPanels to left-side JPanel
 		 */
@@ -103,6 +116,7 @@ public class LecturerPanel extends JFrame implements ActionListener {
 		leftSidePanel.add(questionNavigationPanel.getNavigation());
 		leftSidePanel.add(examNavigationPanel.getNavigation());
 		leftSidePanel.add(settingsNavigationPanel.getNavigation());
+		leftSidePanel.add(logoutNavigationPanel.getNavigation());
 
 		/*
 		 * Adding left-side JPanel which is on the right side of the application. Used as the application's content panel
