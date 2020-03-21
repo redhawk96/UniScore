@@ -39,7 +39,7 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 			ps.setString(4, question.getOption2());
 			ps.setString(5, question.getOption3());
 			ps.setString(6, question.getOption4());
-			ps.setString(7, question.getAnswer());
+			ps.setInt(7, question.getAnswer());
 
 			int execution = ps.executeUpdate();
 
@@ -70,7 +70,7 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 			ps.setString(4, question.getOption2());
 			ps.setString(5, question.getOption3());
 			ps.setString(6, question.getOption4());
-			ps.setString(7, question.getAnswer());
+			ps.setInt(7, question.getAnswer());
 			ps.setInt(8, question.getQuestionId());
 
 			int execution = ps.executeUpdate();
