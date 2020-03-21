@@ -1,8 +1,19 @@
+/*
+ * Institute	: SLIIT
+ * Module		: Comparative Integrated Systems
+ * Project Name	: UniScore
+ * Project		: Online Examination Management System
+ * Group		: 19
+ * Author		: Uditha Silva (UOB-1938086)
+ */
+
 package models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Exam {
+@SuppressWarnings("serial")
+public class Exam implements Serializable{
 
 	private int examId, duration;
 	private String examName, moduleId, enrollmentKey, status;

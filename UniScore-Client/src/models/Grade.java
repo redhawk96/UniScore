@@ -1,6 +1,9 @@
 package models;
 
-public class Grade {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Grade implements Serializable{
 
 	private String grade;
 	private int passMark;

@@ -1,4 +1,4 @@
-package com.utils;
+	package com.utils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,7 +7,31 @@ public class UI {
 
 	// Common Ui class implemented to reduce complexity and to avoid various
 	// properties been implemented for the identical components
+	
+	/*
+	 * Common properties
+	 */
+	public static Color APPLICATION_THEME_COLOR = new Color(249, 168, 37);
+	public static Font APPLICATION_THEME_FONT = new Font("Roboto", Font.BOLD, 14);
+	public static int APPLICATION_WIDTH = 1091;
+	public static int APPLICATION_HEIGHT = 672;
 
+	/*
+	 * Loginin panel properties
+	 */
+	public static Color LOGIN_PANEL_BACKGROUND_COLOR = Color.WHITE;
+	public static Color LOGIN_PANEL_DEFAULT_TEXT_FIELD_COLOR = Color.BLACK;
+	public static Font LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT = new Font("Roboto", Font.PLAIN, 14);
+	
+	public static Color LOGIN_PANEL_LOGIN_BUTTON_COLOR = Color.WHITE;
+	public static Color LOGIN_PANEL_LOGIN_BUTTON_TEXT_COLOR = new Color(249, 168, 37);
+	public static Color LOGIN_PANEL_LOGIN_BUTTON_BORDER_COLOR = new Color(249, 168, 37);
+	public static Font LOGIN_PANEL_LOGIN_BUTTON_FONT = new Font("Roboto", Font.PLAIN, 17);
+	
+	public static Color LOGIN_PANEL_SELECTED_LOGIN_BUTTON_COLOR = new Color(249, 168, 37);
+	public static Color LOGIN_PANEL_SELECTED_LOGIN_BUTTON_TEXT_COLOR = Color.WHITE;
+	public static Color LOGIN_PANEL_SELECTED_LOGIN_BUTTON_BORDER_COLOR = new Color(249, 168, 37);
+	
 	/*
 	 * Navigation panel properties
 	 */

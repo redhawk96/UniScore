@@ -1,3 +1,12 @@
+/*
+ * Institute	: SLIIT
+ * Module		: Comparative Integrated Systems
+ * Project Name	: UniScore
+ * Project		: Online Examination Management System
+ * Group		: 19
+ * Author		: Uditha Silva (UOB-1938086)
+ */
+
 package connectivity;
 
 import java.rmi.Remote;
@@ -367,6 +376,14 @@ public interface UniScoreInterface extends Remote {
 	public User getUser(User user) throws RemoteException, ClassNotFoundException, SQLException;
 	
 	/*
+	 * getUserByCredentials : retrieves a paticular user by his/her username and password
+	 * @params {User} obtains username and password from the user object
+	 * @return {User} returns a user object if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public User getUserByCredentials(User user) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
 	 * getUsers : retrieves all available users
 	 * @return {List<User>} returns a list of users if found and null if not
 	 * @throws RemoteException, ClassNotFoundException, SQLException
@@ -374,6 +391,31 @@ public interface UniScoreInterface extends Remote {
 	public List<User> getUsers() throws RemoteException, ClassNotFoundException, SQLException;
 	
 	/*
+	 * getUsersByType : retrieves all available users filtered by either students, lecturers or administrators
+	 * @params {User} obtains user role from the user object
+	 * @return {List<User>} returns a list of filtered users by type if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public List<User> getUsersByType(User user) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
 	 * Ending declaration of user methods
+	 */
+	
+	
+	/*
+	 * Starting declaration on common methods
+	 */
+	
+	/*
+	 * isUserAvailable : retrieves a boolean to whether a paticular user by his/her username and password
+	 * @params {User} obtains username and password from the user object
+	 * @return {boolean} returns a true if user found and false if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public boolean isUserAvailable(User user) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * Ending declaration of common methods
 	 */
 }

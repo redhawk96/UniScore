@@ -1,6 +1,18 @@
+/*
+ * Institute	: SLIIT
+ * Module		: Comparative Integrated Systems
+ * Project Name	: UniScore
+ * Project		: Online Examination Management System
+ * Group		: 19
+ * Author		: Ishani Welagedara (UOB-1940672)
+ */
+
 package models;
 
-public class Grade {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Grade implements Serializable{
 
 	private String grade;
 	private int passMark;

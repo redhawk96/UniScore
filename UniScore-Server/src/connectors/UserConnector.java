@@ -1,3 +1,12 @@
+/*
+ * Institute	: SLIIT
+ * Module		: Comparative Integrated Systems
+ * Project Name	: UniScore
+ * Project		: Online Examination Management System
+ * Group		: 19
+ * Author		: Subarshan Thiyagarajah (UOB-1939088)
+ */
+
 package connectors;
 
 import java.sql.Connection;
@@ -133,7 +142,7 @@ public class UserConnector implements ConnectorInterface<User> {
 	public User get(User user) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "SELECT * FROM `users` WHERE WHERE `users`.`userId`=?";
+			String sql = "SELECT * FROM `users` WHERE `users`.`userId`=?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, user.getUserId());
 			ResultSet rs = ps.executeQuery();
@@ -160,6 +169,47 @@ public class UserConnector implements ConnectorInterface<User> {
 		return null;
 	}
 
+	
+	/*
+	 * getbyCredentials : retrieves a paticular user by his/her username and password
+	 * @params {User} obtains username and password from the user object
+	 * @return {User} returns a user object if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public User getbyCredentials(User user) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT * FROM `users` WHERE `users`.`userId`=? AND `users`.`password`=?  AND `users`.`status`='Active'";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, user.getUserId());
+			ps.setString(2, user.getPassword());
+			ResultSet rs = ps.executeQuery();
+
+			User u = new User();
+
+			while (rs.next()) {
+
+				u.setUserId(rs.getString(1));
+				u.setFirstName(rs.getString(2));
+				u.setLastName(rs.getString(3));
+				u.setGender(rs.getString(4));
+				u.setEmail(rs.getString(5));
+				u.setNic(rs.getString(6));
+				u.setPhone(rs.getInt(7));
+				u.setAddress(rs.getString(8));
+				u.setAvatar(rs.getString(9));
+				u.setRole(rs.getString(10));
+				u.setRegisteredDate(rs.getTimestamp(11));
+				u.setStatus(rs.getString(12));
+			}
+			return u;
+		}
+		return null;
+	}
+	
+	
+	
+	
 	/*
 	 * getAll : retrieves all available users
 	 * @return {List<User>} returns a list of users if found and null if not
@@ -167,10 +217,50 @@ public class UserConnector implements ConnectorInterface<User> {
 	 */
 	@Override
 	public List<User> getAll() throws ClassNotFoundException, SQLException {
+		
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "SELECT * FROM `activitylogs`";
+			String sql = "SELECT * FROM `users`";
 			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			List<User> userList = new ArrayList<>();
+
+			while (rs.next()) {
+				User u = new User();
+				System.out.println(rs.getString(1));
+				u.setUserId(rs.getString(1));
+				u.setFirstName(rs.getString(2));
+				u.setLastName(rs.getString(3));
+				u.setGender(rs.getString(4));
+				u.setEmail(rs.getString(5));
+				u.setNic(rs.getString(6));
+				u.setPhone(rs.getInt(7));
+				u.setAddress(rs.getString(8));
+				u.setAvatar(rs.getString(9));
+				u.setRole(rs.getString(10));
+				u.setRegisteredDate(rs.getTimestamp(11));
+				u.setStatus(rs.getString(12));
+
+				userList.add(u);
+			}
+			return userList;
+		}
+		return null;
+	}
+	
+	
+	/*
+	 * getByType : retrieves all available users filtered by user type
+	 * @return {List<User>} returns a list of filtered users by user type if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public List<User> getByType(User user) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT * FROM `users` WHERE `users`.`role`= ? AND `users`.`status`='Active'";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, user.getRole());
 			ResultSet rs = ps.executeQuery();
 
 			List<User> userList = new ArrayList<>();

@@ -1,3 +1,12 @@
+/*
+ * Institute	: SLIIT
+ * Module		: Comparative Integrated Systems
+ * Project Name	: UniScore
+ * Project		: Online Examination Management System
+ * Group		: 19
+ * Author		: Ishani Welagedara (UOB-1940672)
+ */
+
 package connectors;
 
 import java.sql.Connection;

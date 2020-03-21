@@ -1,8 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Submission {
+@SuppressWarnings("serial")
+public class Submission implements Serializable{
 	
 	private String moduleId, studentId, answerList, grade;
 	private int examId;

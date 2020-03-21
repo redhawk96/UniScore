@@ -1,8 +1,19 @@
+/*
+ * Institute	: SLIIT
+ * Module		: Comparative Integrated Systems
+ * Project Name	: UniScore
+ * Project		: Online Examination Management System
+ * Group		: 19
+ * Author		: Subarshan Thiyagarajah (UOB-1939088)
+ */
+
 package models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class User {
+@SuppressWarnings("serial")
+public class User implements Serializable{
 
 	private String userId, firstName, lastName, gender, email, nic, address, avatar, role, password, status;
 	private int phone;

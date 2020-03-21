@@ -1,8 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Activity {
+@SuppressWarnings("serial")
+public class Activity implements Serializable{
 
 	private int activityId;
 	private String activityBrief, triggeredBy;
