@@ -1,3 +1,12 @@
+/*
+ * Institute	: SLIIT
+ * Module		: Comparative Integrated Systems
+ * Project Name	: UniScore
+ * Project		: Online Examination Management System
+ * Group		: 19
+ * Author		: Subarshan Thiyagarajah (UOB-1939088)
+ */
+
 package admin.panels.content;
 
 import javax.swing.JPanel;
@@ -20,7 +29,7 @@ public class DashboardContentPanel extends ContentPanel {
 		 */
 		contentPanel.setName("dashboard");
 		contentPanel.setLayout(null);
-		contentPanel.setBounds(UI.CONTENT_PANEL__X_AXIS, UI.CONTENT_PANEL__Y_AXIS, UI.CONTENT_PANEL__WIDTH, UI.CONTENT_PANEL__HEIGHT);
+		contentPanel.setBounds(0, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
 
 		JLabel contentLabel = new JLabel("dashboard");

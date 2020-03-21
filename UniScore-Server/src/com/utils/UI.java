@@ -1,3 +1,12 @@
+/*
+ * Institute	: SLIIT
+ * Module		: Comparative Integrated Systems
+ * Project Name	: UniScore
+ * Project		: Online Examination Management System
+ * Group		: 19
+ * Author		: Subarshan Thiyagarajah (UOB-1939088)
+ */
+
 package com.utils;
 
 import java.awt.Color;
@@ -36,6 +45,11 @@ public class UI {
 	/*
 	 * Navigation panel properties
 	 */
+	public static int LEFT_SIDE_PANEL_X_AXIS = 0;
+	public static int LEFT_SIDE_PANEL_Y_AXIS = 0;
+	public static int LEFT_SIDE_PANEL_WIDTH = 223;
+	public static int LEFT_SIDE_PANEL_HEIGHT = 643;
+	
 	public static Color NAVIGATION_PANEL_COLOR = Color.DARK_GRAY;
 	public static Color NAVIGATION_PANEL_ICON_COLOR = new Color(235, 240, 247);
 
@@ -63,8 +77,13 @@ public class UI {
 	 */
 	public static Color CONTENT_PANEL_BACKGROUND_COLOR = new Color(235, 240, 247);
 
-	public static int CONTENT_PANEL__X_AXIS = 0;
-	public static int CONTENT_PANEL__Y_AXIS = 0;
-	public static int CONTENT_PANEL__WIDTH = 852;
-	public static int CONTENT_PANEL__HEIGHT = 633;
+	public static int RIGHT_SIDE_PANEL_X_AXIS = 221;
+	public static int RIGHT_SIDE_PANEL_Y_AXIS = 0;
+	public static int RIGHT_SIDE_PANEL_WIDTH = 868;
+	public static int RIGHT_SIDE_PANEL_HEIGHT = 643;
+	
+	public static int CONTENT_PANEL_X_AXIS = 221;
+	public static int CONTENT_PANEL_Y_AXIS = 0;
+	public static int CONTENT_PANEL_WIDTH = 868;
+	public static int CONTENT_PANEL_HEIGHT = 643;
 }

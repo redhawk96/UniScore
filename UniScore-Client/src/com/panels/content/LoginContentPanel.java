@@ -7,7 +7,7 @@
  * Author		: Subarshan Thiyagarajah (UOB-1939088)
  */
 
-package admin.panels.content;
+package com.panels.content;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -27,8 +27,8 @@ import javax.swing.border.LineBorder;
 import com.panels.ContentPanel;
 import com.utils.UI;
 
-import connectivity.UniScoreServer;
-import main.panels.AdminPanel;
+import connectivity.UniScoreClient;
+import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
 import models.User;
 
@@ -168,7 +168,7 @@ public class LoginContentPanel  extends ContentPanel{
 					/*
 					 * Checking if the provided credentials match a user in the database
 					 */
-					boolean authUser = (boolean)UniScoreServer.uniscoreInterface.isUserAvailable(user);
+					boolean authUser = (boolean)UniScoreClient.uniscoreInterface.isUserAvailable(user);
 					
 					if(authUser) {
 						/*
@@ -176,11 +176,11 @@ public class LoginContentPanel  extends ContentPanel{
 						 * Logged user will be set to a static user object to be used as a user cookie through the application untill logout
 						 * Current login JFrame will be disposed and new AdminPanel JFrame will be created
 						 */
-						UniScoreServer.authUser = (User)UniScoreServer.uniscoreInterface.getUser(user);
+						UniScoreClient.authUser = (User)UniScoreClient.uniscoreInterface.getUser(user);
 						loadingLabel.setVisible(false);
-						UniScoreServer.loginPanel.dispose();
-						UniScoreServer.adminPanel = new AdminPanel();
-						UniScoreServer.adminPanel.setVisible(true);
+						UniScoreClient.loginPanel.dispose();
+						UniScoreClient.lecturerPanel = new LecturerPanel();
+						UniScoreClient.lecturerPanel.setVisible(true);
 					}else {
 						/*
 						 * If provided credentials are incorrect

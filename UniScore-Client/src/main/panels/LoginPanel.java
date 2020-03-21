@@ -11,9 +11,8 @@ package main.panels;
 
 import javax.swing.JFrame;
 import com.panels.ContentPanel;
+import com.panels.content.LoginContentPanel;
 import com.utils.UI;
-
-import admin.panels.content.LoginContentPanel;
 
 @SuppressWarnings("serial")
 public class LoginPanel extends JFrame{
@@ -25,7 +24,7 @@ public class LoginPanel extends JFrame{
 		/*
 		 * Setting JFrame title text
 		 */
-		setTitle("UNISCORE | Login");
+		setTitle("UNISCORE | Client Login");
 		
 		/*
 		 * Setting the size of the application screen
