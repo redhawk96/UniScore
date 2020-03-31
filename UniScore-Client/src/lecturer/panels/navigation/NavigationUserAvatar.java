@@ -16,7 +16,7 @@ public class NavigationUserAvatar {
 		 */
 		icon.setHorizontalAlignment(SwingConstants.CENTER);
 		icon.setIcon(new ImageIcon(LecturerPanel.class.getResource("/resources/avatar.png")));
-		icon.setBounds(32, 11, 158, 179);
+		icon.setBounds(48, 45, 158, 179);
 	}
 	
 	public JLabel getAvatar() {

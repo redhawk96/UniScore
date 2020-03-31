@@ -29,7 +29,7 @@ public class LoginPanel extends JFrame{
 		/*
 		 * Setting the size of the application screen
 		 */
-		setSize(UI.APPLICATION_WIDTH, UI.APPLICATION_HEIGHT);
+		setSize(UI.LOGIN_PANEL_APPLICATION_WIDTH, UI.LOGIN_PANEL_APPLICATION_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		

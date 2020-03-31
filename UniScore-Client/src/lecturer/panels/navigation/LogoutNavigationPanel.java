@@ -37,9 +37,9 @@ public class LogoutNavigationPanel extends NavigationPanel {
 		 */
 		panel.setName("logout");
 		panel.setBackground(UI.NAVIGATION_PANEL_BUTTON_COLOR);
-		panel.setBounds(0, 558, UI.NAVIGATION_PANEL_BUTTON_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
+		panel.setBounds(0, 615, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
-		panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
 		
 		panel.addMouseListener(new MouseAdapter() {
 			@Override

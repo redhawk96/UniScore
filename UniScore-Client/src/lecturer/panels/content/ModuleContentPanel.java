@@ -1,29 +1,28 @@
 package lecturer.panels.content;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import javax.swing.JScrollPane;
 import com.panels.ContentPanel;
+import com.utils.ContentTable;
 import com.utils.UI;
 
 @SuppressWarnings("serial")
 public class ModuleContentPanel extends ContentPanel {
 
 	JPanel contentPanel = new JPanel();
-	
+	ContentTable table = new ContentTable();
+	JScrollPane scrollPane = new JScrollPane();
+
 	public ModuleContentPanel() {
 		/*
-		 * Adding contentPanel
-		 * JPanel name is set to identify content panel when selected
+		 * Adding contentPanel JPanel name is set to identify content panel when
+		 * selected
 		 */
 		contentPanel.setName("module");
-		contentPanel.setLayout(null);
-		contentPanel.setBounds(UI.CONTENT_PANEL__X_AXIS, UI.CONTENT_PANEL__Y_AXIS, UI.CONTENT_PANEL__WIDTH, UI.CONTENT_PANEL__HEIGHT);
+		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
+		contentPanel.setLayout(null);
 
-		JLabel contentLabel = new JLabel("module");
-		contentLabel.setBounds(283, 187, 95, 37);
-		contentPanel.add(contentLabel);
 	}
 
 	/*

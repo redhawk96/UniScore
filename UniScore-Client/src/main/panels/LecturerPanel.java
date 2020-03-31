@@ -63,9 +63,14 @@ public class LecturerPanel extends JFrame implements ActionListener {
 	public LecturerPanel() {
 
 		/*
+		 * Setting JFrame title text
+		 */
+		setTitle("UNISCORE | Lecturer");
+		
+		/*
 		 * Setting the size of the application screen
 		 */
-		setSize(1091, 672);
+		setSize(UI.APPLICATION_WIDTH, UI.APPLICATION_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
@@ -84,7 +89,7 @@ public class LecturerPanel extends JFrame implements ActionListener {
 		 */
 		JPanel leftSidePanel = new JPanel();
 		leftSidePanel.setBackground(UI.NAVIGATION_PANEL_COLOR);
-		leftSidePanel.setBounds(0, 0, 223, 633);
+		leftSidePanel.setBounds(UI.NAVIGATION_PANEL_X_AXIS, UI.NAVIGATION_PANEL_Y_AXIS, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_HEIGHT);
 		getContentPane().add(leftSidePanel);
 		leftSidePanel.setLayout(null);
 
@@ -122,7 +127,7 @@ public class LecturerPanel extends JFrame implements ActionListener {
 		 * Adding left-side JPanel which is on the right side of the application. Used as the application's content panel
 		 */
 		JPanel rightSidePanel = new JPanel();
-		rightSidePanel.setBounds(223, 0, 852, 633);
+		rightSidePanel.setBounds(UI.NAVIGATION_PANEL_WIDTH, 0, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		getContentPane().add(rightSidePanel);
 		rightSidePanel.setLayout(null);
 		
