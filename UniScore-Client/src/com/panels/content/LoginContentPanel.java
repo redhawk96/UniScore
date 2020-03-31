@@ -55,7 +55,7 @@ public class LoginContentPanel  extends ContentPanel{
 		 */
 		contentPanel.setName("login");
 		contentPanel.setLayout(null);
-		contentPanel.setBounds(0, 0, UI.APPLICATION_WIDTH, UI.APPLICATION_HEIGHT);
+		contentPanel.setBounds(0, 0, UI.LOGIN_PANEL_APPLICATION_WIDTH, UI.LOGIN_PANEL_APPLICATION_HEIGHT);
 		contentPanel.setBackground(Color.WHITE);
 		
 		/*

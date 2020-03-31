@@ -1,6 +1,5 @@
 package lecturer.panels.content;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.panels.ContentPanel;
@@ -18,12 +17,8 @@ JPanel contentPanel = new JPanel();
 		 */
 		contentPanel.setName("settings");
 		contentPanel.setLayout(null);
-		contentPanel.setBounds(UI.CONTENT_PANEL__X_AXIS, UI.CONTENT_PANEL__Y_AXIS, UI.CONTENT_PANEL__WIDTH, UI.CONTENT_PANEL__HEIGHT);
+		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
-
-		JLabel contentLabel = new JLabel("settings");
-		contentLabel.setBounds(283, 187, 95, 37);
-		contentPanel.add(contentLabel);
 	}
 
 	/*
