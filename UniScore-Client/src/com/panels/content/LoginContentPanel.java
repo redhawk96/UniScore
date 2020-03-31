@@ -31,6 +31,7 @@ import connectivity.UniScoreClient;
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
 import models.User;
+import java.awt.Insets;
 
 @SuppressWarnings("serial")
 public class LoginContentPanel  extends ContentPanel{
@@ -69,6 +70,7 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding username text-field
 		 */
 		usernameTextField = new JTextField();
+		usernameTextField.setMargin(new Insets(2, 10, 2, 2));
 		usernameTextField.setFont(UI.LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT);
 		usernameTextField.setBounds(760, 283, 280, 34);
 		contentPanel.add(usernameTextField);
@@ -86,6 +88,7 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding password field
 		 */
 		passwordField = new JPasswordField();
+		passwordField.setMargin(new Insets(2, 10, 2, 2));
 		passwordField.setBounds(760, 365, 280, 34);
 		passwordField.setFont(UI.LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT);
 		passwordField.setColumns(10);
@@ -114,9 +117,10 @@ public class LoginContentPanel  extends ContentPanel{
 		/*
 		 * Adding loading label
 		 */
-		loadingLabel = new JLabel("Signing in...");
+		loadingLabel = new JLabel("Error authenticating...");
+		loadingLabel.setFont(UI.LOGIN_PANEL_ERROR_LABEL_FONT);
 		loadingLabel.setIcon(new ImageIcon(LoginPanel.class.getResource("/resources/loading.gif")));
-		loadingLabel.setBounds(760, 437, 141, 44);
+		loadingLabel.setBounds(760, 437, 153, 44);
 		loadingLabel.setVisible(false);
 		contentPanel.add(loadingLabel);
 		
@@ -178,9 +182,20 @@ public class LoginContentPanel  extends ContentPanel{
 						 */
 						UniScoreClient.authUser = (User)UniScoreClient.uniscoreInterface.getUser(user);
 						loadingLabel.setVisible(false);
-						UniScoreClient.loginPanel.dispose();
-						UniScoreClient.lecturerPanel = new LecturerPanel();
-						UniScoreClient.lecturerPanel.setVisible(true);
+						
+						/*
+						 * Opening up lecturer or student panel accordingly
+						 */
+						if(UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Teacher")) {
+							UniScoreClient.loginPanel.dispose();
+							UniScoreClient.lecturerPanel = new LecturerPanel();
+							UniScoreClient.lecturerPanel.setVisible(true);
+						}else if(UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Student")) {
+							UniScoreClient.loginPanel.dispose();
+							
+						}else {
+							loadingLabel.setVisible(true);
+						}
 					}else {
 						/*
 						 * If provided credentials are incorrect

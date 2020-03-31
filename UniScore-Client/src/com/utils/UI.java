@@ -23,6 +23,8 @@ public class UI {
 	public static Color LOGIN_PANEL_DEFAULT_TEXT_FIELD_COLOR = Color.BLACK;
 	public static Font LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT = new Font("Roboto", Font.PLAIN, 14);
 	
+	public static Font LOGIN_PANEL_ERROR_LABEL_FONT = new Font("Roboto", Font.PLAIN, 12);
+	
 	public static Color LOGIN_PANEL_LOGIN_BUTTON_COLOR = Color.WHITE;
 	public static Color LOGIN_PANEL_LOGIN_BUTTON_TEXT_COLOR = new Color(249, 168, 37);
 	public static Color LOGIN_PANEL_LOGIN_BUTTON_BORDER_COLOR = new Color(249, 168, 37);
