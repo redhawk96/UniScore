@@ -1,5 +1,6 @@
 package lecturer.panels.navigation;
 
+import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -27,8 +28,9 @@ public class StudentNavigationPanel extends NavigationPanel {
 		 */
 		panel.setName("student"); 
 		panel.setBackground(UI.NAVIGATION_PANEL_BUTTON_COLOR);
-		panel.setBounds(0, 314, UI.NAVIGATION_PANEL_BUTTON_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
+		panel.setBounds(0, 375, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
+		panel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
 		
 		panel.addMouseListener(new MouseAdapter() {
 			@Override

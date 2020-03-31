@@ -44,7 +44,7 @@ public class UniScoreServer {
 			System.out.println("Server is ready");
 			
 			if(stub.getServer()) {
-				UniScoreServer.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
+//				UniScoreServer.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
 				/*
 				 * Opening login panel
 				 */

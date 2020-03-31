@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.panels.ContentPanel;
@@ -14,14 +11,12 @@ import com.utils.ContentTable;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
-import models.Question;
 import models.User;
 import javax.swing.JScrollPane;
 import java.awt.Cursor;
 import java.awt.Font;
 import javax.swing.ListSelectionModel;
 import java.awt.SystemColor;
-import java.awt.Dimension;
 
 @SuppressWarnings("serial")
 public class StudentContentPanel extends ContentPanel {
@@ -32,7 +27,7 @@ public class StudentContentPanel extends ContentPanel {
 
 	public StudentContentPanel() {
 		contentPanel.setName("student");
-		contentPanel.setBounds(UI.CONTENT_PANEL__X_AXIS, UI.CONTENT_PANEL__Y_AXIS, UI.CONTENT_PANEL__WIDTH, UI.CONTENT_PANEL__HEIGHT);
+		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
 		contentPanel.setLayout(null);
 		
@@ -72,9 +67,6 @@ public class StudentContentPanel extends ContentPanel {
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.setRowHeight(32);
 			table.setFont(new Font("Roboto", Font.PLAIN, 13));
-//			table.setEnabled(true);
-//			table.setCellSelectionEnabled(false);
-//			table.setRowSelectionAllowed(true);
 			table.isCellEditable(1, 1);
 			scrollPane.setViewportView(table);
 			contentPanel.add(scrollPane);
