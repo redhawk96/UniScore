@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 
+import javax.swing.border.LineBorder;
+
 public class UI {
 
 	// Common Ui class implemented to reduce complexity and to avoid various
@@ -12,9 +14,10 @@ public class UI {
 	/*
 	 * Common properties
 	 */
-	public static Color APPLICATION_THEME_COLOR = new Color(249, 168, 37);
+	public static Color APPLICATION_THEME_PRIMARY_COLOR = new Color(249, 168, 37);
+	public static Color APPLICATION_THEME_SECONDARY_COLOR = Color.DARK_GRAY;
 	public static Font APPLICATION_THEME_FONT = new Font("Roboto", Font.BOLD, 14);
-	public static int APPLICATION_WIDTH = 1480;
+	public static int APPLICATION_WIDTH = 1510;
 	public static int APPLICATION_HEIGHT = 940;
 
 	/*
@@ -77,6 +80,21 @@ public class UI {
 	
 	public static int CONTENT_PANEL_X_AXIS = 0;
 	public static int CONTENT_PANEL_Y_AXIS = 0;
-	public static int CONTENT_PANEL_WIDTH = 1251;
+	public static int CONTENT_PANEL_WIDTH = 1281;
 	public static int CONTENT_PANEL_HEIGHT = 911;
+	
+	/*
+	 * Card panel properties
+	*/
+	public static int 	CARD_HEIGHT = 90;
+	public static int 	CARD_WIDTH = 270;
+	public static Color CARD_PRIMARY_BACKGROUND_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
+	public static Color CARD_SECONDARY_BACKGROUND_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
+	public static LineBorder CARD_BORDER = new LineBorder(APPLICATION_THEME_SECONDARY_COLOR, 3);
+	public static Font 	CARD_LABEL_TEXT_FONT = new Font("Roboto", Font.PLAIN, 20);
+	public static Color CARD_LABEL_TEXT_COLOR = Color.WHITE;
+	public static int 	CARD_LABEL_TEXT_WIDTH = 188;
+	public static Color CARD_LABEL_NUMBER_COLOR = APPLICATION_THEME_PRIMARY_COLOR;
+	public static int 	CARD_LABEL_NUMBER_WIDTH = 81;
+	
 }

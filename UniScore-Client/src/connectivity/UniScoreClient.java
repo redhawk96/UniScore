@@ -33,11 +33,11 @@ public class UniScoreClient {
 			System.out.println("Server located");
 
 			if (UniScoreClient.uniscoreInterface.getServer()) {
-				UniScoreClient.loginPanel = new LoginPanel();
-				UniScoreClient.loginPanel.setVisible(true);
+//				UniScoreClient.loginPanel = new LoginPanel();
+//				UniScoreClient.loginPanel.setVisible(true);
 				
-//				UniScoreClient.lecturerPanel = new LecturerPanel();
-//				UniScoreClient.lecturerPanel.setVisible(true);
+				UniScoreClient.lecturerPanel = new LecturerPanel();
+				UniScoreClient.lecturerPanel.setVisible(true);
 			}
 
 		} catch (Exception e) {
