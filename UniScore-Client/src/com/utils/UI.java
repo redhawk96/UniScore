@@ -16,9 +16,10 @@ public class UI {
 	 */
 	public static Color APPLICATION_THEME_PRIMARY_COLOR = new Color(249, 168, 37);
 	public static Color APPLICATION_THEME_SECONDARY_COLOR = Color.DARK_GRAY;
-	public static Font APPLICATION_THEME_FONT = new Font("Roboto", Font.BOLD, 14);
-	public static int APPLICATION_WIDTH = 1510;
-	public static int APPLICATION_HEIGHT = 940;
+	public static Font 	APPLICATION_THEME_BOLD_FONT = new Font("Roboto", Font.BOLD, 14);
+	public static Font 	APPLICATION_THEME_PLAIN_FONT = new Font("Roboto", Font.PLAIN, 14);
+	public static int 	APPLICATION_WIDTH = 1510;
+	public static int 	APPLICATION_HEIGHT = 940;
 
 	/*
 	 * Loginin panel properties
@@ -28,14 +29,14 @@ public class UI {
 	
 	public static Color LOGIN_PANEL_BACKGROUND_COLOR = Color.WHITE;
 	public static Color LOGIN_PANEL_DEFAULT_TEXT_FIELD_COLOR = Color.BLACK;
-	public static Font LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT = new Font("Roboto", Font.PLAIN, 14);
+	public static Font 	LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT = new Font("Roboto", Font.PLAIN, 14);
 	
-	public static Font LOGIN_PANEL_ERROR_LABEL_FONT = new Font("Roboto", Font.PLAIN, 12);
+	public static Font 	LOGIN_PANEL_ERROR_LABEL_FONT = new Font("Roboto", Font.PLAIN, 12);
 	
 	public static Color LOGIN_PANEL_LOGIN_BUTTON_COLOR = Color.WHITE;
 	public static Color LOGIN_PANEL_LOGIN_BUTTON_TEXT_COLOR = new Color(249, 168, 37);
 	public static Color LOGIN_PANEL_LOGIN_BUTTON_BORDER_COLOR = new Color(249, 168, 37);
-	public static Font LOGIN_PANEL_LOGIN_BUTTON_FONT = new Font("Roboto", Font.PLAIN, 17);
+	public static Font 	LOGIN_PANEL_LOGIN_BUTTON_FONT = new Font("Roboto", Font.PLAIN, 17);
 	
 	public static Color LOGIN_PANEL_SELECTED_LOGIN_BUTTON_COLOR = new Color(249, 168, 37);
 	public static Color LOGIN_PANEL_SELECTED_LOGIN_BUTTON_TEXT_COLOR = Color.WHITE;
@@ -49,15 +50,14 @@ public class UI {
 	public static int NAVIGATION_PANEL_WIDTH = 255;
 	public static int NAVIGATION_PANEL_HEIGHT = 911;
 	
-	
 	public static Color NAVIGATION_PANEL_COLOR = Color.DARK_GRAY;
 	public static Color NAVIGATION_PANEL_ICON_COLOR = new Color(235, 240, 247);
 
-	public static int NAVIGATION_PANEL_BUTTON_HEIGHT = 60;
+	public static int 	NAVIGATION_PANEL_BUTTON_HEIGHT = 60;
 	public static Color NAVIGATION_PANEL_BUTTON_COLOR = Color.DARK_GRAY;
 	public static Color NAVIGATION_PANEL_BUTTON_TEXT_COLOR = new Color(249, 168, 37);
-	public static Font NAVIGATION_PANEL_BUTTON_FONT = new Font("Roboto", Font.BOLD, 14);
-	public static int NAVIGATION_PANEL_BUTTON_CURSOR = Cursor.HAND_CURSOR;
+	public static Font 	NAVIGATION_PANEL_BUTTON_FONT = new Font("Roboto", Font.BOLD, 14);
+	public static int 	NAVIGATION_PANEL_BUTTON_CURSOR = Cursor.HAND_CURSOR;
 			
 	public static int NAVIGATION_PANEL_BUTTON_TEXT_X_AXIS = 100;
 	public static int NAVIGATION_PANEL_BUTTON_TEXT_Y_AXIS = 14;
@@ -85,9 +85,10 @@ public class UI {
 	
 	/*
 	 * Card panel properties
-	*/
+	 */
 	public static int 	CARD_HEIGHT = 90;
 	public static int 	CARD_WIDTH = 270;
+	public static int 	CARD_Y_AXIS = 58;
 	public static Color CARD_PRIMARY_BACKGROUND_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
 	public static Color CARD_SECONDARY_BACKGROUND_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
 	public static LineBorder CARD_BORDER = new LineBorder(APPLICATION_THEME_SECONDARY_COLOR, 3);
@@ -97,4 +98,12 @@ public class UI {
 	public static Color CARD_LABEL_NUMBER_COLOR = APPLICATION_THEME_PRIMARY_COLOR;
 	public static int 	CARD_LABEL_NUMBER_WIDTH = 81;
 	
+	/*
+	 * Navigation indicator panel properties
+	 */
+	public static Font 	NAVIGATION_INDICATOR_PANEL_FONT = APPLICATION_THEME_PLAIN_FONT;
+	public static int 	NAVIGATION_INDICATOR_PANEL_HEIGHT = 17;
+	public static int 	NAVIGATION_INDICATOR_PANEL_Y_AXIS = 8;
+	public static Color NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
+	public static Color NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR = APPLICATION_THEME_PRIMARY_COLOR;
 }

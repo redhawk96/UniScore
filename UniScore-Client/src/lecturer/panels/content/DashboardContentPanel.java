@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.border.BevelBorder;
 
 @SuppressWarnings("serial")
 public class DashboardContentPanel extends ContentPanel {
@@ -112,7 +113,7 @@ public class DashboardContentPanel extends ContentPanel {
 		});
 		moduleCard.setBorder(UI.CARD_BORDER);
 		moduleCard.setBackground(UI.CARD_PRIMARY_BACKGROUND_COLOR);
-		moduleCard.setBounds(30, 28, UI.CARD_WIDTH, UI.CARD_HEIGHT);
+		moduleCard.setBounds(30, 66, UI.CARD_WIDTH, UI.CARD_HEIGHT);
 		moduleCard.setLayout(null);
 		moduleCard.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
 		contentPanel.add(moduleCard);
@@ -155,7 +156,7 @@ public class DashboardContentPanel extends ContentPanel {
 		studentCard.setLayout(null);
 		studentCard.setBorder(UI.CARD_BORDER);
 		studentCard.setBackground(UI.CARD_PRIMARY_BACKGROUND_COLOR);
-		studentCard.setBounds(337, 28, UI.CARD_WIDTH, UI.CARD_HEIGHT);
+		studentCard.setBounds(343, 66, UI.CARD_WIDTH, UI.CARD_HEIGHT);
 		studentCard.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
 		contentPanel.add(studentCard);
 		
@@ -196,7 +197,7 @@ public class DashboardContentPanel extends ContentPanel {
 		examCard.setLayout(null);
 		examCard.setBorder(UI.CARD_BORDER);
 		examCard.setBackground(UI.CARD_PRIMARY_BACKGROUND_COLOR);
-		examCard.setBounds(644, 28, UI.CARD_WIDTH, UI.CARD_HEIGHT);
+		examCard.setBounds(650, 66, UI.CARD_WIDTH, UI.CARD_HEIGHT);
 		examCard.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
 		contentPanel.add(examCard);
 		
@@ -225,7 +226,7 @@ public class DashboardContentPanel extends ContentPanel {
 		moduleCard_3.setLayout(null);
 		moduleCard_3.setBorder(UI.CARD_BORDER);
 		moduleCard_3.setBackground(UI.CARD_PRIMARY_BACKGROUND_COLOR);
-		moduleCard_3.setBounds(952, 28, UI.CARD_WIDTH, UI.CARD_HEIGHT);
+		moduleCard_3.setBounds(957, 66, UI.CARD_WIDTH, UI.CARD_HEIGHT);
 		contentPanel.add(moduleCard_3);
 		
 		JPanel moduleCardTextPanel_3 = new JPanel();
@@ -248,5 +249,24 @@ public class DashboardContentPanel extends ContentPanel {
 		moduleCardStatNumber_3.setFont(UI.CARD_LABEL_TEXT_FONT);
 		moduleCardStatNumber_3.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
 		moduleCard_3.add(moduleCardStatNumber_3);
+		
+		JPanel navigationIndicatorPanel = new JPanel();
+		navigationIndicatorPanel.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(255, 255, 255), new Color(255, 255, 255), Color.LIGHT_GRAY, Color.LIGHT_GRAY));
+		navigationIndicatorPanel.setBackground(Color.WHITE);
+		navigationIndicatorPanel.setBounds(30, 11, 1199, 36);
+		contentPanel.add(navigationIndicatorPanel);
+		navigationIndicatorPanel.setLayout(null);
+		
+		JLabel navigationIndicatorMainLabel = new JLabel("Lecturer /");
+		navigationIndicatorMainLabel.setBounds(1074, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 71, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
+		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
+		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
+		
+		JLabel navigationIndicatorActiveLabel = new JLabel("Home");
+		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
+		navigationIndicatorActiveLabel.setBounds(1139, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 50, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
+		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 }
