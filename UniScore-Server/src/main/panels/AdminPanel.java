@@ -19,22 +19,18 @@ import admin.panels.content.DashboardContentPanel;
 import admin.panels.navigation.DashboardNavigationPanel;
 import admin.panels.navigation.LogoutNavigationPanel;
 import admin.panels.navigation.NavigationUserAvatar;
-import connectivity.UniScoreServer;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 @SuppressWarnings({ "serial" })
-public class AdminPanel extends JFrame{
-
+public class AdminPanel extends JFrame implements ActionListener {
 	/*
 	 * Declaring the NavigationPanels on left side of the application which is used to navigate to different content panels 
 	 * To identify the active navigation, NavigationPanel type arraylist(navigationPanelList) is implemented
 	 */
 	private DashboardNavigationPanel dashboardNavigationPanel = new DashboardNavigationPanel();
-	private LogoutNavigationPanel logoutNavigationPanel = new LogoutNavigationPanel(); 
-	private NavigationUserAvatar navigationUserAvatar = new NavigationUserAvatar();
+	private NavigationPanel logoutNavigationPanel = new LogoutNavigationPanel();
 	private static ArrayList<NavigationPanel> navigationPanelList;
 	public static NavigationPanel selectedNavigation;
 	
@@ -50,8 +46,6 @@ public class AdminPanel extends JFrame{
 	 * User avatar icon component
 	 */
 	private NavigationUserAvatar avatar = new NavigationUserAvatar();
-	
-	private JLabel authUserFNameLabel;
 
 	public AdminPanel() {
 
@@ -68,21 +62,21 @@ public class AdminPanel extends JFrame{
 		getContentPane().setLayout(null);
 		
 		/*
-		 * Disabling frame resizing
-		 */
-		setResizable(false);
-		
-		/*
 		 * setLocationRelativeTo set to null inorder to start the application center of the screen
 		 */
 		setLocationRelativeTo(null); 
+		
+		/*
+		 * Disabling frame resizing
+		 */
+		setResizable(false);
 
 		/*
 		 * Adding left-side JPanel which is on the left side of the application. Used as the application's navigation panel
 		 */
 		JPanel leftSidePanel = new JPanel();
 		leftSidePanel.setBackground(UI.NAVIGATION_PANEL_COLOR);
-		leftSidePanel.setBounds(UI.LEFT_SIDE_PANEL_X_AXIS, UI.LEFT_SIDE_PANEL_Y_AXIS, UI.LEFT_SIDE_PANEL_WIDTH, UI.LEFT_SIDE_PANEL_HEIGHT);
+		leftSidePanel.setBounds(UI.NAVIGATION_PANEL_X_AXIS, UI.NAVIGATION_PANEL_Y_AXIS, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_HEIGHT);
 		getContentPane().add(leftSidePanel);
 		leftSidePanel.setLayout(null);
 
@@ -99,29 +93,18 @@ public class AdminPanel extends JFrame{
 		navigationPanelList = new ArrayList<NavigationPanel>();
 		navigationPanelList.add(dashboardNavigationPanel);
 		navigationPanelList.add(logoutNavigationPanel);
-
+		
 		/*
 		 * Adding navigation JPanels to left-side JPanel
 		 */
-		leftSidePanel.add(navigationUserAvatar.getAvatar());
 		leftSidePanel.add(dashboardNavigationPanel.getNavigation());
 		leftSidePanel.add(logoutNavigationPanel.getNavigation());
-		
-		/*
-		 * Setting auth user's first name by cookie
-		 */
-		authUserFNameLabel = new JLabel(UniScoreServer.authUser.getFirstName());
-		authUserFNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		authUserFNameLabel.setForeground(UI.NAVIGATION_PANEL_BUTTON_TEXT_COLOR);
-		authUserFNameLabel.setFont(UI.NAVIGATION_PANEL_BUTTON_FONT);
-		authUserFNameLabel.setBounds(34, 143, 148, 20);
-		leftSidePanel.add(authUserFNameLabel);
 
 		/*
 		 * Adding left-side JPanel which is on the right side of the application. Used as the application's content panel
 		 */
 		JPanel rightSidePanel = new JPanel();
-		rightSidePanel.setBounds(UI.RIGHT_SIDE_PANEL_X_AXIS, UI.RIGHT_SIDE_PANEL_Y_AXIS, UI.RIGHT_SIDE_PANEL_WIDTH, UI.RIGHT_SIDE_PANEL_HEIGHT);
+		rightSidePanel.setBounds(UI.NAVIGATION_PANEL_WIDTH, 0, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		getContentPane().add(rightSidePanel);
 		rightSidePanel.setLayout(null);
 		
@@ -183,7 +166,12 @@ public class AdminPanel extends JFrame{
 			}
 		}
 	}
-	
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+	}
+
 	public static void main(String args[]) {
 		AdminPanel ap = new AdminPanel();
 		ap.setVisible(true);

@@ -1,5 +1,6 @@
 package lecturer.panels.content;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import com.panels.ContentPanel;
@@ -23,6 +24,7 @@ public class QuestionContentPanel extends ContentPanel {
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
 		contentPanel.setLayout(null);
 		
+		displayNavigationIndicator();
 	}
 
 	/*
@@ -34,5 +36,26 @@ public class QuestionContentPanel extends ContentPanel {
 	 */
 	public JPanel getContent() {
 		return contentPanel;
+	}
+	
+	public void displayNavigationIndicator() {
+		JPanel navigationIndicatorPanel = new JPanel();
+		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
+		navigationIndicatorPanel.setBackground(UI.NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR);
+		navigationIndicatorPanel.setBounds(30, 11, 1199, 36);
+		contentPanel.add(navigationIndicatorPanel);
+		navigationIndicatorPanel.setLayout(null);
+		
+		JLabel navigationIndicatorMainLabel = new JLabel("Lecturer /");
+		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
+		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
+		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
+		
+		JLabel navigationIndicatorActiveLabel = new JLabel("Questions");
+		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
+		navigationIndicatorActiveLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
+		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 }

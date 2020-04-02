@@ -37,9 +37,9 @@ public class DashboardNavigationPanel extends NavigationPanel {
 		 */
 		panel.setName("dashboard");
 		panel.setBackground(UI.NAVIGATION_PANEL_BUTTON_COLOR);
-		panel.setBounds(0, 190, UI.NAVIGATION_PANEL_BUTTON_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
+		panel.setBounds(0, 255, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
-		panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
 
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -77,5 +77,4 @@ public class DashboardNavigationPanel extends NavigationPanel {
 	public JPanel getNavigation() {
 		return panel;
 	}
-
 }
