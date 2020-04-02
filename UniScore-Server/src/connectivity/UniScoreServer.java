@@ -18,7 +18,7 @@ import models.User;
 public class UniScoreServer {
 
 	public static UniScoreInterface uniscoreInterface;
-	public static User authUser = null;
+	public static User authUser;
 	public static LoginPanel loginPanel;
 	public static AdminPanel adminPanel;
 	
@@ -44,7 +44,7 @@ public class UniScoreServer {
 			System.out.println("Server is ready");
 			
 			if(stub.getServer()) {
-//				UniScoreServer.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
+				UniScoreServer.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
 				/*
 				 * Opening login panel
 				 */
