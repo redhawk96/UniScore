@@ -1,5 +1,6 @@
 package lecturer.panels.content;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.panels.ContentPanel;
@@ -20,6 +21,7 @@ public class ExamContentPanel extends ContentPanel {
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
 
+		displayNavigationIndicator();
 	}
 	
 	/*
@@ -29,5 +31,26 @@ public class ExamContentPanel extends ContentPanel {
 	 */
 	public JPanel getContent() {
 		return contentPanel;
+	}
+	
+	public void displayNavigationIndicator() {
+		JPanel navigationIndicatorPanel = new JPanel();
+		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
+		navigationIndicatorPanel.setBackground(UI.NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR);
+		navigationIndicatorPanel.setBounds(30, 11, 1199, 36);
+		contentPanel.add(navigationIndicatorPanel);
+		navigationIndicatorPanel.setLayout(null);
+		
+		JLabel navigationIndicatorMainLabel = new JLabel("Lecturer /");
+		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
+		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
+		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
+		
+		JLabel navigationIndicatorActiveLabel = new JLabel("Exams");
+		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
+		navigationIndicatorActiveLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
+		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 }

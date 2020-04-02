@@ -10,8 +10,9 @@
 package admin.panels.content;
 
 import javax.swing.JPanel;
-
+import javax.swing.JScrollPane;
 import com.panels.ContentPanel;
+import com.utils.ContentTable;
 import com.utils.UI;
 
 import javax.swing.JLabel;
@@ -19,22 +20,23 @@ import javax.swing.JLabel;
 @SuppressWarnings("serial")
 public class DashboardContentPanel extends ContentPanel {
 
-	private JPanel contentPanel = new JPanel();
+	JPanel contentPanel = new JPanel();
+	ContentTable table = new ContentTable();
+	JScrollPane scrollPane = new JScrollPane();
 
 	public DashboardContentPanel() {
-
-		/*
-		 * Adding contentPanel
-		 * JPanel name is set to identify content panel when selected
-		 */
 		contentPanel.setName("dashboard");
-		contentPanel.setLayout(null);
-		contentPanel.setBounds(0, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
+		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
-
-		JLabel contentLabel = new JLabel("dashboard");
-		contentLabel.setBounds(283, 187, 95, 37);
-		contentPanel.add(contentLabel);
+		contentPanel.setLayout(null);
+		
+		try {
+			
+			displayNavigationIndicator();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	/*
@@ -45,5 +47,26 @@ public class DashboardContentPanel extends ContentPanel {
 	public JPanel getContent() {
 		return contentPanel;
 	}
-
+	
+	
+	public void displayNavigationIndicator() {
+		JPanel navigationIndicatorPanel = new JPanel();
+		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
+		navigationIndicatorPanel.setBackground(UI.NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR);
+		navigationIndicatorPanel.setBounds(30, 11, 1199, 36);
+		contentPanel.add(navigationIndicatorPanel);
+		navigationIndicatorPanel.setLayout(null);
+		
+		JLabel navigationIndicatorMainLabel = new JLabel("Lecturer /");
+		navigationIndicatorMainLabel.setBounds(1074, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 71, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
+		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
+		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
+		
+		JLabel navigationIndicatorActiveLabel = new JLabel("Home");
+		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
+		navigationIndicatorActiveLabel.setBounds(1139, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 50, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
+		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
+	}
 }

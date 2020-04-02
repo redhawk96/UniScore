@@ -1,31 +1,20 @@
 package lecturer.panels.content;
 
-import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.SystemColor;
-import java.util.List;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-
 import com.panels.ContentPanel;
 import com.utils.ContentTable;
 import com.utils.UI;
 
-import connectivity.UniScoreClient;
 import lecturer.panels.navigation.ExamNavigationPanel;
 import lecturer.panels.navigation.ModuleNavigationPanel;
 import lecturer.panels.navigation.StudentNavigationPanel;
 import main.panels.LecturerPanel;
-import models.User;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.border.BevelBorder;
 
 @SuppressWarnings("serial")
 public class DashboardContentPanel extends ContentPanel {
@@ -41,46 +30,10 @@ public class DashboardContentPanel extends ContentPanel {
 		contentPanel.setLayout(null);
 		
 		try {
-			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "Last Name", "First Name", "Sex", "Phone", "Email"}, 0);
-
-			User tempUser = new User();
-			tempUser.setRole("Student");
-			List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersByType(tempUser);
-
-			for (User user : userList) {
-				// Adding a new user record to the table each time the loop executes
-				model.addRow(new Object[] {user.getUserId(), user.getLastName(), user.getFirstName(), user.getGender(), user.getPhone(), user.getEmail()});
-			}
-			table.setUpdateSelectionOnSort(false);
-			table.setFocusTraversalKeysEnabled(false);
-			table.setFocusable(false);
-			table.setAutoCreateRowSorter(true);
-			table.setEditingColumn(0);
-			table.setEditingRow(0);
-			table.setRequestFocusEnabled(false);
-			table.setVerifyInputWhenFocusTarget(false);
-			table.setBorder(null);
 			
-			table.setModel(model);
-
-			scrollPane.setBounds(407, 299, 815, 580);
+			displayCards();
 			
-			table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			table.setFillsViewportHeight(true);
-			table.setBackground(Color.WHITE);
-			table.getTableHeader().setOpaque(false);
-			table.getTableHeader().setBackground(Color.WHITE);
-			table.getTableHeader().setForeground(Color.BLACK);
-			table.getTableHeader().setFont(new Font("Roboto", Font.PLAIN, 14));
-			table.setSelectionBackground(SystemColor.inactiveCaption);
-			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			table.setRowHeight(32);
-			table.setFont(new Font("Roboto", Font.PLAIN, 13));
-			table.isCellEditable(1, 1);
-			scrollPane.setViewportView(table);
-			contentPanel.add(scrollPane);
-			
-			addCards();
+			displayNavigationIndicator();
 			
 		} catch (Exception e) {
 			System.out.println(e);
@@ -97,7 +50,7 @@ public class DashboardContentPanel extends ContentPanel {
 	}
 	
 	
-	private void addCards() {
+	private void displayCards() {
 		JPanel moduleCard = new JPanel();
 		moduleCard.addMouseListener(new MouseAdapter() {
 			@Override
@@ -249,23 +202,26 @@ public class DashboardContentPanel extends ContentPanel {
 		moduleCardStatNumber_3.setFont(UI.CARD_LABEL_TEXT_FONT);
 		moduleCardStatNumber_3.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
 		moduleCard_3.add(moduleCardStatNumber_3);
-		
+	}
+	
+	
+	public void displayNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
-		navigationIndicatorPanel.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(255, 255, 255), new Color(255, 255, 255), Color.LIGHT_GRAY, Color.LIGHT_GRAY));
-		navigationIndicatorPanel.setBackground(Color.WHITE);
+		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
+		navigationIndicatorPanel.setBackground(UI.NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR);
 		navigationIndicatorPanel.setBounds(30, 11, 1199, 36);
 		contentPanel.add(navigationIndicatorPanel);
 		navigationIndicatorPanel.setLayout(null);
 		
 		JLabel navigationIndicatorMainLabel = new JLabel("Lecturer /");
-		navigationIndicatorMainLabel.setBounds(1074, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 71, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
 		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
 		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
 		
 		JLabel navigationIndicatorActiveLabel = new JLabel("Home");
 		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorActiveLabel.setBounds(1139, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 50, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorActiveLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
 		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}

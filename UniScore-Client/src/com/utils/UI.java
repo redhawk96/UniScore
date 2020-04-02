@@ -1,9 +1,10 @@
-	package com.utils;
+package com.utils;
 
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 
+import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
 public class UI {
@@ -22,7 +23,7 @@ public class UI {
 	public static int 	APPLICATION_HEIGHT = 940;
 
 	/*
-	 * Loginin panel properties
+	 * Login panel properties
 	 */
 	public static int LOGIN_PANEL_APPLICATION_WIDTH = 1091;
 	public static int LOGIN_PANEL_APPLICATION_HEIGHT = 672;
@@ -101,9 +102,18 @@ public class UI {
 	/*
 	 * Navigation indicator panel properties
 	 */
+	public static BevelBorder NAVIGATION_INDICATOR_PANEL_BORDER =  new BevelBorder(BevelBorder.RAISED, new Color(255, 255, 255), new Color(255, 255, 255), Color.LIGHT_GRAY, Color.LIGHT_GRAY);
+	
+	public static Color NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR = Color.WHITE;
 	public static Font 	NAVIGATION_INDICATOR_PANEL_FONT = APPLICATION_THEME_PLAIN_FONT;
 	public static int 	NAVIGATION_INDICATOR_PANEL_HEIGHT = 17;
 	public static int 	NAVIGATION_INDICATOR_PANEL_Y_AXIS = 8;
+	
+	public static int 	NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH = 71;
+	public static int 	NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS = 1054;
 	public static Color NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
+
+	public static int 	NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_WIDTH = 65;
+	public static int 	NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS = 1119;
 	public static Color NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR = APPLICATION_THEME_PRIMARY_COLOR;
 }
