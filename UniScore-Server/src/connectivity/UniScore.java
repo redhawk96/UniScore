@@ -287,6 +287,18 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 		ModuleConnector mc = new ModuleConnector();
 		return mc.getAll();
 	}
+	
+	/*
+	 * getByYearAndUser : retrieves all available modules reffered by year, semester and user or year and semester
+	 * @params {Module, int, int} Obtains teacher id form module and year and semester to be filtered accordingly
+	 * @return {List<Module>} returns a list of modules for a paticular year, semester and  user or year and semester if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	@Override
+	public List<Module> getModulesByRelevance(Module module, int year, int semester) throws RemoteException, ClassNotFoundException, SQLException {
+		ModuleConnector mc = new ModuleConnector();
+		return mc.getByYearAndUser(module, year, semester);
+	}
 
 	/*
 	 * addQuestion : This will add a question into the databse reffered by a module
