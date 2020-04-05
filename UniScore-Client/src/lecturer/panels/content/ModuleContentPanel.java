@@ -186,7 +186,7 @@ public class ModuleContentPanel extends ContentPanel {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
-		panel.setBounds(0, 0, 1199, 93);
+		panel.setBounds(0, 0, 1199, 90);
 		modulesPanel.add(panel);
 		panel.setLayout(null);
 		
