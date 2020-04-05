@@ -91,7 +91,7 @@ public class ModuleConnector implements ConnectorInterface<Module> {
 			Connection con = DBConnection.getDBConnection();
 			String sql = "DELETE FROM `modules` WHERE `modules`.`moduleId`=?";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setString(5, module.getModuleId());
+			ps.setString(1, module.getModuleId());
 
 			int execution = ps.executeUpdate();
 
@@ -116,7 +116,7 @@ public class ModuleConnector implements ConnectorInterface<Module> {
 			Connection con = DBConnection.getDBConnection();
 			String sql = "SELECT * FROM `modules` WHERE `modules`.`moduleId`=?";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setString(5, module.getModuleId());
+			ps.setString(1, module.getModuleId());
 			ResultSet rs = ps.executeQuery();
 
 			Module m = new Module();
@@ -147,6 +147,52 @@ public class ModuleConnector implements ConnectorInterface<Module> {
 			Connection con = DBConnection.getDBConnection();
 			String sql = "SELECT * FROM `modules`";
 			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			List<Module> moduleList = new ArrayList<>();
+
+			while (rs.next()) {
+				Module m = new Module();
+
+				m.setModuleId(rs.getString(1));
+				m.setModuleName(rs.getString(2));
+				m.setYear(rs.getInt(3));
+				m.setSemester(rs.getInt(4));
+				m.setTeacherId(rs.getString(5));
+				m.setCreatedAt(rs.getTimestamp(6));
+				m.setUpdatedAt(rs.getTimestamp(7));
+				
+				moduleList.add(m);
+			}
+			return moduleList;
+		}
+		return null;
+	}
+	
+	/*
+	 * getByYearAndUser : retrieves all available modules reffered by year, semester and user or year and semester
+	 * @return {List<Module>} returns a list of modules for a paticular year, semester and  user or year and semester if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public List<Module> getByYearAndUser(Module module, int year, int semester)throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			
+			PreparedStatement ps = null;
+			
+			if(module.getTeacherId() != null) {
+				String sql = "SELECT * FROM `modules` WHERE `modules`.`teacherId`=? AND `modules`.`year`=? AND `modules`.`semester`=?";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, module.getTeacherId());
+				ps.setInt(2, year);
+				ps.setInt(3, semester);
+			} else {
+				String sql = "SELECT * FROM `modules` WHERE `modules`.`year`=? AND `modules`.`semester`=?";
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, year);
+				ps.setInt(2, semester);
+			}
+			
 			ResultSet rs = ps.executeQuery();
 
 			List<Module> moduleList = new ArrayList<>();

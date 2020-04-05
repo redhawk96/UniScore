@@ -232,6 +232,14 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	public List<Module> getModules() throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getModulesByRelevance : retrieves all available modules reffered by year and user or year
+	 * @params {Module, int, int} Obtains teacher id form module and year and semester to be filtered accordingly
+	 * @return {List<Module>} returns a list of modules for a paticular year and user or year if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public List<Module> getModulesByRelevance(Module module, int year, int semester) throws RemoteException, ClassNotFoundException, SQLException;
 
 	/*
 	 * Ending declaration of module methods

@@ -58,7 +58,7 @@ public class StudentContentPanel extends ContentPanel {
 			
 			table.setModel(model);
 
-			scrollPane.setBounds(18, 25, 815, 580);
+			scrollPane.setBounds(36, 99, 815, 580);
 			
 			table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			table.setFillsViewportHeight(true);
