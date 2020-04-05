@@ -19,8 +19,8 @@ public class UI {
 	public static Color APPLICATION_THEME_SECONDARY_COLOR = Color.DARK_GRAY;
 	public static Font 	APPLICATION_THEME_BOLD_FONT = new Font("Roboto", Font.BOLD, 14);
 	public static Font 	APPLICATION_THEME_PLAIN_FONT = new Font("Roboto", Font.PLAIN, 14);
-	public static int 	APPLICATION_WIDTH = 1510;
-	public static int 	APPLICATION_HEIGHT = 940;
+	public static int 	APPLICATION_WIDTH = 1366;
+	public static int 	APPLICATION_HEIGHT = 768;
 
 	/*
 	 * Login panel properties
@@ -48,8 +48,8 @@ public class UI {
 	 */
 	public static int NAVIGATION_PANEL_X_AXIS = 0;
 	public static int NAVIGATION_PANEL_Y_AXIS = 0;
-	public static int NAVIGATION_PANEL_WIDTH = 255;
-	public static int NAVIGATION_PANEL_HEIGHT = 911;
+	public static int NAVIGATION_PANEL_WIDTH = 230;
+	public static int NAVIGATION_PANEL_HEIGHT = 768;
 	
 	public static Color NAVIGATION_PANEL_COLOR = Color.DARK_GRAY;
 	public static Color NAVIGATION_PANEL_ICON_COLOR = new Color(235, 240, 247);
@@ -80,14 +80,14 @@ public class UI {
 	
 	public static int CONTENT_PANEL_X_AXIS = 0;
 	public static int CONTENT_PANEL_Y_AXIS = 0;
-	public static int CONTENT_PANEL_WIDTH = 1281;
-	public static int CONTENT_PANEL_HEIGHT = 911;
+	public static int CONTENT_PANEL_WIDTH = 1136;
+	public static int CONTENT_PANEL_HEIGHT = 765;
 	
 	/*
 	 * Card panel properties
 	 */
 	public static int 	CARD_HEIGHT = 90;
-	public static int 	CARD_WIDTH = 270;
+	public static int 	CARD_WIDTH = 230;
 	public static int 	CARD_Y_AXIS = 58;
 	public static Color CARD_PRIMARY_BACKGROUND_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
 	public static Color CARD_SECONDARY_BACKGROUND_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
@@ -109,10 +109,10 @@ public class UI {
 	public static int 	NAVIGATION_INDICATOR_PANEL_Y_AXIS = 8;
 	
 	public static int 	NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH = 71;
-	public static int 	NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS = 1054;
+	public static int 	NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS = 600;
 	public static Color NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
 
 	public static int 	NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_WIDTH = 65;
-	public static int 	NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS = 1119;
+	public static int 	NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS = 1000;
 	public static Color NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR = APPLICATION_THEME_PRIMARY_COLOR;
 }
