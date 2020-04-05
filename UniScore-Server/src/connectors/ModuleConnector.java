@@ -180,13 +180,19 @@ public class ModuleConnector implements ConnectorInterface<Module> {
 			
 			PreparedStatement ps = null;
 			
-			if(module.getTeacherId() != null) {
+			if (module.getTeacherId() != null && year != 0 && semester != 0) {
 				String sql = "SELECT * FROM `modules` WHERE `modules`.`teacherId`=? AND `modules`.`year`=? AND `modules`.`semester`=?";
 				ps = con.prepareStatement(sql);
 				ps.setString(1, module.getTeacherId());
 				ps.setInt(2, year);
 				ps.setInt(3, semester);
-			} else {
+				
+			} else if (module.getTeacherId() != null && year == 0 && semester == 0) {
+				String sql = "SELECT * FROM `modules` WHERE `modules`.`teacherId`=?";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, module.getTeacherId());
+				
+			} else if (year != 0 && semester != 0) {
 				String sql = "SELECT * FROM `modules` WHERE `modules`.`year`=? AND `modules`.`semester`=?";
 				ps = con.prepareStatement(sql);
 				ps.setInt(1, year);
