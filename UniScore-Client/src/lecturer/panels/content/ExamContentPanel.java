@@ -31,130 +31,35 @@ import javax.swing.JScrollPane;
 public class ExamContentPanel extends ContentPanel {
 
 	JPanel contentPanel = new JPanel();
-	JPanel examContentPanel = new JPanel();
+	JPanel examBodyPanel = new JPanel();
 	JPanel examInfoPanel = new JPanel();
 	ContentTable table = new ContentTable();
 	JScrollPane scrollPane = new JScrollPane();
 
 	public ExamContentPanel() {
-		
+		/*
+		 * Adding contentPanel JPanel name is set to identify content panel when selected
+		 */
 		contentPanel.setName("exam");
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
 		contentPanel.setLayout(null);
-		
-		try {
-			
-			displayNavigationIndicator();
-			
-			examContentPanel.setBackground(Color.WHITE);
-			examContentPanel.setBounds(30, 66, 1199, 793);
-			contentPanel.add(examContentPanel);
-			examContentPanel.setLayout(null);
-			
-			setSelectedExam("", "", -1, -1, "", -1, "");
-			
-			
-			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Module", "Exam Name", "Exam Status"}, 0);
 
-			Module module = new Module();
-			module.setTeacherId(UniScoreClient.authUser.getUserId());
-			
-			List<Module> moduleList = (List<Module>) UniScoreClient.uniscoreInterface.getModulesByRelevance(module, 0, 0);
-
-			for (Module mod : moduleList) {
-				
-				Exam exam = new Exam();
-				exam.setModuleId(mod.getModuleId());
-						
-				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(exam);
-				for(Exam e : examList) {
-					// Adding a exam record to the table each time the loop executes
-					model.addRow(new Object[] {e.getExamId(),   "     "+mod.getModuleName(),  "     "+e.getExamName(), "     "+e.getStatus()});
-				}		
-			}
-			
-			table.setForeground(Color.DARK_GRAY);
-
-			table.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					if(table.getSelectedRow() != -1) {
-						 try {
-							 Exam selectedTempExam = new Exam();
-							 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
-							 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
-							 
-							 Module selectedTempModule = new Module();
-							 selectedTempModule.setModuleId(selectedExam.getModuleId());
-							 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
-							 
-							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
-						 }catch(Exception e) {
-							 System.out.println(e);
-						 }
-					 }
-				}
-			});
-			
-			table.setUpdateSelectionOnSort(false);
-			table.setFocusTraversalKeysEnabled(false);
-			table.setFocusable(false);
-			table.setAutoCreateRowSorter(true);
-			table.setEditingColumn(0);
-			table.setEditingRow(0);
-			table.setRequestFocusEnabled(false);
-			table.setVerifyInputWhenFocusTarget(false);
-			table.setBorder(null);
-			
-			table.setModel(model);
-			
-			//  To align text to center in a column 
-            DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
-            centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);
-            
-            // Setting width to colums in JTable
-            TableColumnModel columnModel = table.getColumnModel();
-            
-            columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
-            columnModel.getColumn(3).setCellRenderer(centerAlingedCell);
-			
-            // Removing horizontal cell borders
-            table.setShowHorizontalLines(false);
-            
-            // Setting cursor type on table hover
-			table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			table.setFillsViewportHeight(true);
-			table.setBackground(Color.WHITE);
-			table.getTableHeader().setOpaque(false);
-			table.getTableHeader().setBackground(Color.WHITE);
-			table.getTableHeader().setForeground(Color.BLACK);
-			table.getTableHeader().setFont(new Font("Roboto", Font.PLAIN, 14));
-			table.setSelectionBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			table.setRowHeight(32);
-			table.setFont(new Font("Roboto", Font.PLAIN, 14));
-			table.isCellEditable(1, 1);
-			scrollPane.setBounds(0, 172, 1199, 621);
-			examContentPanel.add(scrollPane);
-			scrollPane.setViewportView(table);
-			
-		}catch(Exception e) {
-			System.out.println(e);
-		}
-		
+		setExamsBody();		
 	}
 	
 	/*
 	 * returns the JPanel inside ContentPanel
-	 * @param {}
 	 * @returns JPanel
 	 */
 	public JPanel getContent() {
 		return contentPanel;
 	}
 	
-	public void displayNavigationIndicator() {
+	
+	
+	
+	public void setNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
 		navigationIndicatorPanel.setBackground(UI.NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR);
@@ -176,13 +81,28 @@ public class ExamContentPanel extends ContentPanel {
 	}
 	
 	
+	public void setExamsBody() {
+		
+		setNavigationIndicator();
+		
+		examBodyPanel.setBackground(Color.WHITE);
+		examBodyPanel.setBounds(30, 66, 1199, 813);
+		contentPanel.add(examBodyPanel);
+		examBodyPanel.setLayout(null);
+
+		setSelectedExam("", "", -1, -1, "", -1, "");
+
+		setExamListTable();
+	}
+	
+	
 	public void setSelectedExam(String moduleCode, String moduleName, int moduleYear, int moduleSemester, String examName, int examDuration, String examStatus) {
 		examInfoPanel.removeAll();
 		examInfoPanel = new JPanel();
 		examInfoPanel.setLayout(null);
 		examInfoPanel.setBackground(Color.DARK_GRAY);
 		examInfoPanel.setBounds(0, 0, 1199, 138);
-		examContentPanel.add(examInfoPanel);
+		examBodyPanel.add(examInfoPanel);
 		
 		JLabel moduleInfoLabel = new JLabel("Module Information");
 		moduleInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -294,4 +214,99 @@ public class ExamContentPanel extends ContentPanel {
 	
 		examInfoPanel.repaint();
 	}
+	
+	
+	public void setExamListTable() {
+		
+		try {
+			
+			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Module", "Exam Name", "Exam Status"}, 0);
+
+			Module module = new Module();
+			module.setTeacherId(UniScoreClient.authUser.getUserId());
+			
+			List<Module> moduleList = (List<Module>) UniScoreClient.uniscoreInterface.getModulesByRelevance(module, 0, 0);
+
+			for (Module mod : moduleList) {
+				
+				Exam exam = new Exam();
+				exam.setModuleId(mod.getModuleId());
+						
+				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(exam);
+				for(Exam e : examList) {
+					// Adding a exam record to the table each time the loop executes
+					model.addRow(new Object[] {e.getExamId(),   "     "+mod.getModuleName(),  "     "+e.getExamName(), "     "+e.getStatus()});
+				}		
+			}
+			
+			table.setForeground(Color.DARK_GRAY);
+
+			table.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					if(table.getSelectedRow() != -1) {
+						 try {
+							 Exam selectedTempExam = new Exam();
+							 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
+							 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
+							 
+							 Module selectedTempModule = new Module();
+							 selectedTempModule.setModuleId(selectedExam.getModuleId());
+							 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
+							 
+							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
+						 }catch(Exception e) {
+							 System.out.println(e);
+						 }
+					 }
+				}
+			});
+			
+			table.setUpdateSelectionOnSort(false);
+			table.setFocusTraversalKeysEnabled(false);
+			table.setFocusable(false);
+			table.setAutoCreateRowSorter(true);
+			table.setEditingColumn(0);
+			table.setEditingRow(0);
+			table.setRequestFocusEnabled(false);
+			table.setVerifyInputWhenFocusTarget(false);
+			table.setBorder(null);
+			
+			table.setModel(model);
+			
+			//  To align text to center in a column 
+            DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
+            centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);
+            
+            // Setting width to colums in JTable
+            TableColumnModel columnModel = table.getColumnModel();
+            
+            columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
+            columnModel.getColumn(3).setCellRenderer(centerAlingedCell);
+			
+            // Removing horizontal cell borders
+            table.setShowHorizontalLines(false);
+            
+            // Setting cursor type on table hover
+			table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			table.setFillsViewportHeight(true);
+			table.setBackground(Color.WHITE);
+			table.getTableHeader().setOpaque(false);
+			table.getTableHeader().setBackground(Color.WHITE);
+			table.getTableHeader().setForeground(Color.BLACK);
+			table.getTableHeader().setFont(new Font("Roboto", Font.PLAIN, 14));
+			table.setSelectionBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			table.setRowHeight(32);
+			table.setFont(new Font("Roboto", Font.PLAIN, 14));
+			table.isCellEditable(1, 1);
+			scrollPane.setBounds(0, 172, 1199, 641);
+			examBodyPanel.add(scrollPane);
+			scrollPane.setViewportView(table);
+			
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
 }
+
