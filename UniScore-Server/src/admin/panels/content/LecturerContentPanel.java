@@ -53,7 +53,7 @@ public class LecturerContentPanel extends ContentPanel {
 				DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "First Name", "Last Name", "Gender", "Email",  "Status"}, 0);
 
 				User tempUser = new User();
-				tempUser.setRole("Teacher");
+				tempUser.setRole("Lecturer");
 				List<User> userList = (List<User>) UniScoreServer.uniscoreInterface.getUsersByType(tempUser);
 
 				for (User user : userList) {
