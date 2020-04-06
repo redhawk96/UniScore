@@ -26,30 +26,28 @@ public class ModuleContentPanel extends ContentPanel {
 	JPanel contentPanel = new JPanel();
 	ContentTable table = new ContentTable();
 	JScrollPane scrollPane = new JScrollPane();
+	JPanel modulesBodyPanel = new JPanel();
 
 	public ModuleContentPanel() {
 		/*
-		 * Adding contentPanel JPanel name is set to identify content panel when
-		 * selected
+		 * Adding contentPanel JPanel name is set to identify content panel when selected
 		 */
 		contentPanel.setName("module");
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
 		contentPanel.setLayout(null);
 
-		displayNavigationIndicator();
-		
-		displayModuleTrees();
+		setModulesBody();
 	}
 
 	/*
 	 * returns the JPanel inside ContentPanel
-	 * @param {}
 	 * @returns JPanel
 	 */
 	public JPanel getContent() {
 		return contentPanel;
 	}
+	
 	
 	public void displayNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
@@ -73,17 +71,25 @@ public class ModuleContentPanel extends ContentPanel {
 		
 	}
 	
-	public void displayModuleTrees() {
-		JPanel modulesPanel = new JPanel();
-		modulesPanel.setBackground(Color.WHITE);
-		modulesPanel.setBounds(30, 66, 1199, 761);
-		contentPanel.add(modulesPanel);
-		modulesPanel.setLayout(null);
+	
+	public void setModulesBody() {
 		
+		displayNavigationIndicator();
+		
+		modulesBodyPanel.setBackground(Color.WHITE);
+		modulesBodyPanel.setBounds(30, 66, 1199, 813);
+		contentPanel.add(modulesBodyPanel);
+		modulesBodyPanel.setLayout(null);
+		
+		getModuleTrees();
+	}
+	
+	
+	public void getModuleTrees() {
 		JPanel yearOnePanel = new JPanel();
 		yearOnePanel.setBackground(Color.DARK_GRAY);
 		yearOnePanel.setBounds(0, 205, 249, 76);
-		modulesPanel.add(yearOnePanel);
+		modulesBodyPanel.add(yearOnePanel);
 		yearOnePanel.setLayout(null);
 		
 		JLabel yearOnePanelLabel = new JLabel("YEAR  1");
@@ -97,7 +103,7 @@ public class ModuleContentPanel extends ContentPanel {
 		yearTwoPanel.setLayout(null);
 		yearTwoPanel.setBackground(Color.DARK_GRAY);
 		yearTwoPanel.setBounds(323, 205, 249, 76);
-		modulesPanel.add(yearTwoPanel);
+		modulesBodyPanel.add(yearTwoPanel);
 		
 		JLabel yearTwoPanelLabel = new JLabel("YEAR  2");
 		yearTwoPanelLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,7 +116,7 @@ public class ModuleContentPanel extends ContentPanel {
 		yearThreePanel.setLayout(null);
 		yearThreePanel.setBackground(Color.DARK_GRAY);
 		yearThreePanel.setBounds(636, 205, 249, 76);
-		modulesPanel.add(yearThreePanel);
+		modulesBodyPanel.add(yearThreePanel);
 		
 		JLabel yearThreePanelLabel = new JLabel("YEAR  3");
 		yearThreePanelLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -123,7 +129,7 @@ public class ModuleContentPanel extends ContentPanel {
 		yearFourPanel.setLayout(null);
 		yearFourPanel.setBackground(Color.DARK_GRAY);
 		yearFourPanel.setBounds(950, 205, 249, 76);
-		modulesPanel.add(yearFourPanel);
+		modulesBodyPanel.add(yearFourPanel);
 		
 		JLabel yearFourPanelLabel = new JLabel("YEAR  4");
 		yearFourPanelLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -135,7 +141,7 @@ public class ModuleContentPanel extends ContentPanel {
 		JScrollPane yearOneScrollPane = new JScrollPane();
 		yearOneScrollPane.setBorder(null);
 		yearOneScrollPane.setBounds(0, 284, 249, 477);
-		modulesPanel.add(yearOneScrollPane);
+		modulesBodyPanel.add(yearOneScrollPane);
 		
 		JTree yearOneTree = new JTree();
 		yearOneTree.setModel(setTreeValues(1)); // Setting values to tree
@@ -148,7 +154,7 @@ public class ModuleContentPanel extends ContentPanel {
 		JScrollPane yearTwoScrollPane = new JScrollPane();
 		yearTwoScrollPane.setBorder(null);
 		yearTwoScrollPane.setBounds(323, 284, 249, 477);
-		modulesPanel.add(yearTwoScrollPane);
+		modulesBodyPanel.add(yearTwoScrollPane);
 		
 		JTree yearTwoTree = new JTree();
 		yearTwoTree.setModel(setTreeValues(2)); // Setting values to tree
@@ -161,7 +167,7 @@ public class ModuleContentPanel extends ContentPanel {
 		JScrollPane yearThreeScrollPane = new JScrollPane();
 		yearThreeScrollPane.setBorder(null);
 		yearThreeScrollPane.setBounds(636, 284, 249, 477);
-		modulesPanel.add(yearThreeScrollPane);
+		modulesBodyPanel.add(yearThreeScrollPane);
 		
 		JTree yearThreeTree = new JTree();
 		yearThreeTree.setModel(setTreeValues(3)); // Setting values to tree
@@ -174,7 +180,7 @@ public class ModuleContentPanel extends ContentPanel {
 		JScrollPane yearFourScrollPane = new JScrollPane();
 		yearFourScrollPane.setBorder(null);
 		yearFourScrollPane.setBounds(950, 284, 249, 477);
-		modulesPanel.add(yearFourScrollPane);
+		modulesBodyPanel.add(yearFourScrollPane);
 		
 		JTree yearFourTree = new JTree();
 		yearFourTree.setModel(setTreeValues(4)); // Setting values to tree
@@ -187,7 +193,7 @@ public class ModuleContentPanel extends ContentPanel {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
 		panel.setBounds(0, 0, 1199, 90);
-		modulesPanel.add(panel);
+		modulesBodyPanel.add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblModules = new JLabel("MODULES");
@@ -201,51 +207,51 @@ public class ModuleContentPanel extends ContentPanel {
 		separator.setBackground(Color.DARK_GRAY);
 		separator.setForeground(Color.DARK_GRAY);
 		separator.setBounds(121, 153, 952, 4);
-		modulesPanel.add(separator);
+		modulesBodyPanel.add(separator);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(Color.DARK_GRAY);
 		separator_1.setBackground(Color.DARK_GRAY);
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setBounds(121, 153, 4, 41);
-		modulesPanel.add(separator_1);
+		modulesBodyPanel.add(separator_1);
 		
 		JSeparator separator_1_1 = new JSeparator();
 		separator_1_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1_1.setForeground(Color.DARK_GRAY);
 		separator_1_1.setBackground(Color.DARK_GRAY);
 		separator_1_1.setBounds(447, 153, 4, 41);
-		modulesPanel.add(separator_1_1);
+		modulesBodyPanel.add(separator_1_1);
 		
 		JSeparator separator_1_2 = new JSeparator();
 		separator_1_2.setOrientation(SwingConstants.VERTICAL);
 		separator_1_2.setForeground(Color.DARK_GRAY);
 		separator_1_2.setBackground(Color.DARK_GRAY);
 		separator_1_2.setBounds(756, 153, 4, 41);
-		modulesPanel.add(separator_1_2);
+		modulesBodyPanel.add(separator_1_2);
 		
 		JSeparator separator_1_3 = new JSeparator();
 		separator_1_3.setOrientation(SwingConstants.VERTICAL);
 		separator_1_3.setForeground(Color.DARK_GRAY);
 		separator_1_3.setBackground(Color.DARK_GRAY);
 		separator_1_3.setBounds(1071, 153, 4, 41);
-		modulesPanel.add(separator_1_3);
+		modulesBodyPanel.add(separator_1_3);
 		
 		JSeparator separator_1_4 = new JSeparator();
 		separator_1_4.setOrientation(SwingConstants.VERTICAL);
 		separator_1_4.setForeground(Color.DARK_GRAY);
 		separator_1_4.setBackground(Color.DARK_GRAY);
 		separator_1_4.setBounds(600, 106, 4, 47);
-		modulesPanel.add(separator_1_4);
+		modulesBodyPanel.add(separator_1_4);
 		
 	}
+	
 	
 	public DefaultTreeModel setTreeValues(int year) {
 		return new DefaultTreeModel(new DefaultMutableTreeNode("Year 0" + year) {
 			{
 				Module module = new Module();
-				module.setTeacherId("T001");
-//				module.setTeacherId(UniScoreClient.authUser.getUserId());
+				module.setTeacherId(UniScoreClient.authUser.getUserId());
 				
 				DefaultMutableTreeNode node_1;
 				DefaultMutableTreeNode node_2;
