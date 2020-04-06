@@ -162,7 +162,7 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setAvatar(rs.getString(9));
 				u.setRole(rs.getString(10));
 				u.setRegisteredDate(rs.getTimestamp(11));
-				u.setStatus(rs.getString(12));
+				u.setStatus(rs.getString(13));
 			}
 			return u;
 		}
@@ -200,7 +200,7 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setAvatar(rs.getString(9));
 				u.setRole(rs.getString(10));
 				u.setRegisteredDate(rs.getTimestamp(11));
-				u.setStatus(rs.getString(12));
+				u.setStatus(rs.getString(13));
 			}
 			return u;
 		}
@@ -240,7 +240,7 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setAvatar(rs.getString(9));
 				u.setRole(rs.getString(10));
 				u.setRegisteredDate(rs.getTimestamp(11));
-				u.setStatus(rs.getString(12));
+				u.setStatus(rs.getString(13));
 
 				userList.add(u);
 			}
@@ -279,7 +279,7 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setAvatar(rs.getString(9));
 				u.setRole(rs.getString(10));
 				u.setRegisteredDate(rs.getTimestamp(11));
-				u.setStatus(rs.getString(12));
+				u.setStatus(rs.getString(13));
 
 				userList.add(u);
 			}
