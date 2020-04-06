@@ -156,7 +156,7 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setNic(rs.getString(6));
 				u.setPhone(rs.getInt(7));
 				u.setAddress(rs.getString(8));
-				u.setRole(rs.getString(9));
+        u.setRole(rs.getString(9));
 				u.setRegisteredDate(rs.getTimestamp(10));
 				u.setStatus(rs.getString(12));
 			}
@@ -193,7 +193,7 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setNic(rs.getString(6));
 				u.setPhone(rs.getInt(7));
 				u.setAddress(rs.getString(8));
-				u.setRole(rs.getString(9));
+        u.setRole(rs.getString(9));
 				u.setRegisteredDate(rs.getTimestamp(10));
 				u.setStatus(rs.getString(12));
 			}
@@ -231,7 +231,7 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setNic(rs.getString(6));
 				u.setPhone(rs.getInt(7));
 				u.setAddress(rs.getString(8));
-				u.setRole(rs.getString(9));
+        u.setRole(rs.getString(9));
 				u.setRegisteredDate(rs.getTimestamp(10));
 				u.setStatus(rs.getString(12));
 
@@ -269,7 +269,7 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setNic(rs.getString(6));
 				u.setPhone(rs.getInt(7));
 				u.setAddress(rs.getString(8));
-				u.setRole(rs.getString(9));
+        u.setRole(rs.getString(9));
 				u.setRegisteredDate(rs.getTimestamp(10));
 				u.setStatus(rs.getString(12));
 
