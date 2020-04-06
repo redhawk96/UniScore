@@ -244,8 +244,7 @@ public class ModuleContentPanel extends ContentPanel {
 		return new DefaultTreeModel(new DefaultMutableTreeNode("Year 0" + year) {
 			{
 				Module module = new Module();
-				module.setTeacherId("T001");
-//				module.setTeacherId(UniScoreClient.authUser.getUserId());
+				module.setTeacherId(UniScoreClient.authUser.getUserId());
 				
 				DefaultMutableTreeNode node_1;
 				DefaultMutableTreeNode node_2;
