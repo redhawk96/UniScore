@@ -1,4 +1,4 @@
-package lecturer.panels.content;
+package admin.panels.content;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -22,7 +22,8 @@ import com.panels.ContentPanel;
 import com.utils.ContentTable;
 import com.utils.UI;
 
-import connectivity.UniScoreClient;
+import connectivity.UniScoreServer;
+import admin.panels.content.StudentContentPanel;
 import models.User;
 
 @SuppressWarnings("serial")
@@ -31,39 +32,122 @@ public class StudentContentPanel extends ContentPanel {
 	JPanel contentPanel = new JPanel();
 	ContentTable table = new ContentTable();
 	JScrollPane scrollPane = new JScrollPane();
-	JPanel studentBodyPanel = new JPanel();
+	JPanel moduleContentPanel = new JPanel();
 	JPanel studentInfoPanel = new JPanel();
 	
 	public StudentContentPanel() {
-		/*
-		 * Adding contentPanel JPanel name is set to identify content panel when selected
-		 */
 		contentPanel.setName("student");
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
 		contentPanel.setLayout(null);
 		
-		setStudentBody();
+		try {
+			displayNavigationIndicator();
+			
+			moduleContentPanel.setBackground(Color.WHITE);
+			moduleContentPanel.setBounds(30, 66, 1096, 793);
+			contentPanel.add(moduleContentPanel);
+			moduleContentPanel.setLayout(null);
+			
+			// Setting studentInfo panel to default
+			setSelectedStudent("", "", "", -1, "" , "", "");
+			
+			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "First Name", "Last Name", "Gender", "Email"}, 0);
+
+			User tempUser = new User();
+			tempUser.setRole("Student");
+			List<User> userList = (List<User>) UniScoreServer.uniscoreInterface.getUsersByType(tempUser);
+
+			for (User user : userList) {
+				// Adding a new user record to the table each time the loop executes
+				model.addRow(new Object[] {user.getUserId(),  "     "+user.getFirstName(), "     "+user.getLastName(), user.getGender(), "     "+user.getEmail()});
+			}
+			table.setForeground(Color.DARK_GRAY);
+			
+			table.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					 if(table.getSelectedRow() != -1) {
+						 try {
+							 User selectedTempUser = new User();
+							 selectedTempUser.setUserId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
+							 User selectedUser = (User)UniScoreServer.uniscoreInterface.getUser(selectedTempUser);
+							 
+							 setSelectedStudent(selectedUser.getFirstName(), selectedUser.getLastName(), selectedUser.getGender(), selectedUser.getPhone(), selectedUser.getEmail(), selectedUser.getAddress(), selectedUser.getUserId());
+						 }catch(Exception e) {
+							 System.out.println(e);
+						 }
+					 }
+				}
+			});
+			table.setUpdateSelectionOnSort(false);
+			table.setFocusTraversalKeysEnabled(false);
+			table.setFocusable(false);
+			table.setAutoCreateRowSorter(true);
+			table.setEditingColumn(0);
+			table.setEditingRow(0);
+			table.setRequestFocusEnabled(false);
+			table.setVerifyInputWhenFocusTarget(false);
+			table.setBorder(null);
+			
+			table.setModel(model);
+			
+			//  To align text to center in a column 
+            DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
+            centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);
+            
+            // Setting width to colums in JTable
+            TableColumnModel columnModel = table.getColumnModel();
+            
+            columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
+            columnModel.getColumn(3).setCellRenderer(centerAlingedCell);
+			
+            // Removing horizontal cell borders
+            table.setShowHorizontalLines(false);
+            
+            // Setting cursor type on table hover
+			table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			table.setFillsViewportHeight(true);
+			table.setBackground(Color.WHITE);
+			table.getTableHeader().setOpaque(false);
+			table.getTableHeader().setBackground(Color.WHITE);
+			table.getTableHeader().setForeground(Color.BLACK);
+			table.getTableHeader().setFont(new Font("Roboto", Font.PLAIN, 14));
+			table.setSelectionBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			table.setRowHeight(32);
+			table.setFont(new Font("Roboto", Font.PLAIN, 14));
+			table.isCellEditable(1, 1);
+			scrollPane.setBounds(0, 172, 1086, 75);
+			moduleContentPanel.add(scrollPane);
+			scrollPane.setViewportView(table);
+			
+			
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	/*
 	 * returns the JPanel inside ContentPanel
+	 * @param {}
 	 * @returns JPanel
 	 */
 	public JPanel getContent() {
 		return contentPanel;
 	}
 	
-	public void setNavigationIndicator() {
+	public void displayNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
 		navigationIndicatorPanel.setBackground(UI.NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR);
-		navigationIndicatorPanel.setBounds(30, 11, 1199, 36);
+		navigationIndicatorPanel.setBounds(30, 11, 1085, 36);
 		contentPanel.add(navigationIndicatorPanel);
 		navigationIndicatorPanel.setLayout(null);
 		
-		JLabel navigationIndicatorMainLabel = new JLabel("Lecturer /");
-		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		JLabel navigationIndicatorMainLabel = new JLabel("Admin /");
+		navigationIndicatorMainLabel.setBounds(932, 8, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
 		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
 		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
@@ -75,36 +159,18 @@ public class StudentContentPanel extends ContentPanel {
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 	
-	
-	public void setStudentBody() {
-		
-		setNavigationIndicator();
-		
-		studentBodyPanel.setBackground(Color.WHITE);
-		studentBodyPanel.setBounds(30, 66, 1199, 813);
-		contentPanel.add(studentBodyPanel);
-		studentBodyPanel.setLayout(null);
-		
-		// Setting studentInfo panel to default
-		setSelectedStudent("", "", "", -1, "" , "", "");
-		
-		setStudentListTable();
-		
-	}
-
-	
 	public void setSelectedStudent(String firstName, String lastName, String gender, int phone, String email, String address, String studentId) {
 		studentInfoPanel.removeAll();
 		studentInfoPanel = new JPanel();
 		studentInfoPanel.setBackground(Color.DARK_GRAY);
-		studentInfoPanel.setBounds(0, 0, 1199, 138);
-		studentBodyPanel.add(studentInfoPanel);
+		studentInfoPanel.setBounds(0, 0, 1086, 138);
+		moduleContentPanel.add(studentInfoPanel);
 		studentInfoPanel.setLayout(null);
 		
 		JLabel studentAvatar = new JLabel("");
 		studentAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		studentAvatar.setIcon(new ImageIcon(StudentContentPanel.class.getResource("/resources/avatar.png")));
-		studentAvatar.setBounds(1083, 11, 94, 100);
+		studentAvatar.setBounds(917, 18, 94, 100);
 		studentInfoPanel.add(studentAvatar);
 		
 		JLabel personalInfoLabel = new JLabel("Personal Information");
@@ -130,7 +196,7 @@ public class StudentContentPanel extends ContentPanel {
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setForeground(Color.LIGHT_GRAY);
 		separator_1.setBackground(Color.LIGHT_GRAY);
-		separator_1.setBounds(1036, 11, 4, 116);
+		separator_1.setBounds(821, 11, 4, 116);
 		studentInfoPanel.add(separator_1);
 		
 		JLabel firstNameLabel = new JLabel("First Name");
@@ -221,89 +287,5 @@ public class StudentContentPanel extends ContentPanel {
 		studentInfoPanel.add(studentIDLabel);
 		
 		studentInfoPanel.repaint();
-	}
-
-
-	public void setStudentListTable() {
-
-		try {
-
-			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "First Name", "Last Name", "Gender", "Email" }, 0);
-
-			User tempUser = new User();
-			tempUser.setRole("Student");
-			List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersByType(tempUser);
-
-			for (User user : userList) {
-				// Adding a new user record to the table each time the loop executes
-				model.addRow(new Object[] { user.getUserId(), "     " + user.getFirstName(),
-						"     " + user.getLastName(), user.getGender(), "     " + user.getEmail() });
-			}
-			table.setForeground(Color.DARK_GRAY);
-
-			table.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					if (table.getSelectedRow() != -1) {
-						try {
-							User selectedTempUser = new User();
-							selectedTempUser
-									.setUserId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
-							User selectedUser = (User) UniScoreClient.uniscoreInterface.getUser(selectedTempUser);
-
-							setSelectedStudent(selectedUser.getFirstName(), selectedUser.getLastName(),
-									selectedUser.getGender(), selectedUser.getPhone(), selectedUser.getEmail(),
-									selectedUser.getAddress(), selectedUser.getUserId());
-						} catch (Exception e) {
-							System.out.println(e);
-						}
-					}
-				}
-			});
-			table.setUpdateSelectionOnSort(false);
-			table.setFocusTraversalKeysEnabled(false);
-			table.setFocusable(false);
-			table.setAutoCreateRowSorter(true);
-			table.setEditingColumn(0);
-			table.setEditingRow(0);
-			table.setRequestFocusEnabled(false);
-			table.setVerifyInputWhenFocusTarget(false);
-			table.setBorder(null);
-
-			table.setModel(model);
-
-			// To align text to center in a column
-			DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
-			centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);
-
-			// Setting width to colums in JTable
-			TableColumnModel columnModel = table.getColumnModel();
-
-			columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
-			columnModel.getColumn(3).setCellRenderer(centerAlingedCell);
-
-			// Removing horizontal cell borders
-			table.setShowHorizontalLines(false);
-
-			// Setting cursor type on table hover
-			table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			table.setFillsViewportHeight(true);
-			table.setBackground(Color.WHITE);
-			table.getTableHeader().setOpaque(false);
-			table.getTableHeader().setBackground(Color.WHITE);
-			table.getTableHeader().setForeground(Color.BLACK);
-			table.getTableHeader().setFont(new Font("Roboto", Font.PLAIN, 14));
-			table.setSelectionBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			table.setRowHeight(32);
-			table.setFont(new Font("Roboto", Font.PLAIN, 14));
-			table.isCellEditable(1, 1);
-			scrollPane.setBounds(0, 172, 1199, 641);
-			studentBodyPanel.add(scrollPane);
-			scrollPane.setViewportView(table);
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}
 	}
 }

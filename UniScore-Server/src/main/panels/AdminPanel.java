@@ -16,9 +16,18 @@ import com.panels.NavigationPanel;
 import com.utils.UI;
 
 import admin.panels.content.DashboardContentPanel;
+import admin.panels.content.ExamsContentPanel;
+import admin.panels.content.LecturerContentPanel;
+import admin.panels.content.ModulesContentPanel;
+import admin.panels.content.StudentContentPanel;
 import admin.panels.navigation.DashboardNavigationPanel;
+import admin.panels.navigation.ExamsNavigationPanel;
+import admin.panels.navigation.LecturerNavigationPanel;
 import admin.panels.navigation.LogoutNavigationPanel;
+import admin.panels.navigation.ModulesNavigationPanel;
 import admin.panels.navigation.NavigationUserAvatar;
+import admin.panels.navigation.StudentNavigationPanel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -31,6 +40,10 @@ public class AdminPanel extends JFrame implements ActionListener {
 	 */
 	private DashboardNavigationPanel dashboardNavigationPanel = new DashboardNavigationPanel();
 	private NavigationPanel logoutNavigationPanel = new LogoutNavigationPanel();
+	private NavigationPanel lecturerNavigationPanel = new LecturerNavigationPanel();
+	private NavigationPanel modulesNavigationPanel = new ModulesNavigationPanel();
+	private NavigationPanel studentNavigationPanel = new StudentNavigationPanel();
+	private NavigationPanel examsNavigationPanel = new ExamsNavigationPanel();
 	private static ArrayList<NavigationPanel> navigationPanelList;
 	public static NavigationPanel selectedNavigation;
 	
@@ -40,6 +53,10 @@ public class AdminPanel extends JFrame implements ActionListener {
 	 */
 	private ContentPanel dashboardContentPanel = new DashboardContentPanel();
 	private static ArrayList<ContentPanel> contentPanelList = null;
+	private ContentPanel lecturerContentPanel = new LecturerContentPanel();
+	private ContentPanel modulesContentPanel = new ModulesContentPanel();
+	private ContentPanel studentContentPanel = new StudentContentPanel();
+	private ContentPanel examsContentPanel = new ExamsContentPanel();
 	public static ContentPanel selectedContent;
 	
 	/*
@@ -92,13 +109,23 @@ public class AdminPanel extends JFrame implements ActionListener {
 		 */
 		navigationPanelList = new ArrayList<NavigationPanel>();
 		navigationPanelList.add(dashboardNavigationPanel);
+		navigationPanelList.add(modulesNavigationPanel);
+		navigationPanelList.add(lecturerNavigationPanel);
+		navigationPanelList.add(studentNavigationPanel);
+		navigationPanelList.add(examsNavigationPanel);
 		navigationPanelList.add(logoutNavigationPanel);
+		
 		
 		/*
 		 * Adding navigation JPanels to left-side JPanel
 		 */
 		leftSidePanel.add(dashboardNavigationPanel.getNavigation());
+		leftSidePanel.add(modulesNavigationPanel.getNavigation());
+		leftSidePanel.add(lecturerNavigationPanel.getNavigation());
+		leftSidePanel.add(studentNavigationPanel.getNavigation());
+		leftSidePanel.add(examsNavigationPanel.getNavigation());
 		leftSidePanel.add(logoutNavigationPanel.getNavigation());
+		
 
 		/*
 		 * Adding left-side JPanel which is on the right side of the application. Used as the application's content panel
@@ -115,11 +142,19 @@ public class AdminPanel extends JFrame implements ActionListener {
 		 */
 		contentPanelList = new ArrayList<ContentPanel>();
 		contentPanelList.add(dashboardContentPanel);
+		contentPanelList.add(lecturerContentPanel);
+		contentPanelList.add(modulesContentPanel);
+		contentPanelList.add(examsContentPanel);
+		contentPanelList.add(studentContentPanel);
 
 		/*
 		 * Adding content JPanels to right-side JPanel
 		 */
 		rightSidePanel.add(dashboardContentPanel.getContent());
+		rightSidePanel.add(lecturerContentPanel.getContent());
+		rightSidePanel.add(modulesContentPanel.getContent());
+		rightSidePanel.add(examsContentPanel.getContent());
+		rightSidePanel.add(studentContentPanel.getContent());
 
 
 		/*

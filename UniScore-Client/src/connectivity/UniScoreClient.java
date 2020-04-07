@@ -36,6 +36,9 @@ public class UniScoreClient {
 //				UniScoreClient.loginPanel = new LoginPanel();
 //				UniScoreClient.loginPanel.setVisible(true);
 				
+				User user = new User();
+				user.setUserId("T001");
+				UniScoreClient.authUser = user;
 				UniScoreClient.lecturerPanel = new LecturerPanel();
 				UniScoreClient.lecturerPanel.setVisible(true);
 			}
