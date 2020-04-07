@@ -104,7 +104,7 @@ public class StudentContentPanel extends ContentPanel {
 		JLabel studentAvatar = new JLabel("");
 		studentAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		studentAvatar.setIcon(new ImageIcon(StudentContentPanel.class.getResource("/resources/avatar.png")));
-		studentAvatar.setBounds(1083, 11, 94, 100);
+		studentAvatar.setBounds(1036, 0, 163, 138);
 		studentInfoPanel.add(studentAvatar);
 		
 		JLabel personalInfoLabel = new JLabel("Personal Information");
@@ -212,13 +212,6 @@ public class StudentContentPanel extends ContentPanel {
 		studentAddressLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
 		studentAddressLabel.setBounds(517, 104, 509, 17);
 		studentInfoPanel.add(studentAddressLabel);
-		
-		JLabel studentIDLabel = new JLabel(studentId);
-		studentIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		studentIDLabel.setForeground(Color.WHITE);
-		studentIDLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		studentIDLabel.setBounds(1083, 113, 94, 14);
-		studentInfoPanel.add(studentIDLabel);
 		
 		studentInfoPanel.repaint();
 	}
