@@ -31,7 +31,7 @@ public class UserConnector implements ConnectorInterface<User> {
 	public boolean add(User user) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "INSERT INTO `users`(`userId`, `firstName`, `lastName`, `gender`, `email`, `nic`, `phone`, `address`, `avatar`, `role`, `password`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO `users`(`userId`, `firstName`, `lastName`, `gender`, `email`, `nic`, `phone`, `address`, `role`, `password`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, user.getUserId());
 			ps.setString(2, user.getFirstName());
@@ -41,9 +41,8 @@ public class UserConnector implements ConnectorInterface<User> {
 			ps.setString(6, user.getNic());
 			ps.setInt(7, user.getPhone());
 			ps.setString(8, user.getAddress());
-			ps.setString(9, user.getAvatar());
-			ps.setString(10, user.getRole());
-			ps.setString(11, user.getPassword());
+			ps.setString(9, user.getRole());
+			ps.setString(10, user.getPassword());
 
 			int execution = ps.executeUpdate();
 
@@ -70,30 +69,28 @@ public class UserConnector implements ConnectorInterface<User> {
 			PreparedStatement ps = null;
 
 			if (user.getPassword() != null) {
-				sql = "UPDATE `users` SET  `firstName`=?, `lastName`=?, `gender`=?, `email`=?, `nic`=?, `phone`=?, `address`=?, `role`=?, `password`=? WHERE `users`.`userId`=?";
+				sql = "UPDATE `users` SET  `firstName`=?, `lastName`=?, `gender`=?, `nic`=?, `phone`=?, `address`=?, `role`=?, `password`=? WHERE `users`.`userId`=?";
 				ps = con.prepareStatement(sql);
 				ps.setString(1, user.getFirstName());
 				ps.setString(2, user.getLastName());
 				ps.setString(3, user.getGender());
-				ps.setString(4, user.getEmail());
-				ps.setString(5, user.getNic());
-				ps.setInt(6, user.getPhone());
-				ps.setString(7, user.getAddress());
-				ps.setString(8, user.getRole());
-				ps.setString(9, user.getPassword());
-				ps.setString(10, user.getUserId());
-			} else {
-				sql = "UPDATE `users` SET  `firstName`=?, `lastName`=?, `gender`=?, `email`=?, `nic`=?, `phone`=?, `address`=?, `role`=? WHERE `users`.`userId`=?";
-				ps = con.prepareStatement(sql);
-				ps.setString(1, user.getFirstName());
-				ps.setString(2, user.getLastName());
-				ps.setString(3, user.getGender());
-				ps.setString(4, user.getEmail());
-				ps.setString(5, user.getNic());
-				ps.setInt(6, user.getPhone());
-				ps.setString(7, user.getAddress());
-				ps.setString(8, user.getRole());
+				ps.setString(4, user.getNic());
+				ps.setInt(5, user.getPhone());
+				ps.setString(6, user.getAddress());
+				ps.setString(7, user.getRole());
+				ps.setString(8, user.getPassword());
 				ps.setString(9, user.getUserId());
+			} else {
+				sql = "UPDATE `users` SET  `firstName`=?, `lastName`=?, `gender`=?, `nic`=?, `phone`=?, `address`=?, `role`=? WHERE `users`.`userId`=?";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, user.getFirstName());
+				ps.setString(2, user.getLastName());
+				ps.setString(3, user.getGender());
+				ps.setString(4, user.getNic());
+				ps.setInt(5, user.getPhone());
+				ps.setString(6, user.getAddress());
+				ps.setString(7, user.getRole());
+				ps.setString(8, user.getUserId());
 			}
 
 			int execution = ps.executeUpdate();
@@ -159,9 +156,8 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setNic(rs.getString(6));
 				u.setPhone(rs.getInt(7));
 				u.setAddress(rs.getString(8));
-				u.setAvatar(rs.getString(9));
-				u.setRole(rs.getString(10));
-				u.setRegisteredDate(rs.getTimestamp(11));
+        u.setRole(rs.getString(9));
+				u.setRegisteredDate(rs.getTimestamp(10));
 				u.setStatus(rs.getString(12));
 			}
 			return u;
@@ -197,9 +193,8 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setNic(rs.getString(6));
 				u.setPhone(rs.getInt(7));
 				u.setAddress(rs.getString(8));
-				u.setAvatar(rs.getString(9));
-				u.setRole(rs.getString(10));
-				u.setRegisteredDate(rs.getTimestamp(11));
+        u.setRole(rs.getString(9));
+				u.setRegisteredDate(rs.getTimestamp(10));
 				u.setStatus(rs.getString(12));
 			}
 			return u;
@@ -228,7 +223,6 @@ public class UserConnector implements ConnectorInterface<User> {
 
 			while (rs.next()) {
 				User u = new User();
-				System.out.println(rs.getString(1));
 				u.setUserId(rs.getString(1));
 				u.setFirstName(rs.getString(2));
 				u.setLastName(rs.getString(3));
@@ -237,9 +231,8 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setNic(rs.getString(6));
 				u.setPhone(rs.getInt(7));
 				u.setAddress(rs.getString(8));
-				u.setAvatar(rs.getString(9));
-				u.setRole(rs.getString(10));
-				u.setRegisteredDate(rs.getTimestamp(11));
+        u.setRole(rs.getString(9));
+				u.setRegisteredDate(rs.getTimestamp(10));
 				u.setStatus(rs.getString(12));
 
 				userList.add(u);
@@ -276,9 +269,8 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setNic(rs.getString(6));
 				u.setPhone(rs.getInt(7));
 				u.setAddress(rs.getString(8));
-				u.setAvatar(rs.getString(9));
-				u.setRole(rs.getString(10));
-				u.setRegisteredDate(rs.getTimestamp(11));
+        u.setRole(rs.getString(9));
+				u.setRegisteredDate(rs.getTimestamp(10));
 				u.setStatus(rs.getString(12));
 
 				userList.add(u);

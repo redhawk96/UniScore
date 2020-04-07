@@ -186,7 +186,7 @@ public class LoginContentPanel  extends ContentPanel{
 						/*
 						 * Opening up lecturer or student panel accordingly
 						 */
-						if(UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Teacher")) {
+						if(UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Lecturer")) {
 							UniScoreClient.loginPanel.dispose();
 							UniScoreClient.lecturerPanel = new LecturerPanel();
 							UniScoreClient.lecturerPanel.setVisible(true);
