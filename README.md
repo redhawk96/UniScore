@@ -43,7 +43,7 @@
     `activityBrief` text NOT NULL,
     `triggeredBy` varchar(255) NOT NULL,
     `triggeredOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-  ) 
+  );
 
   -- --------------------------------------------------------
 
@@ -60,7 +60,7 @@
     `status` enum('Active','Disabled') NOT NULL DEFAULT 'Disabled',
     `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-  ) 
+  ); 
 
   --
   -- Dumping data for table `exams`
@@ -78,7 +78,7 @@
   CREATE TABLE `grades` (
     `grade` varchar(2) NOT NULL,
     `passMark` int(11) NOT NULL
-  ) 
+  ); 
 
   --
   -- Dumping data for table `grades`
@@ -113,7 +113,7 @@
     `teacherId` varchar(255) NOT NULL,
     `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-  ) 
+  );
 
   --
   -- Dumping data for table `modules`
@@ -140,7 +140,7 @@
     `answer` int(2) NOT NULL,
     `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updatedBy` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-  ) 
+  );
 
   -- --------------------------------------------------------
 
@@ -156,7 +156,7 @@
     `overallScore` double NOT NULL,
     `grade` varchar(2) NOT NULL,
     `submittedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-  ) 
+  );
 
   -- --------------------------------------------------------
 
@@ -177,7 +177,7 @@
     `registeredDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `password` varchar(255) NOT NULL,
     `status` enum('Active','Disabled') NOT NULL DEFAULT 'Active'
-  ) 
+  ); 
 
   --
   -- Dumping data for table `users`
