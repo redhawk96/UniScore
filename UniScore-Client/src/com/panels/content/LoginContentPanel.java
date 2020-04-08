@@ -30,6 +30,7 @@ import com.utils.UI;
 import connectivity.UniScoreClient;
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
+import main.panels.StudentPanel;
 import models.User;
 import java.awt.Insets;
 
@@ -192,6 +193,8 @@ public class LoginContentPanel  extends ContentPanel{
 							UniScoreClient.lecturerPanel.setVisible(true);
 						}else if(UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Student")) {
 							UniScoreClient.loginPanel.dispose();
+							UniScoreClient.studentPanel = new StudentPanel();
+							UniScoreClient.studentPanel.setVisible(true);
 							
 						}else {
 							loadingLabel.setVisible(true);
