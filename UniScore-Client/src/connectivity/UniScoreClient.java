@@ -5,13 +5,14 @@ import java.rmi.registry.Registry;
 
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
+import main.panels.StudentPanel;
 import models.User;
 
 public class UniScoreClient {
 
 	public static UniScoreInterface uniscoreInterface;
 	public static LecturerPanel lecturerPanel;
-//	public static StudentPanel studentPanel;
+	public static StudentPanel studentPanel;
 	public static LoginPanel loginPanel;
 	public static User authUser;
 
@@ -39,6 +40,7 @@ public class UniScoreClient {
 				 */
 //				User user = new User();
 //				user.setUserId("uditha@uniscore.com");
+//				user.setUserId("ishani@uniscore.com");
 //				UniScoreClient.authUser = user;
 //				UniScoreClient.lecturerPanel = new LecturerPanel();
 //				UniScoreClient.lecturerPanel.setVisible(true);
