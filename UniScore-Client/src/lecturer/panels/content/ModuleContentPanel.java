@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,7 +19,6 @@ import com.utils.UI;
 
 import connectivity.UniScoreClient;
 import models.Module;
-import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class ModuleContentPanel extends ContentPanel {
@@ -138,57 +138,43 @@ public class ModuleContentPanel extends ContentPanel {
 		yearFourPanelLabel.setBounds(0, 0, 249, 76);
 		yearFourPanel.add(yearFourPanelLabel);
 		
-		JScrollPane yearOneScrollPane = new JScrollPane();
-		yearOneScrollPane.setBorder(null);
-		yearOneScrollPane.setBounds(0, 284, 249, 477);
-		modulesBodyPanel.add(yearOneScrollPane);
-		
 		JTree yearOneTree = new JTree();
 		yearOneTree.setModel(setTreeValues(1)); // Setting values to tree
-		yearOneScrollPane.setViewportView(yearOneTree);
 		yearOneTree.setFont(new Font("Roboto", Font.PLAIN, 14));
 		yearOneTree.setRowHeight(30);
 		yearOneTree.setBorder(null);
 		yearOneTree.setVisibleRowCount(30);
+		yearOneTree.setBounds(0, 284, 249, 477);
+		modulesBodyPanel.add(yearOneTree);
 		
-		JScrollPane yearTwoScrollPane = new JScrollPane();
-		yearTwoScrollPane.setBorder(null);
-		yearTwoScrollPane.setBounds(323, 284, 249, 477);
-		modulesBodyPanel.add(yearTwoScrollPane);
 		
 		JTree yearTwoTree = new JTree();
 		yearTwoTree.setModel(setTreeValues(2)); // Setting values to tree
-		yearTwoScrollPane.setViewportView(yearTwoTree);
 		yearTwoTree.setVisibleRowCount(30);
 		yearTwoTree.setRowHeight(30);
 		yearTwoTree.setFont(new Font("Roboto", Font.PLAIN, 14));
 		yearTwoTree.setBorder(null);
-		
-		JScrollPane yearThreeScrollPane = new JScrollPane();
-		yearThreeScrollPane.setBorder(null);
-		yearThreeScrollPane.setBounds(636, 284, 249, 477);
-		modulesBodyPanel.add(yearThreeScrollPane);
+		yearTwoTree.setBounds(323, 284, 249, 477);
+		modulesBodyPanel.add(yearTwoTree);
+
 		
 		JTree yearThreeTree = new JTree();
 		yearThreeTree.setModel(setTreeValues(3)); // Setting values to tree
-		yearThreeScrollPane.setViewportView(yearThreeTree);
 		yearThreeTree.setVisibleRowCount(30);
 		yearThreeTree.setRowHeight(30);
 		yearThreeTree.setFont(new Font("Roboto", Font.PLAIN, 14));
 		yearThreeTree.setBorder(null);
-		
-		JScrollPane yearFourScrollPane = new JScrollPane();
-		yearFourScrollPane.setBorder(null);
-		yearFourScrollPane.setBounds(950, 284, 249, 477);
-		modulesBodyPanel.add(yearFourScrollPane);
+		yearThreeTree.setBounds(636, 284, 249, 477);
+		modulesBodyPanel.add(yearThreeTree);
 		
 		JTree yearFourTree = new JTree();
 		yearFourTree.setModel(setTreeValues(4)); // Setting values to tree
-		yearFourScrollPane.setViewportView(yearFourTree);
 		yearFourTree.setVisibleRowCount(30);
 		yearFourTree.setRowHeight(30);
 		yearFourTree.setFont(new Font("Roboto", Font.PLAIN, 14));
 		yearFourTree.setBorder(null);
+		yearFourTree.setBounds(950, 284, 249, 477);
+		modulesBodyPanel.add(yearFourTree);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -266,7 +252,7 @@ public class ModuleContentPanel extends ContentPanel {
 							node_2.add(new DefaultMutableTreeNode("No modules"));
 						} else {
 							for (Module mod : moduleList) {
-								node_2.add(new DefaultMutableTreeNode(mod.getModuleId() + " - " + mod.getModuleName()));
+								node_2.add(new DefaultMutableTreeNode(mod.getModuleId()));
 							}
 						}
 						node_1.add(node_2);

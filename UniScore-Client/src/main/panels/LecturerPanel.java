@@ -7,11 +7,6 @@ import com.panels.NavigationPanel;
 import com.utils.UI;
 
 import lecturer.panels.content.DashboardContentPanel;
-import lecturer.panels.content.ExamContentPanel;
-import lecturer.panels.content.ModuleContentPanel;
-import lecturer.panels.content.QuestionContentPanel;
-import lecturer.panels.content.SettingsContentPanel;
-import lecturer.panels.content.StudentContentPanel;
 import lecturer.panels.navigation.DashboardNavigationPanel;
 import lecturer.panels.navigation.ExamNavigationPanel;
 import lecturer.panels.navigation.LogoutNavigationPanel;
@@ -21,12 +16,10 @@ import lecturer.panels.navigation.QuestionNavigationPanel;
 import lecturer.panels.navigation.SettingsNavigationPanel;
 import lecturer.panels.navigation.StudentNavigationPanel;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class LecturerPanel extends JFrame implements ActionListener {
+public class LecturerPanel extends JFrame {
 
 	/*
 	 * Declaring the NavigationPanels on left side of the application which is used to navigate to different content panels 
@@ -46,13 +39,6 @@ public class LecturerPanel extends JFrame implements ActionListener {
 	 * Declaring the ContentPanels on right side of the application which consists of dynamic data retrieved from the databse
 	 * To identify the active content panel, ContentPanel type arraylist(contentPanelList) is implemented
 	 */
-	private ContentPanel dashboardContentPanel = new DashboardContentPanel();
-	private ContentPanel moduleContentPanel = new ModuleContentPanel();
-	private ContentPanel studentContentPanel = new StudentContentPanel();
-	private ContentPanel questionContentPanel = new QuestionContentPanel();
-	private ContentPanel examContentPanel = new ExamContentPanel();
-	private ContentPanel settingsContentPanel = new SettingsContentPanel();
-	private static ArrayList<ContentPanel> contentPanelList = null;
 	public static ContentPanel selectedContent;
 	
 	/*
@@ -60,6 +46,8 @@ public class LecturerPanel extends JFrame implements ActionListener {
 	 */
 	private NavigationUserAvatar avatar = new NavigationUserAvatar();
 
+	private static JPanel rightSidePanel;
+	
 	public LecturerPanel() {
 
 		/*
@@ -126,34 +114,10 @@ public class LecturerPanel extends JFrame implements ActionListener {
 		/*
 		 * Adding left-side JPanel which is on the right side of the application. Used as the application's content panel
 		 */
-		JPanel rightSidePanel = new JPanel();
+		rightSidePanel = new JPanel();
 		rightSidePanel.setBounds(UI.NAVIGATION_PANEL_WIDTH, 0, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		getContentPane().add(rightSidePanel);
 		rightSidePanel.setLayout(null);
-		
-		/*
-		 * Adding the content panels to an ArrayList.
-		 * updatePanels() has the implementation to loop through the arraylist to set color to selected-navigation panel and set relevant content panel accordingly  
-		 * 
-		 */
-		contentPanelList = new ArrayList<ContentPanel>();
-		contentPanelList.add(dashboardContentPanel);
-		contentPanelList.add(moduleContentPanel);
-		contentPanelList.add(studentContentPanel);
-		contentPanelList.add(questionContentPanel);
-		contentPanelList.add(examContentPanel);
-		contentPanelList.add(settingsContentPanel);
-
-		/*
-		 * Adding content JPanels to right-side JPanel
-		 */
-		rightSidePanel.add(dashboardContentPanel.getContent());
-		rightSidePanel.add(moduleContentPanel.getContent());
-		rightSidePanel.add(studentContentPanel.getContent());
-		rightSidePanel.add(questionContentPanel.getContent());
-		rightSidePanel.add(examContentPanel.getContent());
-		rightSidePanel.add(settingsContentPanel.getContent());
-
 
 		/*
 		 * Setting dashboard as root component on both navigation and content on application startup
@@ -189,22 +153,16 @@ public class LecturerPanel extends JFrame implements ActionListener {
 	
 	private static void setSelectedContentPanel() {
 		/*
-		 * Executing a foreach loop to set the relevant content panel according to the selected navigation panel
+		 * Setting the relevant content panel according to the selected navigation panel
 		 */
-		for (ContentPanel contentPanel : contentPanelList) {
-			if (contentPanel.getContent().getName().toString().equalsIgnoreCase(LecturerPanel.selectedContent.getContent().getName().toString())) {
-				contentPanel.getContent().setVisible(true);
-			} else {
-				contentPanel.getContent().setVisible(false);
-			}
-		}
+		rightSidePanel.removeAll();
+		rightSidePanel.add(LecturerPanel.selectedContent.getContent());
+		rightSidePanel.repaint();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-	}
-
+	/*
+	 * For development purposes only
+	 */
 	public static void main(String args[]) {
 		LecturerPanel tp = new LecturerPanel();
 		tp.setVisible(true);

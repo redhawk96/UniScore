@@ -40,6 +40,7 @@ public class UniScoreServer {
 			System.out.println("Server is starting");
 			
 			// Creating a proxy for data communication
+			// Binding the port with the stub
 			registry.bind("rmi://localhost/UniScoreServer", stub);
 			System.out.println("Server is ready");
 			
@@ -53,7 +54,7 @@ public class UniScoreServer {
 			}
 			
 			/* 
-			 * Run following on cmd to find the pid of the process occuping the port
+			 * Run following on cmd to find the pid of the process occupying the port
 			 * netstat -aon | findstr 1417
 			 * 
 			 * Run following on cmd to kill process

@@ -184,7 +184,7 @@ public class LoginContentPanel  extends ContentPanel{
 						loadingLabel.setVisible(false);
 						
 						/*
-						 * Opening up lecturer or student panel accordingly
+						 * Opening up Admin panel
 						 */
 						if(UniScoreServer.authUser.getRole().toString().equalsIgnoreCase("Admin")) {
 							UniScoreServer.loginPanel.dispose();
