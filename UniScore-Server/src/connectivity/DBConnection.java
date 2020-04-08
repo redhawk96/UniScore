@@ -20,7 +20,7 @@ public class DBConnection {
 	/*
 	 * Singleton design pattern is implemented to avoid creation of multiple instances of DBConnetion
 	 */
-	public DBConnection() {
+	private DBConnection() {
 	}
 
 	/*

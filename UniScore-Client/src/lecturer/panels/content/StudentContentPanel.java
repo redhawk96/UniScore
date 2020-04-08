@@ -221,7 +221,7 @@ public class StudentContentPanel extends ContentPanel {
 
 		try {
 
-			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "First Name", "Last Name", "Gender", "Email" }, 0);
+			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "First Name", "Last Name", "Gender" }, 0);
 
 			User tempUser = new User();
 			tempUser.setRole("Student");
@@ -229,8 +229,7 @@ public class StudentContentPanel extends ContentPanel {
 
 			for (User user : userList) {
 				// Adding a new user record to the table each time the loop executes
-				model.addRow(new Object[] { user.getUserId(), "     " + user.getFirstName(),
-						"     " + user.getLastName(), user.getGender(), "     " + user.getEmail() });
+				model.addRow(new Object[] { user.getUserId(), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender() });
 			}
 			table.setForeground(Color.DARK_GRAY);
 
