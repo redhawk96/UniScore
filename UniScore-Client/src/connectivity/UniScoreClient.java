@@ -4,13 +4,14 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
+import main.panels.StudentPanel;
 import models.User;
 
 public class UniScoreClient {
 
 	public static UniScoreInterface uniscoreInterface;
 	public static LecturerPanel lecturerPanel;
-//	public static StudentPanel studentPanel;
+	public static StudentPanel studentPanel;
 	public static LoginPanel loginPanel;
 	public static User authUser;
 
@@ -33,14 +34,14 @@ public class UniScoreClient {
 			System.out.println("Server located");
 
 			if (UniScoreClient.uniscoreInterface.getServer()) {
-//				UniScoreClient.loginPanel = new LoginPanel();
-//				UniScoreClient.loginPanel.setVisible(true);
+				UniScoreClient.loginPanel = new LoginPanel();
+				UniScoreClient.loginPanel.setVisible(true);
 				
-				User user = new User();
-				user.setUserId("T001");
-				UniScoreClient.authUser = user;
-				UniScoreClient.lecturerPanel = new LecturerPanel();
-				UniScoreClient.lecturerPanel.setVisible(true);
+//				User user = new User();
+//				user.setUserId("T001");
+//				UniScoreClient.authUser = user;
+//				UniScoreClient.lecturerPanel = new LecturerPanel();
+//				UniScoreClient.lecturerPanel.setVisible(true);
 			}
 
 		} catch (Exception e) {
