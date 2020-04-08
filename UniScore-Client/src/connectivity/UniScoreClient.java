@@ -2,6 +2,7 @@ package connectivity;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
 import models.User;
@@ -26,21 +27,21 @@ public class UniScoreClient {
 			 * Source refferance : https://stackoverflow.com/questions/6322107/java-no-security-manager-rmi-
 			 * class-loader-disabled. Answered by erickson, edited by Paulo Ebermann
 			 */
-			System.out.println("Searching server");
 			Registry registry = LocateRegistry.getRegistry(1417);
-			System.out.println("Registry located");
 			UniScoreClient.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
-			System.out.println("Server located");
-
+			
 			if (UniScoreClient.uniscoreInterface.getServer()) {
-//				UniScoreClient.loginPanel = new LoginPanel();
-//				UniScoreClient.loginPanel.setVisible(true);
+				UniScoreClient.loginPanel = new LoginPanel();
+				UniScoreClient.loginPanel.setVisible(true);
 				
-				User user = new User();
-				user.setUserId("T001");
-				UniScoreClient.authUser = user;
-				UniScoreClient.lecturerPanel = new LecturerPanel();
-				UniScoreClient.lecturerPanel.setVisible(true);
+				/*
+				 * For development purposes
+				 */
+//				User user = new User();
+//				user.setUserId("uditha@uniscore.com");
+//				UniScoreClient.authUser = user;
+//				UniScoreClient.lecturerPanel = new LecturerPanel();
+//				UniScoreClient.lecturerPanel.setVisible(true);
 			}
 
 		} catch (Exception e) {

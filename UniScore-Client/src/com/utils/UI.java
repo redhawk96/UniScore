@@ -30,7 +30,7 @@ public class UI {
 	
 	public static Color LOGIN_PANEL_BACKGROUND_COLOR = Color.WHITE;
 	public static Color LOGIN_PANEL_DEFAULT_TEXT_FIELD_COLOR = Color.BLACK;
-	public static Font 	LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT = new Font("Roboto", Font.PLAIN, 14);
+	public static Font 	LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT = APPLICATION_THEME_PLAIN_FONT;
 	
 	public static Font 	LOGIN_PANEL_ERROR_LABEL_FONT = new Font("Roboto", Font.PLAIN, 12);
 	
@@ -51,13 +51,13 @@ public class UI {
 	public static int NAVIGATION_PANEL_WIDTH = 255;
 	public static int NAVIGATION_PANEL_HEIGHT = 911;
 	
-	public static Color NAVIGATION_PANEL_COLOR = Color.DARK_GRAY;
-	public static Color NAVIGATION_PANEL_ICON_COLOR = new Color(235, 240, 247);
+	public static Color NAVIGATION_PANEL_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
+	public static Color NAVIGATION_PANEL_ICON_COLOR = APPLICATION_THEME_PRIMARY_COLOR;
 
 	public static int 	NAVIGATION_PANEL_BUTTON_HEIGHT = 60;
-	public static Color NAVIGATION_PANEL_BUTTON_COLOR = Color.DARK_GRAY;
-	public static Color NAVIGATION_PANEL_BUTTON_TEXT_COLOR = new Color(249, 168, 37);
-	public static Font 	NAVIGATION_PANEL_BUTTON_FONT = new Font("Roboto", Font.BOLD, 14);
+	public static Color NAVIGATION_PANEL_BUTTON_COLOR = APPLICATION_THEME_SECONDARY_COLOR;
+	public static Color NAVIGATION_PANEL_BUTTON_TEXT_COLOR = APPLICATION_THEME_PRIMARY_COLOR;
+	public static Font 	NAVIGATION_PANEL_BUTTON_FONT = APPLICATION_THEME_BOLD_FONT;
 	public static int 	NAVIGATION_PANEL_BUTTON_CURSOR = Cursor.HAND_CURSOR;
 			
 	public static int NAVIGATION_PANEL_BUTTON_TEXT_X_AXIS = 100;
@@ -71,7 +71,7 @@ public class UI {
 	public static int NAVIGATION_PANEL_BUTTON_ICON_HEIGHT = 24;
 
 	public static Color NAVIGATION_PANEL_SELECTED_BUTTON_COLOR = new Color(51, 50, 47);
-	public static Color NAVIGATION_PANEL_SELECTED_BUTTON_TEXT_COLOR = new Color(249, 168, 37);
+	public static Color NAVIGATION_PANEL_SELECTED_BUTTON_TEXT_COLOR = APPLICATION_THEME_PRIMARY_COLOR;
 
 	/*
 	 * Content panel properties

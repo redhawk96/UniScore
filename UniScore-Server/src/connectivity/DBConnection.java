@@ -44,13 +44,26 @@ public class DBConnection {
 	 */
 	private static void setConnection() throws ClassNotFoundException, SQLException {
 
+		/*
+		 * Remote mysql database credentials
+		 */
+//		String url = "jdbc:mysql://remotemysql.com/";
+//		String dbname = "mSu5HWWlOJ";
+//		String ssl = "?useSSL=false";
+//		String username = "mSu5HWWlOJ";
+//		String password = "63RL0V8Dh9";
+		
+		/*
+		 * local mysql database credentials
+		 */
 		String url = "jdbc:mysql://localhost/";
 		String dbname = "uniscoredb";
+		String ssl = "?useSSL=false";
 		String username = "root";
 		String password = "";
 
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		conn = DriverManager.getConnection(url + dbname, username, password);
+		conn = DriverManager.getConnection(url + dbname + ssl, username, password);
 	}
 
 }

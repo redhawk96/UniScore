@@ -104,7 +104,7 @@ public class StudentContentPanel extends ContentPanel {
 		JLabel studentAvatar = new JLabel("");
 		studentAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		studentAvatar.setIcon(new ImageIcon(StudentContentPanel.class.getResource("/resources/avatar.png")));
-		studentAvatar.setBounds(1083, 11, 94, 100);
+		studentAvatar.setBounds(1036, 0, 163, 138);
 		studentInfoPanel.add(studentAvatar);
 		
 		JLabel personalInfoLabel = new JLabel("Personal Information");
@@ -213,13 +213,6 @@ public class StudentContentPanel extends ContentPanel {
 		studentAddressLabel.setBounds(517, 104, 509, 17);
 		studentInfoPanel.add(studentAddressLabel);
 		
-		JLabel studentIDLabel = new JLabel(studentId);
-		studentIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		studentIDLabel.setForeground(Color.WHITE);
-		studentIDLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		studentIDLabel.setBounds(1083, 113, 94, 14);
-		studentInfoPanel.add(studentIDLabel);
-		
 		studentInfoPanel.repaint();
 	}
 
@@ -228,7 +221,7 @@ public class StudentContentPanel extends ContentPanel {
 
 		try {
 
-			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "First Name", "Last Name", "Gender", "Email" }, 0);
+			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "First Name", "Last Name", "Gender" }, 0);
 
 			User tempUser = new User();
 			tempUser.setRole("Student");
@@ -236,8 +229,7 @@ public class StudentContentPanel extends ContentPanel {
 
 			for (User user : userList) {
 				// Adding a new user record to the table each time the loop executes
-				model.addRow(new Object[] { user.getUserId(), "     " + user.getFirstName(),
-						"     " + user.getLastName(), user.getGender(), "     " + user.getEmail() });
+				model.addRow(new Object[] { user.getUserId(), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender() });
 			}
 			table.setForeground(Color.DARK_GRAY);
 
