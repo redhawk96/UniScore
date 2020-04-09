@@ -8,9 +8,9 @@ import models.User;
 
 public class Encryptor {
 
-	/*
-	 * For development purposes only
-	 */
+/*
+ * For development purposes only
+ */
 //	public static void main(String args[]) {
 //		try {
 //			User user = new User();
@@ -20,8 +20,7 @@ public class Encryptor {
 //			System.out.println(getEncryptedPassword(user));
 //			System.out.println(getEncryptedPassword(user));
 //			System.out.println(getEncryptedPassword(user));
-//			System.out.println(getEncryptedPassword(user));
-//			
+//			System.out.println(getEncryptedPassword(user));	
 //		}catch(Exception e) {
 //			System.out.println(e);
 //		}

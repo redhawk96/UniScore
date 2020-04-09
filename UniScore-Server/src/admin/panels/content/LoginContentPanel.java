@@ -165,45 +165,67 @@ public class LoginContentPanel  extends ContentPanel{
 					loadingLabel.setVisible(true);
 					
 					/*
-					 * Setting user inputed values to user object
+					 * Validating whether the user to be authenticated is of type admin 
 					 */
-					User user = new User();
-					user.setUserId(usernameTextField.getText());
-					user.setPassword(new String(passwordField.getPassword()));
-					
-					/*
-					 * Encrypting user provided password
-					 */
-					user.setPassword((String)UniScoreServer.uniscoreInterface.encrypt(user));
-					
-					/*
-					 * Checking if the provided credentials match a user in the database
-					 */
-					boolean authUser = (boolean)UniScoreServer.uniscoreInterface.isUserAvailable(user);
-					
-					if(authUser) {
+					if (usernameTextField.getText().trim().charAt(0) == 'A') {
+
 						/*
-						 * If provided credentials match a user
-						 * Logged user will be set to a static user object to be used as a user cookie through the application untill logout
-						 * Current login JFrame will be disposed and new AdminPanel JFrame will be created
+						 * Setting user inputed values to user object
 						 */
-						UniScoreServer.authUser = (User)UniScoreServer.uniscoreInterface.getUser(user);
-						loadingLabel.setVisible(false);
-						
+						User user = new User();
+
+						user.setUserId(usernameTextField.getText().trim().substring(1));
+						user.setPassword(new String(passwordField.getPassword()));
+
 						/*
-						 * Opening up Admin panel
+						 * Encrypting user provided password
 						 */
-						if(UniScoreServer.authUser.getRole().toString().equalsIgnoreCase("Admin")) {
-							UniScoreServer.loginPanel.dispose();
-							UniScoreServer.adminPanel = new AdminPanel();
-							UniScoreServer.adminPanel.setVisible(true);	
-						}else {
-							loadingLabel.setVisible(true);
+						user.setPassword((String) UniScoreServer.uniscoreInterface.encrypt(user));
+
+						/*
+						 * Checking if the provided credentials match a user in the database
+						 */
+						boolean authUser = (boolean) UniScoreServer.uniscoreInterface.isUserAvailable(user);
+
+						if (authUser) {
+							/*
+							 * If provided credentials match a user Logged user will be set to a static user object to be used as a user cookie through the application untill logout
+							 * Current login JFrame will be disposed and new Admin Panel JFrame will be created
+							 */
+							UniScoreServer.authUser = (User) UniScoreServer.uniscoreInterface.getUser(user);
+							loadingLabel.setVisible(false);
+
+							/*
+							 * Opening up lecturer or student panel accordingly
+							 */
+							if (UniScoreServer.authUser.getRole().toString().equalsIgnoreCase("Admin") && usernameTextField.getText().trim().charAt(0) == 'A') {
+								UniScoreServer.loginPanel.dispose();
+								UniScoreServer.adminPanel = new AdminPanel();
+								UniScoreServer.adminPanel.setVisible(true);
+							} else {
+								/*
+								 * If provided credentials match but is role not under any authorized role type (authorized role type is admin)  
+								 * Setting visibility of loading label false 
+								 * Setting visibility of error label true
+								 */
+								errorLabel.setVisible(true);
+								loadingLabel.setVisible(false);
+							}
+							
+						} else {
+							/*
+							 * If provided credentials are incorrect 
+							 * Setting visibility of loading label false 
+							 * Setting visibility of error label true
+							 */
+							errorLabel.setVisible(true);
+							loadingLabel.setVisible(false);
 						}
-					}else {
+						
+					} else {
 						/*
-						 * If provided credentials are incorrect
-						 * Setting visibility of loading label false
+						 * If provided first character is invalid 
+						 * Setting visibility of loading label false 
 						 * Setting visibility of error label true
 						 */
 						errorLabel.setVisible(true);

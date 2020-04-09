@@ -31,18 +31,17 @@ public class UserConnector implements ConnectorInterface<User> {
 	public boolean add(User user) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "INSERT INTO `users`(`userId`, `firstName`, `lastName`, `gender`, `email`, `nic`, `phone`, `address`, `role`, `password`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO `users`(`firstName`, `lastName`, `gender`, `email`, `nic`, `phone`, `address`, `role`, `password`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setString(1, user.getUserId());
-			ps.setString(2, user.getFirstName());
-			ps.setString(3, user.getLastName());
-			ps.setString(4, user.getGender());
-			ps.setString(5, user.getEmail());
-			ps.setString(6, user.getNic());
-			ps.setInt(7, user.getPhone());
-			ps.setString(8, user.getAddress());
-			ps.setString(9, user.getRole());
-			ps.setString(10, user.getPassword());
+			ps.setString(1, user.getFirstName());
+			ps.setString(2, user.getLastName());
+			ps.setString(3, user.getGender());
+			ps.setString(4, user.getEmail());
+			ps.setString(5, user.getNic());
+			ps.setInt(6, user.getPhone());
+			ps.setString(7, user.getAddress());
+			ps.setString(8, user.getRole());
+			ps.setString(9, user.getPassword());
 
 			int execution = ps.executeUpdate();
 
@@ -269,7 +268,7 @@ public class UserConnector implements ConnectorInterface<User> {
 				u.setNic(rs.getString(6));
 				u.setPhone(rs.getInt(7));
 				u.setAddress(rs.getString(8));
-        u.setRole(rs.getString(9));
+				u.setRole(rs.getString(9));
 				u.setRegisteredDate(rs.getTimestamp(10));
 				u.setStatus(rs.getString(12));
 
