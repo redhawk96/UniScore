@@ -14,6 +14,8 @@ import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -171,6 +173,11 @@ public class LoginContentPanel  extends ContentPanel{
 					user.setPassword(new String(passwordField.getPassword()));
 					
 					/*
+					 * Encrypting user provided password
+					 */
+					user.setPassword((String)UniScoreClient.uniscoreInterface.encrypt(user));
+					
+					/*
 					 * Checking if the provided credentials match a user in the database
 					 */
 					boolean authUser = (boolean)UniScoreClient.uniscoreInterface.isUserAvailable(user);
@@ -209,7 +216,7 @@ public class LoginContentPanel  extends ContentPanel{
 						loadingLabel.setVisible(false);
 					}
 					
-				} catch (ClassNotFoundException | SQLException | RemoteException e) {
+				} catch (ClassNotFoundException | SQLException | RemoteException | NoSuchAlgorithmException | NoSuchProviderException e) {
 					System.out.println("Failed execution on LoginContentPanel. Error : " + e.toString());
 				}
 			}

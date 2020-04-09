@@ -11,6 +11,8 @@ package connectivity;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -422,6 +424,14 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	public boolean isUserAvailable(User user) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * encrypt : encrypts the password text provided by the user using combined algorithms and receives the encrypted password in return
+	 * @params {User} obtains username and password from the user object
+	 * @return {String} returns the encrypted password
+	 * @throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException
+	 */
+	public String encrypt(User user) throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException;
 	
 	/*
 	 * Ending declaration of common methods
