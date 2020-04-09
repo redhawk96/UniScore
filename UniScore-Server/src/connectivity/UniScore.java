@@ -11,8 +11,12 @@ package connectivity;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.List;
+
+import com.utils.Encryptor;
 
 import connectors.ActivityConnector;
 import connectors.ExamConnector;
@@ -505,9 +509,19 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 	 * @return {boolean} returns a user object if found and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
-	public boolean isUserAvailable(User user) throws ClassNotFoundException, SQLException{
+	public boolean isUserAvailable(User user) throws RemoteException, ClassNotFoundException, SQLException{
 		LoginConnector lc = new LoginConnector();
 		return lc.authenticateUser(user);
+	}
+	
+	/*
+	 * encrypt : encrypts the password text provided by the user using combined algorithms and receives the encrypted password in return
+	 * @params {User} obtains username and password from the user object
+	 * @return {String} returns the encrypted password
+	 * @throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException
+	 */
+	public String encrypt(User user) throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException{
+		return Encryptor.getEncryptedPassword(user);
 	}
 	
 }

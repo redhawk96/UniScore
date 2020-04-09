@@ -29,9 +29,12 @@ public class UniScoreClient {
 			 * class-loader-disabled. Answered by erickson, edited by Paulo Ebermann
 			 */
 			Registry registry = LocateRegistry.getRegistry(1417);
+			System.out.println("Registry located");
 			UniScoreClient.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
+			System.out.println("Server located");
 			
 			if (UniScoreClient.uniscoreInterface.getServer()) {
+				System.out.println("Database connection established");
 				UniScoreClient.loginPanel = new LoginPanel();
 				UniScoreClient.loginPanel.setVisible(true);
 				
