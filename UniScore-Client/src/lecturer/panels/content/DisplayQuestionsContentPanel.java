@@ -26,26 +26,30 @@ import lecturer.panels.navigation.QuestionNavigationPanel;
 import main.panels.LecturerPanel;
 import models.Exam;
 import models.Module;
+import models.Question;
 
 @SuppressWarnings("serial")
-public class QuestionContentPanel extends ContentPanel {
-
+public class DisplayQuestionsContentPanel extends ContentPanel{
+	
 	JPanel contentPanel = new JPanel();
 	ContentTable table = new ContentTable();
 	JScrollPane scrollPane = new JScrollPane();
-	JPanel examBodyPanel = new JPanel();
+	JPanel questionBodyPanel = new JPanel();
 	JPanel examInfoPanel = new JPanel();
-	
-	public QuestionContentPanel() {
+	Exam exam;
+	public DisplayQuestionsContentPanel(Module module, Exam exam) {
+		this.exam = exam;
 		/*
-		 * Adding contentPanel JPanel name is set to identify content panel when selected
+		 * Adding contentPanel
+		 * JPanel name is set to identify content panel when selected
 		 */
-		contentPanel.setName("question");
-		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
-		contentPanel.setBackground(new Color(255, 255, 255));
+		contentPanel.setName("displayQuestions");
 		contentPanel.setLayout(null);
+		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
+		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
 		
-		setQuestionBody();
+		setQuestionBody(module, exam);
+		
 	}
 
 	/*
@@ -55,8 +59,7 @@ public class QuestionContentPanel extends ContentPanel {
 	public JPanel getContent() {
 		return contentPanel;
 	}
-	
-	
+
 	public void setNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
@@ -65,28 +68,30 @@ public class QuestionContentPanel extends ContentPanel {
 		contentPanel.add(navigationIndicatorPanel);
 		navigationIndicatorPanel.setLayout(null);
 		
-		JLabel navigationIndicatorMainLabel = new JLabel("Lecturer /");
-		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		JLabel navigationIndicatorMainLabel = new JLabel("Questions /");
+		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_SUB_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_SUB_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
 		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
 		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
 		
-		JLabel navigationIndicatorActiveLabel = new JLabel("Questions");
+		JLabel navigationIndicatorActiveLabel = new JLabel("Exam Questions");
 		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorActiveLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorActiveLabel.setBounds(UI.NAVIGATION_INDICATOR_SUB_PANEL_ACTIVE_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_SUB_PANEL_ACTIVE_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
 		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 	
 	
-	public void setQuestionBody() {
+	public void setQuestionBody(Module module, Exam exam) {
 		
 		setNavigationIndicator();
 		
-		examBodyPanel.setBackground(Color.WHITE);
-		examBodyPanel.setBounds(30, 66, 1199, 813);
-		contentPanel.add(examBodyPanel);
-		examBodyPanel.setLayout(null);
+		questionBodyPanel.setBackground(Color.WHITE);
+		questionBodyPanel.setBounds(30, 66, 1199, 813);
+		contentPanel.add(questionBodyPanel);
+		questionBodyPanel.setLayout(null);
+		
+		setSelectedExam(module.getModuleId(), module.getModuleName(), module.getYear(), module.getSemester(), exam.getExamId(), exam.getExamName(), exam.getDuration(), exam.getStatus());
 		
 		setExamListTable();
 	}
@@ -98,7 +103,7 @@ public class QuestionContentPanel extends ContentPanel {
 		examInfoPanel.setLayout(null);
 		examInfoPanel.setBackground(Color.DARK_GRAY);
 		examInfoPanel.setBounds(0, 0, 1199, 138);
-		examBodyPanel.add(examInfoPanel);
+		questionBodyPanel.add(examInfoPanel);
 		
 		JLabel moduleInfoLabel = new JLabel("Module Information");
 		moduleInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -150,11 +155,19 @@ public class QuestionContentPanel extends ContentPanel {
 		selectedModuleNameLabel.setBounds(158, 76, 279, 14);
 		examInfoPanel.add(selectedModuleNameLabel);
 		
-		JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+moduleYear+"  - S"+moduleSemester);
-		selectedModuleAllocationLabel.setForeground(Color.WHITE);
-		selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedModuleAllocationLabel.setBounds(158, 105, 391, 14);
-		examInfoPanel.add(selectedModuleAllocationLabel);
+		if(moduleYear == -1) {
+			JLabel selectedModuleAllocationLabel = new JLabel(":  ");
+			selectedModuleAllocationLabel.setForeground(Color.WHITE);
+			selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+			selectedModuleAllocationLabel.setBounds(158, 105, 391, 14);
+			examInfoPanel.add(selectedModuleAllocationLabel);
+		}else {
+			JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+moduleYear+"  - S"+moduleSemester);
+			selectedModuleAllocationLabel.setForeground(Color.WHITE);
+			selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+			selectedModuleAllocationLabel.setBounds(158, 105, 391, 14);
+			examInfoPanel.add(selectedModuleAllocationLabel);
+		}
 		
 		JLabel examNameLabel = new JLabel("Name");
 		examNameLabel.setForeground(Color.WHITE);
@@ -180,11 +193,19 @@ public class QuestionContentPanel extends ContentPanel {
 		selectedExamName.setBounds(674, 49, 362, 17);
 		examInfoPanel.add(selectedExamName);
 		
-		JLabel selectedExamDuration = new JLabel(":  "+examDuration);
-		selectedExamDuration.setForeground(Color.WHITE);
-		selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedExamDuration.setBounds(674, 76, 362, 14);
-		examInfoPanel.add(selectedExamDuration);
+		if(examDuration == -1) {
+			JLabel selectedExamDuration = new JLabel(":  ");
+			selectedExamDuration.setForeground(Color.WHITE);
+			selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
+			selectedExamDuration.setBounds(674, 76, 362, 14);
+			examInfoPanel.add(selectedExamDuration);
+		}else {
+			JLabel selectedExamDuration = new JLabel(":  "+examDuration);
+			selectedExamDuration.setForeground(Color.WHITE);
+			selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
+			selectedExamDuration.setBounds(674, 76, 362, 14);
+			examInfoPanel.add(selectedExamDuration);
+		}
 		
 		JLabel selectedExamStatus = new JLabel(":  "+examStatus.toUpperCase());
 		selectedExamStatus.setForeground(Color.WHITE);
@@ -193,26 +214,15 @@ public class QuestionContentPanel extends ContentPanel {
 		examInfoPanel.add(selectedExamStatus);
 		
 		JPanel showQuestionButtonPanel = new JPanel();
-		showQuestionButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
 		showQuestionButtonPanel.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseEntered(MouseEvent e) {
+				showQuestionButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+			}
+			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
-				Module module = new Module();
-				module.setModuleId(moduleCode);
-				module.setModuleName(moduleName);
-				module.setYear(moduleYear);
-				module.setSemester(moduleSemester);
-				
-				Exam exam = new Exam();
-				exam.setExamId(examId);
-				exam.setExamName(examName);
-				exam.setDuration(examDuration);
-				exam.setStatus(examStatus);
-				
-				
 				LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
-				LecturerPanel.selectedContent = new DisplayQuestionsContentPanel(module, exam);
+				LecturerPanel.selectedContent = new QuestionContentPanel();
 				LecturerPanel.setSelectedPanel();
 			}
 		});
@@ -221,12 +231,13 @@ public class QuestionContentPanel extends ContentPanel {
 		examInfoPanel.add(showQuestionButtonPanel);
 		showQuestionButtonPanel.setLayout(null);
 		
-		JLabel showQuestionButtonLabel = new JLabel("SHOW");
+		JLabel showQuestionButtonLabel = new JLabel("BACK");
 		showQuestionButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		showQuestionButtonLabel.setBounds(0, 0, 153, 138);
 		showQuestionButtonLabel.setForeground(Color.DARK_GRAY);
 		showQuestionButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
 		showQuestionButtonPanel.add(showQuestionButtonLabel);
+		
 		
 		examInfoPanel.repaint();
 	}
@@ -236,56 +247,47 @@ public class QuestionContentPanel extends ContentPanel {
 		
 		try {
 			
-			DefaultTableModel model = new DefaultTableModel(new String[] {"EID", "MID", "Allocation", "Module", "Exam Name"}, 0);
+			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Question", "Option 1", "Option 2", "Option 3", "Option 4", "Answer"}, 0);
 
-			Module module = new Module();
-			module.setTeacherId(UniScoreClient.authUser.getUserId());
+			Question question = new Question();
+			question.setExamId(1);
 			
-			List<Module> moduleList = (List<Module>) UniScoreClient.uniscoreInterface.getModulesByRelevance(module, 0, 0);
+			List<Question> questionList = (List<Question>) UniScoreClient.uniscoreInterface.getExamQuestions(question);
 
-			for (Module mod : moduleList) {
-
-				Exam exam = new Exam();
-				exam.setModuleId(mod.getModuleId());
-
-				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(exam);
-				int count = 0;
-
-				for (Exam e : examList) {
-
-					// Adding a exam record to the table each time the loop executes
-					if (e.getStatus().equalsIgnoreCase("disabled")) {
-						model.addRow(new Object[] { e.getExamId(), mod.getModuleId(),"     Y" + mod.getYear() + " - S" + mod.getSemester(), "     " + mod.getModuleName(), "     " + e.getExamName() });
-
-						if (count < 1) {
-							setSelectedExam(mod.getModuleId(), mod.getModuleName(), mod.getYear(), mod.getSemester(), e.getExamId(), e.getExamName(), e.getDuration(), e.getStatus());
-						}
-					}
-					count++;
-				}
+			for (Question qes : questionList) {
+				// Adding a exam record to the table each time the loop executes
+				model.addRow(new Object[] {qes.getQuestionId(), "     "+qes.getQuestion(),  "     "+qes.getOption1(), "     "+qes.getOption2(),  "     "+qes.getOption3(),   "     "+qes.getOption4(), qes.getAnswer()});
 			}
 			
 			table.setForeground(Color.DARK_GRAY);
 
 			table.addMouseListener(new MouseAdapter() {
+				
 				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					if(table.getSelectedRow() != -1) {
-						 try {
-							 Exam selectedTempExam = new Exam();
-							 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
-							 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
-							 
-							 Module selectedTempModule = new Module();
-							 selectedTempModule.setModuleId(selectedExam.getModuleId());
-							 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
-							 
-							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamId(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
-						 }catch(Exception e) {
-							 System.out.println(e);
-						 }
-					 }
-				}
+				public void mousePressed(MouseEvent mouseEvent) {
+			        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+			            System.out.print(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
+			        }
+			    }
+				
+//				@Override
+//				public void mouseClicked(MouseEvent arg0) {
+//					if(table.getSelectedRow() != -1) {
+//						 try {
+//							 Exam selectedTempExam = new Exam();
+//							 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
+//							 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
+//							 
+//							 Module selectedTempModule = new Module();
+//							 selectedTempModule.setModuleId(selectedExam.getModuleId());
+//							 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
+//							 
+////							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamId(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
+//						 }catch(Exception e) {
+//							 System.out.println(e);
+//						 }
+//					 }
+//				}
 			});
 			
 			table.setUpdateSelectionOnSort(false);
@@ -308,8 +310,7 @@ public class QuestionContentPanel extends ContentPanel {
             TableColumnModel columnModel = table.getColumnModel();
             
             columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
-            columnModel.getColumn(1).setCellRenderer(centerAlingedCell);
-            columnModel.getColumn(2).setCellRenderer(centerAlingedCell);
+            columnModel.getColumn(6).setCellRenderer(centerAlingedCell);
             
             // Removing question id column, but will still be able to access by column index
             columnModel.removeColumn(columnModel.getColumn(0));
@@ -331,11 +332,12 @@ public class QuestionContentPanel extends ContentPanel {
 			table.setFont(new Font("Roboto", Font.PLAIN, 14));
 			table.isCellEditable(1, 1);
 			scrollPane.setBounds(0, 172, 1199, 641);
-			examBodyPanel.add(scrollPane);
+			questionBodyPanel.add(scrollPane);
 			scrollPane.setViewportView(table);
 			
 		}catch(Exception e) {
 			System.out.println(e);
 		}
 	}
+
 }

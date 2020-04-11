@@ -221,15 +221,24 @@ public class StudentContentPanel extends ContentPanel {
 
 		try {
 
-			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "First Name", "Last Name", "Gender" }, 0);
+			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "SID", "First Name", "Last Name", "Gender", "Email", "Phone" }, 0);
 
 			User tempUser = new User();
 			tempUser.setRole("Student");
 			List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersByType(tempUser);
 
 			for (User user : userList) {
+				String userId = "S";
+				switch(user.getUserId().length()) {
+					case 1 : userId = userId.concat("00000").concat(user.getUserId()); break;
+					case 2 : userId = userId.concat("0000").concat(user.getUserId()); break;
+					case 3 : userId = userId.concat("000").concat(user.getUserId()); break;
+					case 4 : userId = userId.concat("00").concat(user.getUserId()); break;
+					case 5 : userId = userId.concat("0").concat(user.getUserId()); break;
+				}
 				// Adding a new user record to the table each time the loop executes
-				model.addRow(new Object[] { user.getUserId(), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender() });
+				
+				model.addRow(new Object[] { user.getUserId(), userId, "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender(), "     " + user.getEmail(), "     " + user.getPhone() });
 			}
 			table.setForeground(Color.DARK_GRAY);
 
@@ -239,13 +248,10 @@ public class StudentContentPanel extends ContentPanel {
 					if (table.getSelectedRow() != -1) {
 						try {
 							User selectedTempUser = new User();
-							selectedTempUser
-									.setUserId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
+							selectedTempUser.setUserId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
 							User selectedUser = (User) UniScoreClient.uniscoreInterface.getUser(selectedTempUser);
 
-							setSelectedStudent(selectedUser.getFirstName(), selectedUser.getLastName(),
-									selectedUser.getGender(), selectedUser.getPhone(), selectedUser.getEmail(),
-									selectedUser.getAddress(), selectedUser.getUserId());
+							setSelectedStudent(selectedUser.getFirstName(), selectedUser.getLastName(), selectedUser.getGender(), selectedUser.getPhone(), selectedUser.getEmail(), selectedUser.getAddress(), selectedUser.getUserId());
 						} catch (Exception e) {
 							System.out.println(e);
 						}
@@ -263,6 +269,11 @@ public class StudentContentPanel extends ContentPanel {
 			table.setBorder(null);
 
 			table.setModel(model);
+			
+			// Setting column width
+			table.getColumn("SID").setMinWidth(0);
+			table.getColumn("SID").setMaxWidth(120);
+			table.getColumn("SID").setWidth(120);
 
 			// To align text to center in a column
 			DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
@@ -271,6 +282,9 @@ public class StudentContentPanel extends ContentPanel {
 			// Setting width to colums in JTable
 			TableColumnModel columnModel = table.getColumnModel();
 
+			// Removing question id column, but will still be able to access by column index
+            columnModel.removeColumn(columnModel.getColumn(0));
+            
 			columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
 			columnModel.getColumn(3).setCellRenderer(centerAlingedCell);
 

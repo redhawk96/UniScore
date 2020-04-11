@@ -133,7 +133,7 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 				q.setOption1(rs.getString(4));
 				q.setOption2(rs.getString(5));
 				q.setOption3(rs.getString(6));
-				q.setOption4(rs.getString(8));
+				q.setOption4(rs.getString(7));
 				q.setAnswer(rs.getInt(8));
 				q.setCreatedAt(rs.getTimestamp(9));
 				q.setUpdatedAt(rs.getTimestamp(10));
@@ -166,7 +166,7 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 				q.setOption1(rs.getString(4));
 				q.setOption2(rs.getString(5));
 				q.setOption3(rs.getString(6));
-				q.setOption4(rs.getString(8));
+				q.setOption4(rs.getString(7));
 				q.setAnswer(rs.getInt(8));
 				q.setCreatedAt(rs.getTimestamp(9));
 				q.setUpdatedAt(rs.getTimestamp(10));
@@ -202,7 +202,7 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 				q.setOption1(rs.getString(4));
 				q.setOption2(rs.getString(5));
 				q.setOption3(rs.getString(6));
-				q.setOption4(rs.getString(8));
+				q.setOption4(rs.getString(7));
 				q.setAnswer(rs.getInt(8));
 				q.setCreatedAt(rs.getTimestamp(9));
 				q.setUpdatedAt(rs.getTimestamp(10));
