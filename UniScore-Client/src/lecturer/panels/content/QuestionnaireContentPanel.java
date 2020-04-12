@@ -28,7 +28,7 @@ import models.Exam;
 import models.Module;
 
 @SuppressWarnings("serial")
-public class QuestionContentPanel extends ContentPanel {
+public class QuestionnaireContentPanel extends ContentPanel {
 
 	JPanel contentPanel = new JPanel();
 	ContentTable table = new ContentTable();
@@ -36,11 +36,11 @@ public class QuestionContentPanel extends ContentPanel {
 	JPanel examBodyPanel = new JPanel();
 	JPanel examInfoPanel = new JPanel();
 	
-	public QuestionContentPanel() {
+	public QuestionnaireContentPanel() {
 		/*
 		 * Adding contentPanel JPanel name is set to identify content panel when selected
 		 */
-		contentPanel.setName("question");
+		contentPanel.setName("questionnaire");
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(new Color(255, 255, 255));
 		contentPanel.setLayout(null);

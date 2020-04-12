@@ -62,16 +62,15 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 	public boolean update(Question question) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "UPDATE `questions` SET `examId`=?, `question`=?, `option1`=?, `option2`=?, `option3`=?, `option4`=?, `answer`=? WHERE `questions`.`questionsId`=?";
+			String sql = "UPDATE `questions` SET `question`=?, `option1`=?, `option2`=?, `option3`=?, `option4`=?, `answer`=? WHERE `questions`.`questionId`=?";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setInt(1, question.getExamId());
-			ps.setString(2, question.getQuestion());
-			ps.setString(3, question.getOption1());
-			ps.setString(4, question.getOption2());
-			ps.setString(5, question.getOption3());
-			ps.setString(6, question.getOption4());
-			ps.setInt(7, question.getAnswer());
-			ps.setInt(8, question.getQuestionId());
+			ps.setString(1, question.getQuestion());
+			ps.setString(2, question.getOption1());
+			ps.setString(3, question.getOption2());
+			ps.setString(4, question.getOption3());
+			ps.setString(5, question.getOption4());
+			ps.setInt(6, question.getAnswer());
+			ps.setInt(7, question.getQuestionId());
 
 			int execution = ps.executeUpdate();
 
@@ -94,7 +93,7 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 	public boolean remove(Question question) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "DELETE FROM `questions` WHERE `questions`.`questionsId`=?";
+			String sql = "DELETE FROM `questions` WHERE `questions`.`questionId`=?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, question.getQuestionId());
 

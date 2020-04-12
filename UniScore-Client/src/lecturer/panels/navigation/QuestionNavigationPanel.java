@@ -12,7 +12,7 @@ import javax.swing.SwingConstants;
 import com.panels.NavigationPanel;
 import com.utils.UI;
 
-import lecturer.panels.content.QuestionContentPanel;
+import lecturer.panels.content.QuestionnaireContentPanel;
 import main.panels.LecturerPanel;
 
 @SuppressWarnings("serial")
@@ -40,7 +40,7 @@ public class QuestionNavigationPanel extends NavigationPanel {
 				 * setSelectedPanel() will be executed to update the already selected NavigationPanel with current selected NavigationPanel along with relevant ContentPanel
 				 */
 				LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
-				LecturerPanel.selectedContent = new QuestionContentPanel();
+				LecturerPanel.selectedContent = new QuestionnaireContentPanel();
 				LecturerPanel.setSelectedPanel();
 			}
 		});

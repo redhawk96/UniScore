@@ -73,6 +73,7 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding username text-field
 		 */
 		usernameTextField = new JTextField();
+		usernameTextField.setForeground(Color.GRAY);
 		usernameTextField.setMargin(new Insets(2, 10, 2, 2));
 		usernameTextField.setFont(UI.LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT);
 		usernameTextField.setBounds(760, 283, 280, 34);
@@ -91,6 +92,7 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding password field
 		 */
 		passwordField = new JPasswordField();
+		passwordField.setForeground(Color.GRAY);
 		passwordField.setMargin(new Insets(2, 10, 2, 2));
 		passwordField.setBounds(760, 365, 280, 34);
 		passwordField.setFont(UI.LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT);
