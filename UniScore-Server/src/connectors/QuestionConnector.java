@@ -212,5 +212,30 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 		}
 		return null;
 	}
+	
+	
+	/*
+	 * getQuestionCountByExamination : retrieves the count for questions for the paticular exam
+	 * @params {Question} Obtains exam id from question object
+	 * @return {int} returns an integer representing the number of questions for a paticular exam if exam is found and -1 if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public int getQuestionCountByExamination(Question question) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT COUNT(*) as 'qCount' FROM `questions` WHERE `questions`.`examId` = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, question.getExamId());
+			ResultSet rs = ps.executeQuery();
+
+			int qCount = -1;
+
+			while (rs.next()) {
+				qCount = rs.getInt(1);
+			}
+			return qCount;
+		}
+		return -1;
+	}
 
 }

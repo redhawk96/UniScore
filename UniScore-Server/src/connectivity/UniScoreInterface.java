@@ -302,6 +302,14 @@ public interface UniScoreInterface extends Remote {
 	public List<Question> getExamQuestions(Question question) throws RemoteException, ClassNotFoundException, SQLException;
 	
 	/*
+	 * getExaminationQuestionCount : retrieves the count for questions for the paticular exam
+	 * @params {Question} Obtains exam id from question object
+	 * @return {int} returns an integer representing the number of questions for a paticular exam if exam is found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getExaminationQuestionCount(Question question) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
 	 * Ending declaration of question methods
 	 */
 	

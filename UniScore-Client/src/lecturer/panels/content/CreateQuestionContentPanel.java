@@ -38,7 +38,7 @@ import models.Module;
 import models.Question;
 
 @SuppressWarnings("serial")
-public class DisplayQuestionContentPanel extends ContentPanel{
+public class CreateQuestionContentPanel extends ContentPanel{
 	
 	JPanel contentPanel = new JPanel();
 	ContentTable table = new ContentTable();
@@ -48,7 +48,7 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 	JComboBox<Object> answersComboBox;
 	Module module;
 	Exam exam;
-	Question question;
+	int questionCount;
 	
 	private JTextField questionText;
 	private JTextField optionOneText;
@@ -56,15 +56,15 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 	private JTextField optionThreeText;
 	private JTextField optionFourText;
 	
-	public DisplayQuestionContentPanel(Module module, Exam exam, Question question) {
+	public CreateQuestionContentPanel(Module module, Exam exam, int questionCount) {
 		this.module = module;
 		this.exam = exam;
-		this.question = question;
+		this.questionCount = questionCount;
 		/*
 		 * Adding contentPanel
 		 * JPanel name is set to identify content panel when selected
 		 */
-		contentPanel.setName("displayQuestion");
+		contentPanel.setName("createQuestion");
 		contentPanel.setLayout(null);
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
@@ -177,26 +177,29 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 		examInfoPanel.add(selectedExamStatus);
 		
 		
-		JPanel removeQuestionPanel = new JPanel();
-		removeQuestionPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
-		removeQuestionPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				RemoveQuestionNotifier cn = new RemoveQuestionNotifier(module, exam, question);
-				cn.setVisible(true);
-			}
-		});
-		removeQuestionPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-		removeQuestionPanel.setBounds(1046, 0, 153, 68);
-		examInfoPanel.add(removeQuestionPanel);
-		removeQuestionPanel.setLayout(null);
 		
-		JLabel removeQuestionLabel = new JLabel("REMOVE");
-		removeQuestionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		removeQuestionLabel.setBounds(0, 0, 153, 68);
-		removeQuestionLabel.setForeground(Color.DARK_GRAY);
-		removeQuestionLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
-		removeQuestionPanel.add(removeQuestionLabel);
+		JPanel questionCountPanel = new JPanel();
+		questionCountPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		questionCountPanel.setBounds(1046, 0, 153, 68);
+		questionCountPanel.setBorder(new MatteBorder(0, 1, 1, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+		examInfoPanel.add(questionCountPanel);
+		questionCountPanel.setLayout(null);
+		
+		Integer remaningQuestionCount = (30-questionCount);
+		String remaningQuestionCountStr = "";
+		
+		if(remaningQuestionCount.toString().length() < 2) {
+			remaningQuestionCountStr = "0"+remaningQuestionCount.toString();
+		} else {
+			remaningQuestionCountStr = remaningQuestionCount.toString();
+		}
+		
+		JLabel remaningQuestionCountLabel = new JLabel("RQ  "+remaningQuestionCountStr);
+		remaningQuestionCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		remaningQuestionCountLabel.setBounds(0, 0, 153, 68);
+		remaningQuestionCountLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		remaningQuestionCountLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		questionCountPanel.add(remaningQuestionCountLabel);
 		
 		JPanel goBackButtonPanel = new JPanel();
 		goBackButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
@@ -228,7 +231,7 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				
 				Question updatedQuestion = new Question();
-				updatedQuestion.setQuestionId(question.getQuestionId());
+				updatedQuestion.setExamId(exam.getExamId());
 				updatedQuestion.setQuestion(questionText.getText());
 				updatedQuestion.setOption1(optionOneText.getText());
 				updatedQuestion.setOption2(optionTwoText.getText());
@@ -238,28 +241,39 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 
 				try {
 					
-					boolean executionStatus = (boolean) UniScoreClient.uniscoreInterface.updateQuestion(updatedQuestion);
+					boolean executionStatus = (boolean) UniScoreClient.uniscoreInterface.addQuestion(updatedQuestion);
 	
 					if(executionStatus) {
-						SuccessNotifier sn = new SuccessNotifier("Question was successfully saved.\nRecord refferance : Question ID - "+question.getQuestionId(), new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
-						sn.setVisible(true);
+						
+						int updatedQuestionCount = questionCount + 1;
+						
+						if(updatedQuestionCount == 30) {
+							System.out.println("H"+updatedQuestionCount);	
+							SuccessNotifier sn = new SuccessNotifier("Question was successfully created.", new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
+							sn.setVisible(true);
+						}else {
+							System.out.println("L"+updatedQuestionCount);	
+							SuccessNotifier sn = new SuccessNotifier("Question was successfully created.", new QuestionNavigationPanel(), new CreateQuestionContentPanel(module, exam, updatedQuestionCount));
+							sn.setVisible(true);
+						}
+						
 					} else {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 501");
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 501");
 						en.setVisible(true);
 					}
-				
+					
 				} catch (RemoteException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 400");
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 400");
 					en.setVisible(true);
-					System.out.println("RemoteException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
+					System.out.println("RemoteException execution thrown on CreateQuestionContentPanel.java file. Error : "+e.getCause());
 				} catch (ClassNotFoundException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 600");
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 600");
 					en.setVisible(true);
-					System.out.println("ClassNotFoundException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
+					System.out.println("ClassNotFoundException execution thrown on CreateQuestionContentPanel.java file. Error : "+e.getCause());
 				} catch (SQLException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 500");
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 500");
 					en.setVisible(true);
-					System.out.println("SQLException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
+					System.out.println("SQLException execution thrown on CreateQuestionContentPanel.java file. Error : "+e.getCause());
 				}
 			}
 		});
@@ -280,13 +294,6 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 		displayQuestionPanel.setBounds(0, 172, 1199, 641);
 		questionBodyPanel.add(displayQuestionPanel);
 		displayQuestionPanel.setLayout(null);
-		
-		JLabel questionIDLabel = new JLabel("Question ID  :  "+question.getQuestionId());
-		questionIDLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		questionIDLabel.setForeground(Color.DARK_GRAY);
-		questionIDLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
-		questionIDLabel.setBounds(1034, 24, 155, 38);
-		displayQuestionPanel.add(questionIDLabel);
 		
 		JLabel questionLabel = new JLabel("Question                   :");
 		questionLabel.setForeground(Color.DARK_GRAY);
@@ -326,7 +333,6 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 		displayQuestionPanel.add(optionFourLabel);
 		
 		questionText = new JTextField();
-		questionText.setText(question.getQuestion());
 		questionText.setForeground(Color.GRAY);
 		questionText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.DARK_GRAY));
 		questionText.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -335,7 +341,6 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 		questionText.setColumns(10);
 		
 		optionOneText = new JTextField();
-		optionOneText.setText(question.getOption1());
 		optionOneText.setForeground(Color.GRAY);
 		optionOneText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.DARK_GRAY));
 		optionOneText.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -344,7 +349,6 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 		displayQuestionPanel.add(optionOneText);
 		
 		optionTwoText = new JTextField();
-		optionTwoText.setText(question.getOption2());
 		optionTwoText.setForeground(Color.GRAY);
 		optionTwoText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.DARK_GRAY));
 		optionTwoText.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -353,7 +357,6 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 		displayQuestionPanel.add(optionTwoText);
 		
 		optionThreeText = new JTextField();
-		optionThreeText.setText(question.getOption3());
 		optionThreeText.setForeground(Color.GRAY);
 		optionThreeText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.DARK_GRAY));
 		optionThreeText.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -362,7 +365,6 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 		displayQuestionPanel.add(optionThreeText);
 		
 		optionFourText = new JTextField();
-		optionFourText.setText(question.getOption4());
 		optionFourText.setForeground(Color.GRAY);
 		optionFourText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.DARK_GRAY));
 		optionFourText.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -396,13 +398,13 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 		    }
 		});
 		
+
 		answersComboBox.setOpaque(false);
 		answersComboBox.setFont(new Font("Roboto", Font.PLAIN, 16));
 		answersComboBox.setModel(new DefaultComboBoxModel<Object>(new String[] {"   Option 01", "   Option 02", "   Option 03", "   Option 04"}));
-		answersComboBox.setSelectedIndex( question.getAnswer()-1);
+		answersComboBox.setSelectedIndex(0);
 		answersComboBox.setBounds(196, 524, 214, 38);
 		displayQuestionPanel.add(answersComboBox);
-		
 		
 	}
 

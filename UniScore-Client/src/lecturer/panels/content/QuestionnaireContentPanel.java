@@ -5,6 +5,8 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -18,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import com.panels.ContentPanel;
+import com.panels.content.ErrorNotifier;
 import com.utils.ContentTable;
 import com.utils.UI;
 
@@ -37,15 +40,32 @@ public class QuestionnaireContentPanel extends ContentPanel {
 	JPanel examInfoPanel = new JPanel();
 	
 	public QuestionnaireContentPanel() {
-		/*
-		 * Adding contentPanel JPanel name is set to identify content panel when selected
-		 */
-		contentPanel.setName("questionnaire");
-		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
-		contentPanel.setBackground(new Color(255, 255, 255));
-		contentPanel.setLayout(null);
 		
-		setQuestionBody();
+		try {
+			
+			/*
+			 * Adding contentPanel JPanel name is set to identify content panel when selected
+			 */
+			contentPanel.setName("questionnaire");
+			contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
+			contentPanel.setBackground(new Color(255, 255, 255));
+			contentPanel.setLayout(null);
+			
+			setQuestionBody();
+			
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve questions.\nError refferance : 400");
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve questions.\nError refferance : 600");
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve questions.\nError refferance : 500");
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+		}
 	}
 
 	/*
@@ -79,7 +99,7 @@ public class QuestionnaireContentPanel extends ContentPanel {
 	}
 	
 	
-	public void setQuestionBody() {
+	public void setQuestionBody() throws RemoteException, ClassNotFoundException, SQLException {
 		
 		setNavigationIndicator();
 		
@@ -232,110 +252,117 @@ public class QuestionnaireContentPanel extends ContentPanel {
 	}
 	
 	
-	public void setExamListTable() {
+	public void setExamListTable() throws RemoteException, ClassNotFoundException, SQLException {
+	
+		DefaultTableModel model = new DefaultTableModel(new String[] {"EID", "MID", "Allocation", "Module", "Exam Name"}, 0);
+
+		Module module = new Module();
+		module.setTeacherId(UniScoreClient.authUser.getUserId());
 		
-		try {
-			
-			DefaultTableModel model = new DefaultTableModel(new String[] {"EID", "MID", "Allocation", "Module", "Exam Name"}, 0);
+		List<Module> moduleList = (List<Module>) UniScoreClient.uniscoreInterface.getModulesByRelevance(module, 0, 0);
 
-			Module module = new Module();
-			module.setTeacherId(UniScoreClient.authUser.getUserId());
-			
-			List<Module> moduleList = (List<Module>) UniScoreClient.uniscoreInterface.getModulesByRelevance(module, 0, 0);
+		for (Module mod : moduleList) {
 
-			for (Module mod : moduleList) {
+			Exam exam = new Exam();
+			exam.setModuleId(mod.getModuleId());
 
-				Exam exam = new Exam();
-				exam.setModuleId(mod.getModuleId());
+			List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(exam);
+			int count = 0;
 
-				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(exam);
-				int count = 0;
+			for (Exam e : examList) {
 
-				for (Exam e : examList) {
+				// Adding a exam record to the table each time the loop executes
+				if (e.getStatus().equalsIgnoreCase("disabled")) {
+					model.addRow(new Object[] { e.getExamId(), mod.getModuleId(),"     Y" + mod.getYear() + " - S" + mod.getSemester(), "     " + mod.getModuleName(), "     " + e.getExamName() });
 
-					// Adding a exam record to the table each time the loop executes
-					if (e.getStatus().equalsIgnoreCase("disabled")) {
-						model.addRow(new Object[] { e.getExamId(), mod.getModuleId(),"     Y" + mod.getYear() + " - S" + mod.getSemester(), "     " + mod.getModuleName(), "     " + e.getExamName() });
-
-						if (count < 1) {
-							setSelectedExam(mod.getModuleId(), mod.getModuleName(), mod.getYear(), mod.getSemester(), e.getExamId(), e.getExamName(), e.getDuration(), e.getStatus());
-						}
+					if (count < 1) {
+						setSelectedExam(mod.getModuleId(), mod.getModuleName(), mod.getYear(), mod.getSemester(), e.getExamId(), e.getExamName(), e.getDuration(), e.getStatus());
 					}
-					count++;
 				}
+				count++;
 			}
-			
-			table.setForeground(Color.DARK_GRAY);
-
-			table.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					if(table.getSelectedRow() != -1) {
-						 try {
-							 Exam selectedTempExam = new Exam();
-							 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
-							 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
-							 
-							 Module selectedTempModule = new Module();
-							 selectedTempModule.setModuleId(selectedExam.getModuleId());
-							 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
-							 
-							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamId(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
-						 }catch(Exception e) {
-							 System.out.println(e);
-						 }
-					 }
-				}
-			});
-			
-			table.setUpdateSelectionOnSort(false);
-			table.setFocusTraversalKeysEnabled(false);
-			table.setFocusable(false);
-			table.setAutoCreateRowSorter(true);
-			table.setEditingColumn(0);
-			table.setEditingRow(0);
-			table.setRequestFocusEnabled(false);
-			table.setVerifyInputWhenFocusTarget(false);
-			table.setBorder(null);
-			
-			table.setModel(model);
-			
-			//  To align text to center in a column 
-            DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
-            centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);
-            
-            // Setting width to colums in JTable
-            TableColumnModel columnModel = table.getColumnModel();
-            
-            columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
-            columnModel.getColumn(1).setCellRenderer(centerAlingedCell);
-            columnModel.getColumn(2).setCellRenderer(centerAlingedCell);
-            
-            // Removing question id column, but will still be able to access by column index
-            columnModel.removeColumn(columnModel.getColumn(0));
-			
-            // Removing horizontal cell borders
-            table.setShowHorizontalLines(false);
-            
-            // Setting cursor type on table hover
-			table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			table.setFillsViewportHeight(true);
-			table.setBackground(Color.WHITE);
-			table.getTableHeader().setOpaque(false);
-			table.getTableHeader().setBackground(Color.WHITE);
-			table.getTableHeader().setForeground(Color.BLACK);
-			table.getTableHeader().setFont(new Font("Roboto", Font.PLAIN, 14));
-			table.setSelectionBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			table.setRowHeight(32);
-			table.setFont(new Font("Roboto", Font.PLAIN, 14));
-			table.isCellEditable(1, 1);
-			scrollPane.setBounds(0, 172, 1199, 641);
-			examBodyPanel.add(scrollPane);
-			scrollPane.setViewportView(table);
-			
-		}catch(Exception e) {
-			System.out.println(e);
 		}
+		
+		table.setForeground(Color.DARK_GRAY);
+
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(table.getSelectedRow() != -1) {
+					
+					try {
+						
+						 Exam selectedTempExam = new Exam();
+						 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
+						 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
+						 
+						 Module selectedTempModule = new Module();
+						 selectedTempModule.setModuleId(selectedExam.getModuleId());
+						 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
+						 
+						 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamId(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
+						 
+					} catch (RemoteException e) {
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : 400");
+						en.setVisible(true);
+						System.out.println("RemoteException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+					} catch (ClassNotFoundException e) {
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : 600");
+						en.setVisible(true);
+						System.out.println("ClassNotFoundException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+					} catch (SQLException e) {
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : 500");
+						en.setVisible(true);
+						System.out.println("SQLException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+					}
+				 }
+			}
+		});
+		
+		table.setUpdateSelectionOnSort(false);
+		table.setFocusTraversalKeysEnabled(false);
+		table.setFocusable(false);
+		table.setAutoCreateRowSorter(true);
+		table.setEditingColumn(0);
+		table.setEditingRow(0);
+		table.setRequestFocusEnabled(false);
+		table.setVerifyInputWhenFocusTarget(false);
+		table.setBorder(null);
+		
+		table.setModel(model);
+		
+		//  To align text to center in a column 
+        DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
+        centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);
+        
+        // Setting width to colums in JTable
+        TableColumnModel columnModel = table.getColumnModel();
+        
+        columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
+        columnModel.getColumn(1).setCellRenderer(centerAlingedCell);
+        columnModel.getColumn(2).setCellRenderer(centerAlingedCell);
+        
+        // Removing question id column, but will still be able to access by column index
+        columnModel.removeColumn(columnModel.getColumn(0));
+		
+        // Removing horizontal cell borders
+        table.setShowHorizontalLines(false);
+        
+        // Setting cursor type on table hover
+		table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		table.setFillsViewportHeight(true);
+		table.setBackground(Color.WHITE);
+		table.getTableHeader().setOpaque(false);
+		table.getTableHeader().setBackground(Color.WHITE);
+		table.getTableHeader().setForeground(Color.BLACK);
+		table.getTableHeader().setFont(new Font("Roboto", Font.PLAIN, 14));
+		table.setSelectionBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setRowHeight(32);
+		table.setFont(new Font("Roboto", Font.PLAIN, 14));
+		table.isCellEditable(1, 1);
+		scrollPane.setBounds(0, 172, 1199, 641);
+		examBodyPanel.add(scrollPane);
+		scrollPane.setViewportView(table);
 	}
 }

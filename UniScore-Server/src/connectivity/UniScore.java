@@ -374,6 +374,18 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 		QuestionConnector qc = new QuestionConnector();
 		return qc.getByExamination(question);
 	}
+	
+	/*
+	 * getExaminationQuestionCount : retrieves the count for questions for the paticular exam
+	 * @params {Question} Obtains exam id from question object
+	 * @return {int} returns an integer representing the number of questions for a paticular exam if exam is found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	@Override
+	public int getExaminationQuestionCount(Question question) throws RemoteException, ClassNotFoundException, SQLException{
+		QuestionConnector qc = new QuestionConnector();
+		return qc.getQuestionCountByExamination(question);
+	}
 
 	/*
 	 * addSubmission : This will add a submission into the databse reffered by exam and module

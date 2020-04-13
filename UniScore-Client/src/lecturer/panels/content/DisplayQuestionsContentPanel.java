@@ -5,6 +5,8 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -13,11 +15,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import com.panels.ContentPanel;
+import com.panels.content.ErrorNotifier;
 import com.utils.ContentTable;
 import com.utils.UI;
 
@@ -38,20 +42,43 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 	JPanel examInfoPanel = new JPanel();
 	Module module;
 	Exam exam;
+	Integer questionCount = -1;
 	
 	public DisplayQuestionsContentPanel(Module module, Exam exam) {
 		this.module = module;
 		this.exam = exam;
-		/*
-		 * Adding contentPanel
-		 * JPanel name is set to identify content panel when selected
-		 */
-		contentPanel.setName("displayQuestions");
-		contentPanel.setLayout(null);
-		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
-		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
 		
-		setQuestionBody();
+		try {
+			
+			Question q = new Question();
+			q.setExamId(exam.getExamId());
+			questionCount = (int)UniScoreClient.uniscoreInterface.getExaminationQuestionCount(q);
+			
+			
+			/*
+			 * Adding contentPanel
+			 * JPanel name is set to identify content panel when selected
+			 */
+			contentPanel.setName("displayQuestions");
+			contentPanel.setLayout(null);
+			contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
+			contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
+			
+			setQuestionBody();
+			
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : 400");
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : 600");
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : 500");
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		}
 		
 	}
 
@@ -85,7 +112,7 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 	}
 	
 	
-	public void setQuestionBody() {
+	public void setQuestionBody() throws RemoteException, ClassNotFoundException, SQLException {
 		
 		setNavigationIndicator();
 		
@@ -112,20 +139,20 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		moduleInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		moduleInfoLabel.setForeground(Color.WHITE);
 		moduleInfoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		moduleInfoLabel.setBounds(31, 11, 406, 14);
+		moduleInfoLabel.setBounds(31, 11, 381, 14);
 		examInfoPanel.add(moduleInfoLabel);
 		
 		JLabel examInfoLabel = new JLabel("Exam Information");
 		examInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		examInfoLabel.setForeground(Color.WHITE);
 		examInfoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examInfoLabel.setBounds(562, 11, 474, 14);
+		examInfoLabel.setBounds(489, 11, 349, 14);
 		examInfoPanel.add(examInfoLabel);
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBackground(Color.WHITE);
-		separator.setBounds(510, 11, 11, 116);
+		separator.setBounds(437, 11, 11, 116);
 		examInfoPanel.add(separator);
 		
 		JLabel moduleCodeLabel = new JLabel("Code");
@@ -149,63 +176,85 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		JLabel selectedModuleCodeLabel = new JLabel(":  "+module.getModuleId());
 		selectedModuleCodeLabel.setForeground(Color.WHITE);
 		selectedModuleCodeLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedModuleCodeLabel.setBounds(158, 48, 279, 14);
+		selectedModuleCodeLabel.setBounds(158, 48, 269, 14);
 		examInfoPanel.add(selectedModuleCodeLabel);
 		
 		JLabel selectedModuleNameLabel = new JLabel(":  "+module.getModuleName());
 		selectedModuleNameLabel.setForeground(Color.WHITE);
 		selectedModuleNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedModuleNameLabel.setBounds(158, 76, 279, 14);
+		selectedModuleNameLabel.setBounds(158, 76, 269, 14);
 		examInfoPanel.add(selectedModuleNameLabel);
 		
 		JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+module.getYear()+"  - S"+module.getSemester());
 		selectedModuleAllocationLabel.setForeground(Color.WHITE);
 		selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedModuleAllocationLabel.setBounds(158, 105, 391, 14);
+		selectedModuleAllocationLabel.setBounds(158, 105, 269, 14);
 		examInfoPanel.add(selectedModuleAllocationLabel);
 		
 		JLabel examNameLabel = new JLabel("Name");
 		examNameLabel.setForeground(Color.WHITE);
 		examNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examNameLabel.setBounds(562, 48, 109, 14);
+		examNameLabel.setBounds(489, 48, 349, 14);
 		examInfoPanel.add(examNameLabel);
 		
 		JLabel examDurationLabel = new JLabel("Duration");
 		examDurationLabel.setForeground(Color.WHITE);
 		examDurationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examDurationLabel.setBounds(562, 76, 109, 14);
+		examDurationLabel.setBounds(489, 76, 349, 14);
 		examInfoPanel.add(examDurationLabel);
 		
 		JLabel examStatusLabel = new JLabel("Status");
 		examStatusLabel.setForeground(Color.WHITE);
 		examStatusLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examStatusLabel.setBounds(562, 104, 109, 14);
+		examStatusLabel.setBounds(489, 104, 349, 14);
 		examInfoPanel.add(examStatusLabel);
 		
 		JLabel selectedExamName = new JLabel(":  "+ exam.getExamName());
 		selectedExamName.setForeground(Color.WHITE);
 		selectedExamName.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedExamName.setBounds(674, 49, 362, 17);
+		selectedExamName.setBounds(601, 49, 237, 17);
 		examInfoPanel.add(selectedExamName);
 		
 		JLabel selectedExamDuration = new JLabel(":  "+exam.getDuration());
 		selectedExamDuration.setForeground(Color.WHITE);
 		selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedExamDuration.setBounds(674, 76, 362, 14);
+		selectedExamDuration.setBounds(601, 76, 237, 14);
 		examInfoPanel.add(selectedExamDuration);
 		
 		JLabel selectedExamStatus = new JLabel(":  "+exam.getStatus().toUpperCase());
 		selectedExamStatus.setForeground(Color.WHITE);
 		selectedExamStatus.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedExamStatus.setBounds(674, 104, 362, 17);
+		selectedExamStatus.setBounds(601, 104, 237, 17);
 		examInfoPanel.add(selectedExamStatus);
 		
-		JPanel showQuestionButtonPanel = new JPanel();
-		showQuestionButtonPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				showQuestionButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
-			}
+		
+		JPanel questionCountPanel = new JPanel();
+		questionCountPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		questionCountPanel.setBounds(1046, 0, 153, 68);
+		questionCountPanel.setBorder(new MatteBorder(0, 1, 1, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+		examInfoPanel.add(questionCountPanel);
+		questionCountPanel.setLayout(null);
+		
+		Integer remaningQuestionCount = (30-questionCount);
+		String remaningQuestionCountStr = "";
+		
+		if(remaningQuestionCount.toString().length() < 2) {
+			remaningQuestionCountStr = "0"+remaningQuestionCount.toString();
+		} else {
+			remaningQuestionCountStr = remaningQuestionCount.toString();
+		}
+		
+		JLabel remaningQuestionCountLabel = new JLabel("RQ  "+remaningQuestionCountStr);
+		remaningQuestionCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		remaningQuestionCountLabel.setBounds(0, 0, 153, 68);
+		remaningQuestionCountLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		remaningQuestionCountLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		questionCountPanel.add(remaningQuestionCountLabel);
+		
+		JPanel goBackButtonPanel = new JPanel();
+		goBackButtonPanel.setBorder(new MatteBorder(0, 1, 0, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+		goBackButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		goBackButtonPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
@@ -213,26 +262,67 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 				LecturerPanel.setSelectedPanel();
 			}
 		});
-		showQuestionButtonPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-		showQuestionButtonPanel.setBounds(1046, 0, 153, 138);
-		examInfoPanel.add(showQuestionButtonPanel);
-		showQuestionButtonPanel.setLayout(null);
+		goBackButtonPanel.setLayout(null);
+		goBackButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		goBackButtonPanel.setBounds(891, 0, 153, 138);
+		examInfoPanel.add(goBackButtonPanel);
 		
-		JLabel showQuestionButtonLabel = new JLabel("BACK");
-		showQuestionButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		showQuestionButtonLabel.setBounds(0, 0, 153, 138);
-		showQuestionButtonLabel.setForeground(Color.DARK_GRAY);
-		showQuestionButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
-		showQuestionButtonPanel.add(showQuestionButtonLabel);
+		JLabel goBackButtonLabel = new JLabel("BACK");
+		goBackButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		goBackButtonLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		goBackButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		goBackButtonLabel.setBounds(0, 0, 153, 138);
+		goBackButtonPanel.add(goBackButtonLabel);
 		
+		
+		if(remaningQuestionCount != 0) {
+			
+			JPanel createQuestionPanel = new JPanel();
+			createQuestionPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+			createQuestionPanel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					
+					LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
+					LecturerPanel.selectedContent = new CreateQuestionContentPanel(module, exam, questionCount);
+					LecturerPanel.setSelectedPanel();
+				}
+			});
+			createQuestionPanel.setLayout(null);
+			createQuestionPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+			createQuestionPanel.setBounds(1046, 70, 153, 68);
+			examInfoPanel.add(createQuestionPanel);
+			
+			JLabel createQuestionLabel = new JLabel("CREATE");
+			createQuestionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			createQuestionLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+			createQuestionLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+			createQuestionLabel.setBounds(0, 0, 153, 68);
+			createQuestionPanel.add(createQuestionLabel);
+			
+		} else {
+			
+			JPanel createQuestionPanel = new JPanel();
+			createQuestionPanel.setLayout(null);
+			createQuestionPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+			createQuestionPanel.setBounds(1046, 70, 153, 68);
+			createQuestionPanel.setBorder(new MatteBorder(1, 1, 0, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+			examInfoPanel.add(createQuestionPanel);
+			
+			JLabel createQuestionLabel = new JLabel("MAX Q");
+			createQuestionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			createQuestionLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+			createQuestionLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+			createQuestionLabel.setBounds(0, 0, 153, 68);
+			createQuestionPanel.add(createQuestionLabel);
+			
+		}
 		
 		examInfoPanel.repaint();
 	}
 	
 	
-	public void setExamListTable() {
-		
-		try {
+	public void setExamListTable() throws RemoteException, ClassNotFoundException, SQLException {
 			
 			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Question", "Option 1", "Option 2", "Option 3", "Option 4", "Answer"}, 0);
 
@@ -269,25 +359,6 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			            
 			        }
 			    }
-				
-//				@Override
-//				public void mouseClicked(MouseEvent arg0) {
-//					if(table.getSelectedRow() != -1) {
-//						 try {
-//							 Exam selectedTempExam = new Exam();
-//							 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
-//							 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
-//							 
-//							 Module selectedTempModule = new Module();
-//							 selectedTempModule.setModuleId(selectedExam.getModuleId());
-//							 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
-//							 
-////							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamId(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
-//						 }catch(Exception e) {
-//							 System.out.println(e);
-//						 }
-//					 }
-//				}
 			});
 			
 			table.setUpdateSelectionOnSort(false);
@@ -334,10 +405,6 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			scrollPane.setBounds(0, 172, 1199, 641);
 			questionBodyPanel.add(scrollPane);
 			scrollPane.setViewportView(table);
-			
-		}catch(Exception e) {
-			System.out.println(e);
-		}
 	}
 
 }
