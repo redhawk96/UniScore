@@ -373,6 +373,12 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			
 			table.setModel(model);
 			
+			// Setting column width
+			table.getColumn("Answer").setMinWidth(0);
+			table.getColumn("Answer").setMaxWidth(120);
+			table.getColumn("Answer").setWidth(120);
+
+			
 			//  To align text to center in a column 
             DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
             centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);

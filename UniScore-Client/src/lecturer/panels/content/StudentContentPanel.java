@@ -85,11 +85,7 @@ public class StudentContentPanel extends ContentPanel {
 		contentPanel.add(studentBodyPanel);
 		studentBodyPanel.setLayout(null);
 		
-		// Setting studentInfo panel to default
-		setSelectedStudent("", "", "", -1, "" , "", "");
-		
-		setStudentListTable();
-		
+		setStudentListTable();	
 	}
 
 	
@@ -104,7 +100,7 @@ public class StudentContentPanel extends ContentPanel {
 		JLabel studentAvatar = new JLabel("");
 		studentAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		studentAvatar.setIcon(new ImageIcon(StudentContentPanel.class.getResource("/resources/avatar.png")));
-		studentAvatar.setBounds(1036, 0, 163, 138);
+		studentAvatar.setBounds(1036, 11, 163, 100);
 		studentInfoPanel.add(studentAvatar);
 		
 		JLabel personalInfoLabel = new JLabel("Personal Information");
@@ -213,6 +209,13 @@ public class StudentContentPanel extends ContentPanel {
 		studentAddressLabel.setBounds(517, 104, 509, 17);
 		studentInfoPanel.add(studentAddressLabel);
 		
+		JLabel studentIDLabel = new JLabel("S000014");
+		studentIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		studentIDLabel.setForeground(Color.WHITE);
+		studentIDLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		studentIDLabel.setBounds(1036, 113, 163, 14);
+		studentInfoPanel.add(studentIDLabel);
+		
 		studentInfoPanel.repaint();
 	}
 
@@ -226,20 +229,18 @@ public class StudentContentPanel extends ContentPanel {
 			User tempUser = new User();
 			tempUser.setRole("Student");
 			List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersByType(tempUser);
-
+			int count = 0;
+			
 			for (User user : userList) {
-				String userId = "S";
-				switch(user.getUserId().length()) {
-					case 1 : userId = userId.concat("00000").concat(user.getUserId()); break;
-					case 2 : userId = userId.concat("0000").concat(user.getUserId()); break;
-					case 3 : userId = userId.concat("000").concat(user.getUserId()); break;
-					case 4 : userId = userId.concat("00").concat(user.getUserId()); break;
-					case 5 : userId = userId.concat("0").concat(user.getUserId()); break;
-				}
 				// Adding a new user record to the table each time the loop executes
+				model.addRow(new Object[] { user.getUserId(), getFormatedStudentId(user), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender(), "     " + user.getEmail(), "     " + user.getPhone() });
 				
-				model.addRow(new Object[] { user.getUserId(), userId, "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender(), "     " + user.getEmail(), "     " + user.getPhone() });
+				if (count < 1) {
+					setSelectedStudent(user.getFirstName(), user.getLastName(), user.getGender(), user.getPhone(), user.getEmail(), user.getAddress(), getFormatedStudentId(user));
+				}
+				count++;
 			}
+			
 			table.setForeground(Color.DARK_GRAY);
 
 			table.addMouseListener(new MouseAdapter() {
@@ -311,5 +312,18 @@ public class StudentContentPanel extends ContentPanel {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+	
+	public String getFormatedStudentId(User user) {
+		String studentId = "S";
+		
+		switch(user.getUserId().length()) {
+			case 1 : studentId = studentId.concat("00000").concat(user.getUserId()); break;
+			case 2 : studentId = studentId.concat("0000").concat(user.getUserId()); break;
+			case 3 : studentId = studentId.concat("000").concat(user.getUserId()); break;
+			case 4 : studentId = studentId.concat("00").concat(user.getUserId()); break;
+			case 5 : studentId = studentId.concat("0").concat(user.getUserId()); break;
+		}
+		return studentId;
 	}
 }

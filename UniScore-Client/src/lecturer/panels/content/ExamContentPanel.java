@@ -90,8 +90,6 @@ public class ExamContentPanel extends ContentPanel {
 		contentPanel.add(examBodyPanel);
 		examBodyPanel.setLayout(null);
 
-		setSelectedExam("", "", -1, -1, "", -1, "");
-
 		setExamListTable();
 	}
 	
@@ -108,20 +106,20 @@ public class ExamContentPanel extends ContentPanel {
 		moduleInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		moduleInfoLabel.setForeground(Color.WHITE);
 		moduleInfoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		moduleInfoLabel.setBounds(31, 11, 518, 14);
+		moduleInfoLabel.setBounds(31, 11, 406, 14);
 		examInfoPanel.add(moduleInfoLabel);
 		
 		JLabel examInfoLabel = new JLabel("Exam Information");
 		examInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		examInfoLabel.setForeground(Color.WHITE);
 		examInfoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examInfoLabel.setBounds(644, 11, 545, 14);
+		examInfoLabel.setBounds(562, 11, 474, 14);
 		examInfoPanel.add(examInfoLabel);
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBackground(Color.WHITE);
-		separator.setBounds(559, 11, 11, 116);
+		separator.setBounds(510, 11, 11, 116);
 		examInfoPanel.add(separator);
 		
 		JLabel moduleCodeLabel = new JLabel("Code");
@@ -145,73 +143,93 @@ public class ExamContentPanel extends ContentPanel {
 		JLabel selectedModuleCodeLabel = new JLabel(":  "+moduleCode);
 		selectedModuleCodeLabel.setForeground(Color.WHITE);
 		selectedModuleCodeLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedModuleCodeLabel.setBounds(158, 48, 391, 14);
+		selectedModuleCodeLabel.setBounds(158, 48, 279, 14);
 		examInfoPanel.add(selectedModuleCodeLabel);
 		
 		JLabel selectedModuleNameLabel = new JLabel(":  "+moduleName);
 		selectedModuleNameLabel.setForeground(Color.WHITE);
 		selectedModuleNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedModuleNameLabel.setBounds(158, 76, 391, 14);
+		selectedModuleNameLabel.setBounds(158, 76, 279, 14);
 		examInfoPanel.add(selectedModuleNameLabel);
 		
-		if(moduleYear == -1) {
-			JLabel selectedModuleAllocationLabel = new JLabel(":  ");
-			selectedModuleAllocationLabel.setForeground(Color.WHITE);
-			selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-			selectedModuleAllocationLabel.setBounds(158, 105, 391, 14);
-			examInfoPanel.add(selectedModuleAllocationLabel);
-		}else {
-			JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+moduleYear+"  - S"+moduleSemester);
-			selectedModuleAllocationLabel.setForeground(Color.WHITE);
-			selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-			selectedModuleAllocationLabel.setBounds(158, 105, 391, 14);
-			examInfoPanel.add(selectedModuleAllocationLabel);
-		}
+		JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+moduleYear+"  - S"+moduleSemester);
+		selectedModuleAllocationLabel.setForeground(Color.WHITE);
+		selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		selectedModuleAllocationLabel.setBounds(158, 105, 391, 14);
+		examInfoPanel.add(selectedModuleAllocationLabel);
 		
 		JLabel examNameLabel = new JLabel("Name");
 		examNameLabel.setForeground(Color.WHITE);
 		examNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examNameLabel.setBounds(644, 48, 109, 14);
+		examNameLabel.setBounds(562, 48, 109, 14);
 		examInfoPanel.add(examNameLabel);
 		
 		JLabel examDurationLabel = new JLabel("Duration");
 		examDurationLabel.setForeground(Color.WHITE);
 		examDurationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examDurationLabel.setBounds(644, 76, 109, 14);
+		examDurationLabel.setBounds(562, 76, 109, 14);
 		examInfoPanel.add(examDurationLabel);
 		
 		JLabel examStatusLabel = new JLabel("Status");
 		examStatusLabel.setForeground(Color.WHITE);
 		examStatusLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examStatusLabel.setBounds(644, 104, 109, 14);
+		examStatusLabel.setBounds(562, 104, 109, 14);
 		examInfoPanel.add(examStatusLabel);
 		
 		JLabel selectedExamName = new JLabel(":  "+examName);
 		selectedExamName.setForeground(Color.WHITE);
 		selectedExamName.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedExamName.setBounds(756, 49, 362, 17);
+		selectedExamName.setBounds(674, 49, 362, 17);
 		examInfoPanel.add(selectedExamName);
 		
-		if(examDuration == -1) {
-			JLabel selectedExamDuration = new JLabel(":  ");
-			selectedExamDuration.setForeground(Color.WHITE);
-			selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
-			selectedExamDuration.setBounds(756, 76, 362, 14);
-			examInfoPanel.add(selectedExamDuration);
-		}else {
-			JLabel selectedExamDuration = new JLabel(":  "+examDuration);
-			selectedExamDuration.setForeground(Color.WHITE);
-			selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
-			selectedExamDuration.setBounds(756, 76, 362, 14);
-			examInfoPanel.add(selectedExamDuration);
-		}
+		JLabel selectedExamDuration = new JLabel(":  "+examDuration);
+		selectedExamDuration.setForeground(Color.WHITE);
+		selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
+		selectedExamDuration.setBounds(674, 76, 362, 14);
+		examInfoPanel.add(selectedExamDuration);
 		
 		JLabel selectedExamStatus = new JLabel(":  "+examStatus.toUpperCase());
 		selectedExamStatus.setForeground(Color.WHITE);
 		selectedExamStatus.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedExamStatus.setBounds(756, 104, 362, 17);
+		selectedExamStatus.setBounds(674, 104, 362, 17);
 		examInfoPanel.add(selectedExamStatus);
-	
+		
+		JPanel showQuestionButtonPanel = new JPanel();
+		showQuestionButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		showQuestionButtonPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+//				Module module = new Module();
+//				module.setModuleId(moduleCode);
+//				module.setModuleName(moduleName);
+//				module.setYear(moduleYear);
+//				module.setSemester(moduleSemester);
+//				
+//				Exam exam = new Exam();
+//				exam.setExamId(examId);
+//				exam.setExamName(examName);
+//				exam.setDuration(examDuration);
+//				exam.setStatus(examStatus);
+//				
+//				
+//				LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
+//				LecturerPanel.selectedContent = new DisplayQuestionsContentPanel(module, exam);
+//				LecturerPanel.setSelectedPanel();
+			}
+		});
+		showQuestionButtonPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		showQuestionButtonPanel.setBounds(1046, 0, 153, 138);
+		examInfoPanel.add(showQuestionButtonPanel);
+		showQuestionButtonPanel.setLayout(null);
+		
+		JLabel showQuestionButtonLabel = new JLabel("PRINT");
+		showQuestionButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		showQuestionButtonLabel.setBounds(0, 0, 153, 138);
+		showQuestionButtonLabel.setForeground(Color.DARK_GRAY);
+		showQuestionButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		showQuestionButtonPanel.add(showQuestionButtonLabel);
+		
 		examInfoPanel.repaint();
 	}
 	
@@ -226,7 +244,8 @@ public class ExamContentPanel extends ContentPanel {
 			module.setTeacherId(UniScoreClient.authUser.getUserId());
 			
 			List<Module> moduleList = (List<Module>) UniScoreClient.uniscoreInterface.getModulesByRelevance(module, 0, 0);
-
+			int count = 0;
+			
 			for (Module mod : moduleList) {
 				
 				Exam exam = new Exam();
@@ -236,6 +255,11 @@ public class ExamContentPanel extends ContentPanel {
 				for(Exam e : examList) {
 					// Adding a exam record to the table each time the loop executes
 					model.addRow(new Object[] {e.getExamId(),   "     "+mod.getModuleName(),  "     "+e.getExamName(), "     "+e.getStatus()});
+					
+					if (count < 1) {
+						setSelectedExam(mod.getModuleId(), mod.getModuleName(), mod.getYear(), mod.getSemester(), e.getExamName(), e.getDuration(), e.getStatus());
+					}
+					count++;
 				}		
 			}
 			

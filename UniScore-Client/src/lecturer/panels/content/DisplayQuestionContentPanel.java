@@ -227,39 +227,73 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				Question updatedQuestion = new Question();
-				updatedQuestion.setQuestionId(question.getQuestionId());
-				updatedQuestion.setQuestion(questionText.getText());
-				updatedQuestion.setOption1(optionOneText.getText());
-				updatedQuestion.setOption2(optionTwoText.getText());
-				updatedQuestion.setOption3(optionThreeText.getText());
-				updatedQuestion.setOption4(optionFourText.getText());
-				updatedQuestion.setAnswer(answersComboBox.getSelectedIndex()+1);
-
-				try {
-					
-					boolean executionStatus = (boolean) UniScoreClient.uniscoreInterface.updateQuestion(updatedQuestion);
-	
-					if(executionStatus) {
-						SuccessNotifier sn = new SuccessNotifier("Question was successfully saved.\nRecord refferance : Question ID - "+question.getQuestionId(), new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
-						sn.setVisible(true);
-					} else {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 501");
-						en.setVisible(true);
-					}
 				
-				} catch (RemoteException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 400");
+				if(questionText.getText().trim().length() < 1) {
+					
+					ErrorNotifier en = new ErrorNotifier("Question title is a required field");
 					en.setVisible(true);
-					System.out.println("RemoteException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
-				} catch (ClassNotFoundException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 600");
+					
+				} else if(optionOneText.getText().trim().length() < 1) {
+					
+					ErrorNotifier en = new ErrorNotifier("Option one is a required field");
 					en.setVisible(true);
-					System.out.println("ClassNotFoundException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
-				} catch (SQLException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 500");
+					
+				} else if(optionTwoText.getText().trim().length() < 1) {
+					
+					ErrorNotifier en = new ErrorNotifier("Option two is a required field");
 					en.setVisible(true);
-					System.out.println("SQLException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
+					
+				} else if(optionThreeText.getText().trim().length() < 1) {
+
+					ErrorNotifier en = new ErrorNotifier("Option three is a required field");
+					en.setVisible(true);
+					
+				} else if(optionFourText.getText().trim().length() < 1) {
+					
+					ErrorNotifier en = new ErrorNotifier("Option four is a required field");
+					en.setVisible(true);
+					
+				} else if(answersComboBox.getSelectedIndex() == -1) {
+
+					ErrorNotifier en = new ErrorNotifier("Answer is a required field");
+					en.setVisible(true);
+					
+				} else {
+					
+					Question updatedQuestion = new Question();
+					updatedQuestion.setQuestionId(question.getQuestionId());
+					updatedQuestion.setQuestion(questionText.getText());
+					updatedQuestion.setOption1(optionOneText.getText());
+					updatedQuestion.setOption2(optionTwoText.getText());
+					updatedQuestion.setOption3(optionThreeText.getText());
+					updatedQuestion.setOption4(optionFourText.getText());
+					updatedQuestion.setAnswer(answersComboBox.getSelectedIndex()+1);
+
+					try {
+						
+						boolean executionStatus = (boolean) UniScoreClient.uniscoreInterface.updateQuestion(updatedQuestion);
+		
+						if(executionStatus) {
+							SuccessNotifier sn = new SuccessNotifier("Question was successfully saved.\nRecord refferance : Question ID - "+question.getQuestionId(), new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
+							sn.setVisible(true);
+						} else {
+							ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 501");
+							en.setVisible(true);
+						}
+					
+					} catch (RemoteException e) {
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 400");
+						en.setVisible(true);
+						System.out.println("RemoteException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
+					} catch (ClassNotFoundException e) {
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 600");
+						en.setVisible(true);
+						System.out.println("ClassNotFoundException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
+					} catch (SQLException e) {
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 500");
+						en.setVisible(true);
+						System.out.println("SQLException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
+					}
 				}
 			}
 		});

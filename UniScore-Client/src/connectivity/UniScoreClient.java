@@ -38,17 +38,17 @@ public class UniScoreClient {
 
 			if (UniScoreClient.uniscoreInterface.getServer()) {
 				System.out.println("Database connectied");
-				UniScoreClient.loginPanel = new LoginPanel();
-				UniScoreClient.loginPanel.setVisible(true);
+//				UniScoreClient.loginPanel = new LoginPanel();
+//				UniScoreClient.loginPanel.setVisible(true);
 
 				/*
 				 * For development purposes
 				 */
-//				User user = new User();
-//				user.setUserId("000015");
-//				UniScoreClient.authUser = user;
-//				UniScoreClient.lecturerPanel = new LecturerPanel();
-//				UniScoreClient.lecturerPanel.setVisible(true);
+				User user = new User();
+				user.setUserId("000015");
+				UniScoreClient.authUser = user;
+				UniScoreClient.lecturerPanel = new LecturerPanel();
+				UniScoreClient.lecturerPanel.setVisible(true);
 				
 			} else {
 				ErrorNotifier en = new ErrorNotifier("Failed to establish connection to the server !\nPlease contact the administrator\nError refferance : 501");

@@ -230,52 +230,86 @@ public class CreateQuestionContentPanel extends ContentPanel{
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				Question updatedQuestion = new Question();
-				updatedQuestion.setExamId(exam.getExamId());
-				updatedQuestion.setQuestion(questionText.getText());
-				updatedQuestion.setOption1(optionOneText.getText());
-				updatedQuestion.setOption2(optionTwoText.getText());
-				updatedQuestion.setOption3(optionThreeText.getText());
-				updatedQuestion.setOption4(optionFourText.getText());
-				updatedQuestion.setAnswer(answersComboBox.getSelectedIndex()+1);
-
-				try {
+				if(questionText.getText().trim().length() < 1) {
 					
-					boolean executionStatus = (boolean) UniScoreClient.uniscoreInterface.addQuestion(updatedQuestion);
-	
-					if(executionStatus) {
+					ErrorNotifier en = new ErrorNotifier("Question title is a required field");
+					en.setVisible(true);
+					
+				} else if(optionOneText.getText().trim().length() < 1) {
+					
+					ErrorNotifier en = new ErrorNotifier("Option one is a required field");
+					en.setVisible(true);
+					
+				} else if(optionTwoText.getText().trim().length() < 1) {
+					
+					ErrorNotifier en = new ErrorNotifier("Option two is a required field");
+					en.setVisible(true);
+					
+				} else if(optionThreeText.getText().trim().length() < 1) {
+
+					ErrorNotifier en = new ErrorNotifier("Option three is a required field");
+					en.setVisible(true);
+					
+				} else if(optionFourText.getText().trim().length() < 1) {
+					
+					ErrorNotifier en = new ErrorNotifier("Option four is a required field");
+					en.setVisible(true);
+					
+				} else if(answersComboBox.getSelectedIndex() == -1) {
+
+					ErrorNotifier en = new ErrorNotifier("Answer is a required field");
+					en.setVisible(true);
+					
+				} else {
+					
+					System.out.println(answersComboBox.getSelectedIndex());
+					
+					Question newQuestion = new Question();
+					newQuestion.setExamId(exam.getExamId());
+					newQuestion.setQuestion(questionText.getText());
+					newQuestion.setOption1(optionOneText.getText());
+					newQuestion.setOption2(optionTwoText.getText());
+					newQuestion.setOption3(optionThreeText.getText());
+					newQuestion.setOption4(optionFourText.getText());
+					newQuestion.setAnswer(answersComboBox.getSelectedIndex()+1);
+
+					try {
 						
-						int updatedQuestionCount = questionCount + 1;
-						
-						if(updatedQuestionCount == 30) {
-							System.out.println("H"+updatedQuestionCount);	
-							SuccessNotifier sn = new SuccessNotifier("Question was successfully created.", new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
-							sn.setVisible(true);
-						}else {
-							System.out.println("L"+updatedQuestionCount);	
-							SuccessNotifier sn = new SuccessNotifier("Question was successfully created.", new QuestionNavigationPanel(), new CreateQuestionContentPanel(module, exam, updatedQuestionCount));
-							sn.setVisible(true);
+						boolean executionStatus = (boolean) UniScoreClient.uniscoreInterface.addQuestion(newQuestion);
+		
+						if(executionStatus) {
+							
+							int updatedQuestionCount = questionCount + 1;
+							
+							if(updatedQuestionCount == 30) {	
+								SuccessNotifier sn = new SuccessNotifier("Question was successfully created.", new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
+								sn.setVisible(true);
+							}else {	
+								SuccessNotifier sn = new SuccessNotifier("Question was successfully created.", new QuestionNavigationPanel(), new CreateQuestionContentPanel(module, exam, updatedQuestionCount));
+								sn.setVisible(true);
+							}
+							
+						} else {
+							ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 501");
+							en.setVisible(true);
 						}
 						
-					} else {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 501");
+					} catch (RemoteException e) {
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 400");
 						en.setVisible(true);
+						System.out.println("RemoteException execution thrown on CreateQuestionContentPanel.java file. Error : "+e.getCause());
+					} catch (ClassNotFoundException e) {
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 600");
+						en.setVisible(true);
+						System.out.println("ClassNotFoundException execution thrown on CreateQuestionContentPanel.java file. Error : "+e.getCause());
+					} catch (SQLException e) {
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 500");
+						en.setVisible(true);
+						System.out.println("SQLException execution thrown on CreateQuestionContentPanel.java file. Error : "+e.getCause());
 					}
-					
-				} catch (RemoteException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 400");
-					en.setVisible(true);
-					System.out.println("RemoteException execution thrown on CreateQuestionContentPanel.java file. Error : "+e.getCause());
-				} catch (ClassNotFoundException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 600");
-					en.setVisible(true);
-					System.out.println("ClassNotFoundException execution thrown on CreateQuestionContentPanel.java file. Error : "+e.getCause());
-				} catch (SQLException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : 500");
-					en.setVisible(true);
-					System.out.println("SQLException execution thrown on CreateQuestionContentPanel.java file. Error : "+e.getCause());
 				}
 			}
+				
 		});
 		saveQuestionPanel.setLayout(null);
 		saveQuestionPanel.setBackground(new Color(249, 168, 37));
@@ -402,7 +436,7 @@ public class CreateQuestionContentPanel extends ContentPanel{
 		answersComboBox.setOpaque(false);
 		answersComboBox.setFont(new Font("Roboto", Font.PLAIN, 16));
 		answersComboBox.setModel(new DefaultComboBoxModel<Object>(new String[] {"   Option 01", "   Option 02", "   Option 03", "   Option 04"}));
-		answersComboBox.setSelectedIndex(0);
+		answersComboBox.setSelectedIndex(-1);
 		answersComboBox.setBounds(196, 524, 214, 38);
 		displayQuestionPanel.add(answersComboBox);
 		
