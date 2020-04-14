@@ -3,6 +3,8 @@ package lecturer.panels.content;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
@@ -13,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
@@ -43,42 +46,22 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 	Module module;
 	Exam exam;
 	Integer questionCount = -1;
+	private JTextField searchText;
 	
 	public DisplayQuestionsContentPanel(Module module, Exam exam) {
 		this.module = module;
 		this.exam = exam;
 		
-		try {
-			
-			Question q = new Question();
-			q.setExamId(exam.getExamId());
-			questionCount = (int)UniScoreClient.uniscoreInterface.getExaminationQuestionCount(q);
-			
-			
-			/*
-			 * Adding contentPanel
-			 * JPanel name is set to identify content panel when selected
-			 */
-			contentPanel.setName("displayQuestions");
-			contentPanel.setLayout(null);
-			contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
-			contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
-			
-			setQuestionBody();
-			
-		} catch (RemoteException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : 400");
-			en.setVisible(true);
-			System.out.println("RemoteException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
-		} catch (ClassNotFoundException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : 600");
-			en.setVisible(true);
-			System.out.println("ClassNotFoundException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
-		} catch (SQLException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : 500");
-			en.setVisible(true);
-			System.out.println("SQLException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
-		}
+		/*
+		 * Adding contentPanel
+		 * JPanel name is set to identify content panel when selected
+		 */
+		contentPanel.setName("displayQuestions");
+		contentPanel.setLayout(null);
+		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
+		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
+		
+		setQuestionBody();
 		
 	}
 
@@ -112,7 +95,7 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 	}
 	
 	
-	public void setQuestionBody() throws RemoteException, ClassNotFoundException, SQLException {
+	public void setQuestionBody() {
 		
 		setNavigationIndicator();
 		
@@ -123,9 +106,33 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		
 		setSelectedExam();
 		
-		setExamListTable();
+		setSearchField();
+		
+		setQuestionListTable("");
 	}
 	
+	public void setRemaningQuestionCount() {
+		
+		try {
+			
+			Question q = new Question();
+			q.setExamId(exam.getExamId());
+			questionCount = (int)UniScoreClient.uniscoreInterface.getExaminationQuestionCount(q);
+			
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : 400");
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : 600");
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : 500");
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		}
+	}
 	
 	public void setSelectedExam() {
 		examInfoPanel.removeAll();
@@ -315,26 +322,28 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			createQuestionLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
 			createQuestionLabel.setBounds(0, 0, 153, 68);
 			createQuestionPanel.add(createQuestionLabel);
-			
 		}
 		
 		examInfoPanel.repaint();
 	}
 	
 	
-	public void setExamListTable() throws RemoteException, ClassNotFoundException, SQLException {
+	public void setQuestionListTable(String searchText) {
+			
+		try {
 			
 			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Question", "Option 1", "Option 2", "Option 3", "Option 4", "Answer"}, 0);
-
+				
 			Question question = new Question();
-			question.setExamId(1);
+			question.setExamId(exam.getExamId());
 			
-			List<Question> questionList = (List<Question>) UniScoreClient.uniscoreInterface.getExamQuestions(question);
-
+			List<Question> questionList  = (List<Question>) UniScoreClient.uniscoreInterface.getExamQuestionsBySearch(searchText, question);
+			
 			for (Question qes : questionList) {
 				// Adding a exam record to the table each time the loop executes
 				model.addRow(new Object[] {qes.getQuestionId(), "     "+qes.getQuestion(),  "     "+qes.getOption1(), "     "+qes.getOption2(),  "     "+qes.getOption3(),   "     "+qes.getOption4(), qes.getAnswer()});
 			}
+				
 			
 			table.setForeground(Color.DARK_GRAY);
 
@@ -408,9 +417,43 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			table.setRowHeight(32);
 			table.setFont(new Font("Roboto", Font.PLAIN, 14));
 			table.isCellEditable(1, 1);
-			scrollPane.setBounds(0, 172, 1199, 641);
+			scrollPane.setBounds(0, 220, 1199, 593);
 			questionBodyPanel.add(scrollPane);
 			scrollPane.setViewportView(table);
+		
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve exam questions.\nError refferance : 400");
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve exam questions.\nError refferance : 600");
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve exam questions.\nError refferance : 500");
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		} 
 	}
 
+	public void setSearchField() {
+		searchText = new JTextField();
+		searchText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				setQuestionListTable(searchText.getText().trim());
+			}
+		});
+		searchText.setForeground(Color.GRAY);
+		searchText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.DARK_GRAY));
+		searchText.setFont(new Font("Roboto", Font.PLAIN, 14));
+		searchText.setBounds(978, 172, 219, 31);
+		questionBodyPanel.add(searchText);
+		searchText.setColumns(10);
+
+		JLabel searchLabel = new JLabel("Search    :");
+		searchLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		searchLabel.setBounds(908, 172, 60, 31);
+		questionBodyPanel.add(searchLabel);
+	}
 }

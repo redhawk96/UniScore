@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.panels.ContentPanel;
+import com.panels.content.ErrorNotifier;
 import com.utils.ContentTable;
 import com.utils.UI;
 
@@ -21,6 +22,8 @@ import javax.swing.table.TableColumnModel;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JSeparator;
@@ -37,6 +40,8 @@ public class ExamContentPanel extends ContentPanel {
 	JScrollPane scrollPane = new JScrollPane();
 
 	public ExamContentPanel() {
+		
+		try {
 		/*
 		 * Adding contentPanel JPanel name is set to identify content panel when selected
 		 */
@@ -46,6 +51,20 @@ public class ExamContentPanel extends ContentPanel {
 		contentPanel.setLayout(null);
 
 		setExamsBody();		
+		
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 400");
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 600");
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 500");
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+		}
 	}
 	
 	/*
@@ -81,7 +100,7 @@ public class ExamContentPanel extends ContentPanel {
 	}
 	
 	
-	public void setExamsBody() {
+	public void setExamsBody() throws RemoteException, ClassNotFoundException, SQLException {
 		
 		setNavigationIndicator();
 		
@@ -89,7 +108,7 @@ public class ExamContentPanel extends ContentPanel {
 		examBodyPanel.setBounds(30, 66, 1199, 813);
 		contentPanel.add(examBodyPanel);
 		examBodyPanel.setLayout(null);
-
+		
 		setExamListTable();
 	}
 	
@@ -234,9 +253,7 @@ public class ExamContentPanel extends ContentPanel {
 	}
 	
 	
-	public void setExamListTable() {
-		
-		try {
+	public void setExamListTable() throws RemoteException, ClassNotFoundException, SQLException {
 			
 			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Module", "Exam Name", "Exam Status"}, 0);
 
@@ -270,6 +287,7 @@ public class ExamContentPanel extends ContentPanel {
 				public void mouseClicked(MouseEvent arg0) {
 					if(table.getSelectedRow() != -1) {
 						 try {
+							 
 							 Exam selectedTempExam = new Exam();
 							 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
 							 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
@@ -279,9 +297,20 @@ public class ExamContentPanel extends ContentPanel {
 							 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
 							 
 							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
-						 }catch(Exception e) {
-							 System.out.println(e);
-						 }
+						 	
+						 	} catch (RemoteException e) {
+								ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 400");
+								en.setVisible(true);
+								System.out.println("RemoteException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+							} catch (ClassNotFoundException e) {
+								ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 600");
+								en.setVisible(true);
+								System.out.println("ClassNotFoundException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+							} catch (SQLException e) {
+								ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 500");
+								en.setVisible(true);
+								System.out.println("SQLException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+							}
 					 }
 				}
 			});
@@ -324,13 +353,9 @@ public class ExamContentPanel extends ContentPanel {
 			table.setRowHeight(32);
 			table.setFont(new Font("Roboto", Font.PLAIN, 14));
 			table.isCellEditable(1, 1);
-			scrollPane.setBounds(0, 172, 1199, 641);
+			scrollPane.setBounds(0, 171, 1199, 593);
 			examBodyPanel.add(scrollPane);
 			scrollPane.setViewportView(table);
-			
-		}catch(Exception e) {
-			System.out.println(e);
-		}
 	}
 }
 

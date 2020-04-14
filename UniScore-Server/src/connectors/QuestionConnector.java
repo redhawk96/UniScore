@@ -237,5 +237,43 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 		}
 		return -1;
 	}
+	
+	/*
+	 * getBySearch : retrieves all available questions filtered by either question id or tile
+	 * @params {String, Question} obtains a string to base the search and exam id from question object 
+	 * @return {List<Question>} returns a list of filtered questions by either question id or tile if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public List<Question> getBySearch(String searchString, Question question) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT * FROM `questions` WHERE `questions`.`questionId` LIKE ? OR `questions`.`question` LIKE ? AND `questions`.`examId`= ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, "%"+searchString+"%");
+			ps.setString(2, "%"+searchString+"%");
+			ps.setInt(3, question.getExamId());
+			ResultSet rs = ps.executeQuery();
+
+			List<Question> questionList = new ArrayList<>();
+
+			while (rs.next()) {
+				Question q = new Question();
+				q.setQuestionId(rs.getInt(1));
+				q.setExamId(rs.getInt(2));
+				q.setQuestion(rs.getString(3));
+				q.setOption1(rs.getString(4));
+				q.setOption2(rs.getString(5));
+				q.setOption3(rs.getString(6));
+				q.setOption4(rs.getString(7));
+				q.setAnswer(rs.getInt(8));
+				q.setCreatedAt(rs.getTimestamp(9));
+				q.setUpdatedAt(rs.getTimestamp(10));
+				
+				questionList.add(q);
+			}
+			return questionList;
+		}
+		return null;
+	}
 
 }

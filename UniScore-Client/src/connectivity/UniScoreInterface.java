@@ -309,6 +309,15 @@ public interface UniScoreInterface extends Remote {
 	 */
 	public int getExaminationQuestionCount(Question question) throws RemoteException, ClassNotFoundException, SQLException;
 	
+	
+	/*
+	 * getExamQuestionsBySearch : retrieves all available questions filtered by either question id or tile
+	 * @params {String, Question} obtains a string to base the search and exam id from question object 
+	 * @return {List<Question>} returns a list of filtered questions by either question id or tile if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public List<Question> getExamQuestionsBySearch(String searchString, Question question) throws RemoteException, ClassNotFoundException, SQLException;
+	
 	/*
 	 * Ending declaration of question methods
 	 */
@@ -416,6 +425,13 @@ public interface UniScoreInterface extends Remote {
 	 */
 	public List<User> getUsersByType(User user) throws RemoteException, ClassNotFoundException, SQLException;
 	
+	/*
+	 * getUsersBySearch : retrieves all available users filtered by either user id, first name or last name with status active and specified role
+	 * @params {String, User} obtains a string to base the search and role from user object 
+	 * @return {List<User>} returns a list of filtered users by either user id, first name or last name with status active and specified role if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public List<User> getUsersBySearch(String searchString, User user) throws RemoteException, ClassNotFoundException, SQLException;
 	/*
 	 * Ending declaration of user methods
 	 */

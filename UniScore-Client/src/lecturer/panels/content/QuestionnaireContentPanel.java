@@ -36,7 +36,7 @@ public class QuestionnaireContentPanel extends ContentPanel {
 	JPanel contentPanel = new JPanel();
 	ContentTable table = new ContentTable();
 	JScrollPane scrollPane = new JScrollPane();
-	JPanel examBodyPanel = new JPanel();
+	JPanel questionnaireBodyPanel = new JPanel();
 	JPanel examInfoPanel = new JPanel();
 	
 	public QuestionnaireContentPanel() {
@@ -54,15 +54,15 @@ public class QuestionnaireContentPanel extends ContentPanel {
 			setQuestionBody();
 			
 		} catch (RemoteException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve questions.\nError refferance : 400");
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 400");
 			en.setVisible(true);
 			System.out.println("RemoteException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
 		} catch (ClassNotFoundException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve questions.\nError refferance : 600");
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 600");
 			en.setVisible(true);
 			System.out.println("ClassNotFoundException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
 		} catch (SQLException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve questions.\nError refferance : 500");
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 500");
 			en.setVisible(true);
 			System.out.println("SQLException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
 		}
@@ -103,10 +103,10 @@ public class QuestionnaireContentPanel extends ContentPanel {
 		
 		setNavigationIndicator();
 		
-		examBodyPanel.setBackground(Color.WHITE);
-		examBodyPanel.setBounds(30, 66, 1199, 813);
-		contentPanel.add(examBodyPanel);
-		examBodyPanel.setLayout(null);
+		questionnaireBodyPanel.setBackground(Color.WHITE);
+		questionnaireBodyPanel.setBounds(30, 66, 1199, 813);
+		contentPanel.add(questionnaireBodyPanel);
+		questionnaireBodyPanel.setLayout(null);
 		
 		setExamListTable();
 	}
@@ -118,7 +118,7 @@ public class QuestionnaireContentPanel extends ContentPanel {
 		examInfoPanel.setLayout(null);
 		examInfoPanel.setBackground(Color.DARK_GRAY);
 		examInfoPanel.setBounds(0, 0, 1199, 138);
-		examBodyPanel.add(examInfoPanel);
+		questionnaireBodyPanel.add(examInfoPanel);
 		
 		JLabel moduleInfoLabel = new JLabel("Module Information");
 		moduleInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -361,8 +361,8 @@ public class QuestionnaireContentPanel extends ContentPanel {
 		table.setRowHeight(32);
 		table.setFont(new Font("Roboto", Font.PLAIN, 14));
 		table.isCellEditable(1, 1);
-		scrollPane.setBounds(0, 172, 1199, 641);
-		examBodyPanel.add(scrollPane);
+		scrollPane.setBounds(0, 171, 1199, 642);
+		questionnaireBodyPanel.add(scrollPane);
 		scrollPane.setViewportView(table);
 	}
 }

@@ -386,6 +386,18 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 		QuestionConnector qc = new QuestionConnector();
 		return qc.getQuestionCountByExamination(question);
 	}
+	
+
+	/*
+	 * getExamQuestionsBySearch : retrieves all available questions filtered by either question id or tile
+	 * @params {String, Question} obtains a string to base the search and exam id from question object 
+	 * @return {List<Question>} returns a list of filtered questions by either question id or tile if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public List<Question> getExamQuestionsBySearch(String searchString, Question question) throws RemoteException, ClassNotFoundException, SQLException {
+		QuestionConnector qc = new QuestionConnector();
+		return qc.getBySearch(searchString, question);
+	}
 
 	/*
 	 * addSubmission : This will add a submission into the databse reffered by exam and module
@@ -513,6 +525,17 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 	public List<User> getUsersByType(User user) throws RemoteException, ClassNotFoundException, SQLException{
 		UserConnector uc = new UserConnector();
 		return uc.getByType(user);
+	}
+	
+	/*
+	 * getUsersBySearch : retrieves all available users filtered by either user id, first name or last name with status active and specified role
+	 * @params {String, User} obtains a string to base the search and role from user object 
+	 * @return {List<User>} returns a list of filtered users by either user id, first name or last name with status active and specified role if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public List<User> getUsersBySearch(String searchString, User user) throws RemoteException, ClassNotFoundException, SQLException{
+		UserConnector uc = new UserConnector();
+		return uc.getBySearch(searchString, user);
 	}
 	
 	/*

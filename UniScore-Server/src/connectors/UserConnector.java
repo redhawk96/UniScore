@@ -278,4 +278,46 @@ public class UserConnector implements ConnectorInterface<User> {
 		}
 		return null;
 	}
+	
+	
+	/*
+	 * getBySearch : retrieves all available users filtered by either user id, first name or last name with status active and specified role
+	 * @params {String, User} obtains a string to base the search and role from user object 
+	 * @return {List<User>} returns a list of filtered users by either user id, first name or last name with status active and specified role if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public List<User> getBySearch(String searchString, User user) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT * FROM `users` WHERE `users`.`userId` LIKE ? OR `users`.`firstName` LIKE ? OR `users`.`lastName` LIKE ? AND `users`.`role`= ? AND `users`.`status`='Active'";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, "%"+searchString+"%");
+			ps.setString(2, "%"+searchString+"%");
+			ps.setString(3, "%"+searchString+"%");
+			ps.setString(4, user.getRole());
+			ResultSet rs = ps.executeQuery();
+
+			List<User> userList = new ArrayList<>();
+
+			while (rs.next()) {
+				User u = new User();
+
+				u.setUserId(rs.getString(1));
+				u.setFirstName(rs.getString(2));
+				u.setLastName(rs.getString(3));
+				u.setGender(rs.getString(4));
+				u.setEmail(rs.getString(5));
+				u.setNic(rs.getString(6));
+				u.setPhone(rs.getInt(7));
+				u.setAddress(rs.getString(8));
+				u.setRole(rs.getString(9));
+				u.setRegisteredDate(rs.getTimestamp(10));
+				u.setStatus(rs.getString(12));
+
+				userList.add(u);
+			}
+			return userList;
+		}
+		return null;
+	}
 }

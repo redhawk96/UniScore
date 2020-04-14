@@ -24,6 +24,10 @@ import com.utils.UI;
 
 import connectivity.UniScoreClient;
 import models.User;
+import javax.swing.JTextField;
+import javax.swing.border.MatteBorder;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class StudentContentPanel extends ContentPanel {
@@ -33,6 +37,7 @@ public class StudentContentPanel extends ContentPanel {
 	JScrollPane scrollPane = new JScrollPane();
 	JPanel studentBodyPanel = new JPanel();
 	JPanel studentInfoPanel = new JPanel();
+	private JTextField searchText;
 	
 	public StudentContentPanel() {
 		/*
@@ -85,7 +90,9 @@ public class StudentContentPanel extends ContentPanel {
 		contentPanel.add(studentBodyPanel);
 		studentBodyPanel.setLayout(null);
 		
-		setStudentListTable();	
+		setSearchField();
+		
+		setStudentListTable("");	
 	}
 
 	
@@ -220,7 +227,7 @@ public class StudentContentPanel extends ContentPanel {
 	}
 
 
-	public void setStudentListTable() {
+	public void setStudentListTable(String searchText) {
 
 		try {
 
@@ -228,7 +235,7 @@ public class StudentContentPanel extends ContentPanel {
 
 			User tempUser = new User();
 			tempUser.setRole("Student");
-			List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersByType(tempUser);
+			List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersBySearch(searchText, tempUser);
 			int count = 0;
 			
 			for (User user : userList) {
@@ -305,10 +312,10 @@ public class StudentContentPanel extends ContentPanel {
 			table.setRowHeight(32);
 			table.setFont(new Font("Roboto", Font.PLAIN, 14));
 			table.isCellEditable(1, 1);
-			scrollPane.setBounds(0, 172, 1199, 641);
+			scrollPane.setBounds(0, 220, 1199, 593);
 			studentBodyPanel.add(scrollPane);
 			scrollPane.setViewportView(table);
-
+			
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -325,5 +332,27 @@ public class StudentContentPanel extends ContentPanel {
 			case 5 : studentId = studentId.concat("0").concat(user.getUserId()); break;
 		}
 		return studentId;
+	}
+	
+	
+	public void setSearchField() {
+		searchText = new JTextField();
+		searchText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				setStudentListTable(searchText.getText().trim());	
+			}
+		});
+		searchText.setForeground(Color.GRAY);
+		searchText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.DARK_GRAY));
+		searchText.setFont(new Font("Roboto", Font.PLAIN, 14));
+		searchText.setBounds(978, 172, 219, 31);
+		studentBodyPanel.add(searchText);
+		searchText.setColumns(10);
+		
+		JLabel searchLabel = new JLabel("Search    :");
+		searchLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		searchLabel.setBounds(908, 172, 60, 31);
+		studentBodyPanel.add(searchLabel);
 	}
 }
