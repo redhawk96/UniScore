@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.utils.Encryptor;
+import com.utils.GenerateReport;
 
 import connectors.ActivityConnector;
 import connectors.ExamConnector;
@@ -33,6 +34,7 @@ import models.Module;
 import models.Question;
 import models.Submission;
 import models.User;
+import net.sf.jasperreports.engine.JRException;
 
 @SuppressWarnings("serial")
 public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
@@ -557,6 +559,15 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 	 */
 	public String encrypt(User user) throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException{
 		return Encryptor.getEncryptedPassword(user);
+	}
+	
+	/*
+	 * printReport : prints a report based on user given report location by index, file name by index, SQL query by index and option parameters needed to execute the query
+	 * @params {int, int, int, String} report location by index, file name by index, SQL query by index and option parameters
+	 * @throws RemoteException, ClassNotFoundException, SQLException, JRException
+	 */
+	public void printReport(int reportIndex, int fileIndex, int queryIndex, String optionalParameter) throws RemoteException, ClassNotFoundException, SQLException, JRException {
+		new GenerateReport(reportIndex, fileIndex, queryIndex, optionalParameter);
 	}
 	
 }

@@ -1,24 +1,7 @@
 package lecturer.panels.content;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import com.panels.ContentPanel;
-import com.panels.content.ErrorNotifier;
-import com.utils.ContentTable;
-import com.utils.UI;
-
-import connectivity.UniScoreClient;
-import models.Exam;
-import models.Module;
 import java.awt.Color;
 import java.awt.Cursor;
-
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
-
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,9 +9,26 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.ListSelectionModel;
-import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+
+import com.panels.ContentPanel;
+import com.panels.content.ErrorNotifier;
+import com.panels.content.SuccessNotifier;
+import com.utils.ContentTable;
+import com.utils.UI;
+
+import connectivity.UniScoreClient;
+import models.Exam;
+import models.Module;
+import net.sf.jasperreports.engine.JRException;
 
 @SuppressWarnings("serial")
 public class ExamContentPanel extends ContentPanel {
@@ -113,7 +113,7 @@ public class ExamContentPanel extends ContentPanel {
 	}
 	
 	
-	public void setSelectedExam(String moduleCode, String moduleName, int moduleYear, int moduleSemester, String examName, int examDuration, String examStatus) {
+	public void setSelectedExam(String moduleCode, String moduleName, int moduleYear, int moduleSemester, Integer examId, String examName, int examDuration, String examStatus) {
 		examInfoPanel.removeAll();
 		examInfoPanel = new JPanel();
 		examInfoPanel.setLayout(null);
@@ -219,22 +219,32 @@ public class ExamContentPanel extends ContentPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-//				Module module = new Module();
-//				module.setModuleId(moduleCode);
-//				module.setModuleName(moduleName);
-//				module.setYear(moduleYear);
-//				module.setSemester(moduleSemester);
-//				
-//				Exam exam = new Exam();
-//				exam.setExamId(examId);
-//				exam.setExamName(examName);
-//				exam.setDuration(examDuration);
-//				exam.setStatus(examStatus);
-//				
-//				
-//				LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
-//				LecturerPanel.selectedContent = new DisplayQuestionsContentPanel(module, exam);
-//				LecturerPanel.setSelectedPanel();
+				// report location by index, file name by index, SQL query by index and option parameters
+				try {
+					
+					UniScoreClient.uniscoreInterface.printReport(1, 1, 1, examId.toString());
+					
+					SuccessNotifier sn = new SuccessNotifier("Report was successfully saved.", null, null);
+					sn.setVisible(true);
+					
+				} catch (RemoteException e) {
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions.\nError refferance : 400");
+					en.setVisible(true);
+					System.out.println("RemoteException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+				} catch (ClassNotFoundException e) {
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions.\nError refferance : 600");
+					en.setVisible(true);
+					System.out.println("ClassNotFoundException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+				} catch (SQLException e) {
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions.\nError refferance : 500");
+					en.setVisible(true);
+					System.out.println("SQLException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+				} catch (JRException e) {
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions.\nError refferance : 700");
+					en.setVisible(true);
+					System.out.println("JRException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+				}
+				
 			}
 		});
 		showQuestionButtonPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
@@ -274,7 +284,7 @@ public class ExamContentPanel extends ContentPanel {
 					model.addRow(new Object[] {e.getExamId(),   "     "+mod.getModuleName(),  "     "+e.getExamName(), "     "+e.getStatus()});
 					
 					if (count < 1) {
-						setSelectedExam(mod.getModuleId(), mod.getModuleName(), mod.getYear(), mod.getSemester(), e.getExamName(), e.getDuration(), e.getStatus());
+						setSelectedExam(mod.getModuleId(), mod.getModuleName(), mod.getYear(), mod.getSemester(), e.getExamId(), e.getExamName(), e.getDuration(), e.getStatus());
 					}
 					count++;
 				}		
@@ -296,20 +306,20 @@ public class ExamContentPanel extends ContentPanel {
 							 selectedTempModule.setModuleId(selectedExam.getModuleId());
 							 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
 							 
-							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
+							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamId(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
 						 	
 						 	} catch (RemoteException e) {
 								ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 400");
 								en.setVisible(true);
-								System.out.println("RemoteException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+								System.out.println("RemoteException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 							} catch (ClassNotFoundException e) {
 								ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 600");
 								en.setVisible(true);
-								System.out.println("ClassNotFoundException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+								System.out.println("ClassNotFoundException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 							} catch (SQLException e) {
 								ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 500");
 								en.setVisible(true);
-								System.out.println("SQLException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
+								System.out.println("SQLException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 							}
 					 }
 				}

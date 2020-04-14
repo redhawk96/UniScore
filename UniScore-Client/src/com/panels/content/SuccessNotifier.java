@@ -66,10 +66,14 @@ public class SuccessNotifier extends JFrame {
 		okButtonPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				LecturerPanel.selectedNavigation = navigationRouter;
-				LecturerPanel.selectedContent = contentRouter;
-				LecturerPanel.setSelectedPanel();
-				dispose();
+				if(navigationRouter != null && contentRouter != null) {
+					LecturerPanel.selectedNavigation = navigationRouter;
+					LecturerPanel.selectedContent = contentRouter;
+					LecturerPanel.setSelectedPanel();
+					dispose();
+				} else {
+					dispose();
+				}
 			}
 		});
 		okButtonPanel.setBorder(new LineBorder(Color.DARK_GRAY));

@@ -23,6 +23,7 @@ import models.Module;
 import models.Question;
 import models.Submission;
 import models.User;
+import net.sf.jasperreports.engine.JRException;
 
 public interface UniScoreInterface extends Remote {
 
@@ -456,6 +457,13 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException
 	 */
 	public String encrypt(User user) throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException;
+	
+	/*
+	 * printReport : prints a report based on user given report location by index, file name by index, SQL query by index and option parameters needed to execute the query
+	 * @params {int, int, int, String} report location by index, file name by index, SQL query by index and option parameters
+	 * @throws RemoteException, ClassNotFoundException, SQLException, JRException
+	 */
+	public void printReport(int reportIndex, int fileIndex, int queryIndex, String optionalParameter) throws RemoteException, ClassNotFoundException, SQLException, JRException;
 	
 	/*
 	 * Ending declaration of common methods
