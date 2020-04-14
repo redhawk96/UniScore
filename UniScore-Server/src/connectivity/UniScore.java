@@ -9,6 +9,8 @@
 
 package connectivity;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.NoSuchAlgorithmException;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import com.utils.Encryptor;
 import com.utils.GenerateReport;
+import com.utils.IpifyAPI;
 
 import connectors.ActivityConnector;
 import connectors.ExamConnector;
@@ -568,6 +571,15 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 	 */
 	public void printReport(int reportIndex, int fileIndex, int queryIndex, String optionalParameter) throws RemoteException, ClassNotFoundException, SQLException, JRException {
 		new GenerateReport(reportIndex, fileIndex, queryIndex, optionalParameter);
+	}
+	
+	/*
+	 * getLocation : locates the IP4 of the current user through an public web API call
+	 * @return {String} returns the IP4 of the current user through an public web API call
+	 * @throws RemoteException, ClassNotFoundException, MalformedURLException, IOException 
+	 */
+	public String getLocation() throws RemoteException, ClassNotFoundException, MalformedURLException, IOException {
+		return IpifyAPI.getIP();
 	}
 	
 }

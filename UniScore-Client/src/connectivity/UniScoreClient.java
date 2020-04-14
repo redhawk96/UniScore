@@ -1,5 +1,7 @@
 package connectivity;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -20,6 +22,7 @@ public class UniScoreClient {
 	public static StudentPanel studentPanel;
 	public static LoginPanel loginPanel;
 	public static User authUser;
+	public static String authLocation;
 
 	public UniScoreClient() {
 	}
@@ -38,6 +41,9 @@ public class UniScoreClient {
 
 			if (UniScoreClient.uniscoreInterface.getServer()) {
 				System.out.println("Database connectied");
+				
+				UniScoreClient.authLocation = UniScoreClient.uniscoreInterface.getLocation();
+				
 //				UniScoreClient.loginPanel = new LoginPanel();
 //				UniScoreClient.loginPanel.setVisible(true);
 
@@ -70,6 +76,14 @@ public class UniScoreClient {
 			ErrorNotifier en = new ErrorNotifier("Failed to establish connection to the server !\nPlease contact the administrator\nError refferance : 700");
 			en.setVisible(true);
 			System.out.println("NotBoundException execution thrown on UniScoreClient.java file. Error : "+e.getCause());
+		} catch (MalformedURLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve user location.\nError refferance : 800");
+			en.setVisible(true);
+			System.out.println("JRException execution thrown on UniScoreClient.java file. Error : "+e.getCause());
+		} catch (IOException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve user location.\nError refferance : 800");
+			en.setVisible(true);
+			System.out.println("JRException execution thrown on UniScoreClient.java file. Error : "+e.getCause());
 		}
 
 	}

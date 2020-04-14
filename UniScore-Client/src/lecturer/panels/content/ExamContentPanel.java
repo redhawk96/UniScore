@@ -26,6 +26,7 @@ import com.utils.ContentTable;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
+import models.Activity;
 import models.Exam;
 import models.Module;
 import net.sf.jasperreports.engine.JRException;
@@ -223,6 +224,8 @@ public class ExamContentPanel extends ContentPanel {
 				try {
 					
 					UniScoreClient.uniscoreInterface.printReport(1, 1, 1, examId.toString());
+										
+					UniScoreClient.uniscoreInterface.addLogActivity(new Activity("New submissions report for exam "+examId+" was printed from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
 					
 					SuccessNotifier sn = new SuccessNotifier("Report was successfully saved.", null, null);
 					sn.setVisible(true);
@@ -243,8 +246,7 @@ public class ExamContentPanel extends ContentPanel {
 					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions.\nError refferance : 700");
 					en.setVisible(true);
 					System.out.println("JRException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
-				}
-				
+				}				
 			}
 		});
 		showQuestionButtonPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
