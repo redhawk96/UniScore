@@ -114,7 +114,6 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 	public void setRemaningQuestionCount() {
 		
 		try {
-			
 			Question q = new Question();
 			q.setExamId(exam.getExamId());
 			questionCount = (int)UniScoreClient.uniscoreInterface.getExaminationQuestionCount(q);
@@ -135,6 +134,9 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 	}
 	
 	public void setSelectedExam() {
+		
+		setRemaningQuestionCount();
+		
 		examInfoPanel.removeAll();
 		examInfoPanel = new JPanel();
 		examInfoPanel.setLayout(null);
@@ -334,14 +336,13 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			
 			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Question", "Option 1", "Option 2", "Option 3", "Option 4", "Answer"}, 0);
 				
-			Question question = new Question();
-			question.setExamId(exam.getExamId());
-			
-			List<Question> questionList  = (List<Question>) UniScoreClient.uniscoreInterface.getExamQuestionsBySearch(searchText, question);
+			List<Question> questionList  = (List<Question>) UniScoreClient.uniscoreInterface.getExamQuestionsBySearch(searchText);
 			
 			for (Question qes : questionList) {
-				// Adding a exam record to the table each time the loop executes
-				model.addRow(new Object[] {qes.getQuestionId(), "     "+qes.getQuestion(),  "     "+qes.getOption1(), "     "+qes.getOption2(),  "     "+qes.getOption3(),   "     "+qes.getOption4(), qes.getAnswer()});
+				if(qes.getExamId() == exam.getExamId()) {
+					// Adding a exam record to the table each time the loop executes
+					model.addRow(new Object[] {qes.getQuestionId(), "     "+qes.getQuestion(),  "     "+qes.getOption1(), "     "+qes.getOption2(),  "     "+qes.getOption3(),   "     "+qes.getOption4(), qes.getAnswer()});
+				}
 			}
 				
 			

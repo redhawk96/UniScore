@@ -3,8 +3,6 @@ package lecturer.panels.content;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -216,7 +214,7 @@ public class StudentContentPanel extends ContentPanel {
 		studentAddressLabel.setBounds(517, 104, 509, 17);
 		studentInfoPanel.add(studentAddressLabel);
 		
-		JLabel studentIDLabel = new JLabel("S000014");
+		JLabel studentIDLabel = new JLabel(studentId);
 		studentIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		studentIDLabel.setForeground(Color.WHITE);
 		studentIDLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
@@ -235,37 +233,22 @@ public class StudentContentPanel extends ContentPanel {
 
 			User tempUser = new User();
 			tempUser.setRole("Student");
-			List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersBySearch(searchText, tempUser);
+			List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersBySearch(searchText);
 			int count = 0;
 			
 			for (User user : userList) {
-				// Adding a new user record to the table each time the loop executes
-				model.addRow(new Object[] { user.getUserId(), getFormatedStudentId(user), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender(), "     " + user.getEmail(), "     " + user.getPhone() });
-				
-				if (count < 1) {
-					setSelectedStudent(user.getFirstName(), user.getLastName(), user.getGender(), user.getPhone(), user.getEmail(), user.getAddress(), getFormatedStudentId(user));
+				if(user.getRole().equalsIgnoreCase("Student")) {
+					// Adding a new user record to the table each time the loop executes
+					model.addRow(new Object[] { user.getUserId(), getFormatedStudentId(user), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender(), "     " + user.getEmail(), "     " + user.getPhone() });
+					
+					if (count < 1) {
+						setSelectedStudent(user.getFirstName(), user.getLastName(), user.getGender(), user.getPhone(), user.getEmail(), user.getAddress(), getFormatedStudentId(user));
+					}
+					count++;
 				}
-				count++;
 			}
 			
 			table.setForeground(Color.DARK_GRAY);
-
-			table.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					if (table.getSelectedRow() != -1) {
-						try {
-							User selectedTempUser = new User();
-							selectedTempUser.setUserId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
-							User selectedUser = (User) UniScoreClient.uniscoreInterface.getUser(selectedTempUser);
-
-							setSelectedStudent(selectedUser.getFirstName(), selectedUser.getLastName(), selectedUser.getGender(), selectedUser.getPhone(), selectedUser.getEmail(), selectedUser.getAddress(), selectedUser.getUserId());
-						} catch (Exception e) {
-							System.out.println(e);
-						}
-					}
-				}
-			});
 			table.setUpdateSelectionOnSort(false);
 			table.setFocusTraversalKeysEnabled(false);
 			table.setFocusable(false);

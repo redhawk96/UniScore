@@ -43,12 +43,16 @@
 	<subDataset name="tableDataset" uuid="cff064df-c2f1-43bb-bbc3-e10134c48019">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="localhost"/>
 		<queryString language="SQL">
-			<![CDATA[SELECT `studentId`,
-	`overallScore`,
-	`grade`
-FROM submissions
-WHERE 
-	 `examId` = '1']]>
+			<![CDATA[SELECT
+    s.studentId AS 'studentId',
+    s.overallScore AS 'overallScore',
+    s.grade AS 'grade',
+    e.examName AS 'exam',
+    e.moduleId AS 'module'
+FROM
+    submissions s, exams e
+WHERE
+    s.examId = '1' AND e.examId = '1']]>
 		</queryString>
 		<field name="studentId" class="java.lang.Long">
 			<property name="com.jaspersoft.studio.field.label" value="studentId"/>
@@ -64,20 +68,58 @@ WHERE
 		</field>
 	</subDataset>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[SELECT s.studentId AS 'studentId', s.overallScore AS 'overallScore', s.grade AS 'grade', e.examName AS 'exam', e.moduleId AS 'module' FROM submissions s, exams e WHERE s.examId = '1' AND e.examId = '1']]>
 	</queryString>
+	<field name="studentId" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="studentId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="submissions"/>
+	</field>
+	<field name="overallScore" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="overallScore"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="submissions"/>
+	</field>
+	<field name="grade" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="grade"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="submissions"/>
+	</field>
+	<field name="exam" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="exam"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="exams"/>
+	</field>
+	<field name="module" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="module"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="exams"/>
+	</field>
 	<title>
 		<band height="79" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="99" backcolor="#414242" uuid="aee92e04-4f70-41d9-8df0-89831587f26c"/>
 				<staticText>
-					<reportElement x="20" y="20" width="330" height="43" forecolor="#FFFFFF" uuid="c3bb74ba-6ab3-4926-92e8-216248033170"/>
+					<reportElement x="20" y="20" width="230" height="43" forecolor="#FFFFFF" uuid="c3bb74ba-6ab3-4926-92e8-216248033170"/>
 					<textElement verticalAlignment="Middle" markup="none">
-						<font fontName="Roboto" size="20" isBold="true"/>
+						<font fontName="Roboto" size="18" isBold="true"/>
 						<paragraph lineSpacing="Single"/>
 					</textElement>
-					<text><![CDATA[ SUBMISSION RESULTS]]></text>
+					<text><![CDATA[ SUBMISSION RESULTS  - ]]></text>
 				</staticText>
+				<textField>
+					<reportElement x="250" y="20" width="160" height="43" forecolor="#FFFFFF" uuid="4d2287b4-3247-4907-8c88-7500bcb1b6e0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Roboto" size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{exam}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="450" y="20" width="125" height="43" forecolor="#FFFFFF" uuid="b6734eab-f2af-4b98-8b05-591683352e39">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Roboto" size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{module}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</title>

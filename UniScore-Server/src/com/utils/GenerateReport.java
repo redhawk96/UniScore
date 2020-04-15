@@ -61,7 +61,7 @@ public class GenerateReport {
 	
 	public String getQueryByIndex(int index, String optionalParameter) {
 		switch(index) {
-			case 1 : return "SELECT `studentId` AS 'SID', `overallScore` AS 'Score', `grade` AS 'Grade' FROM submissions WHERE `examId` = "+optionalParameter;
+			case 1 : return "SELECT s.studentId AS 'studentId', s.overallScore AS 'overallScore', s.grade AS 'grade', e.examName AS 'exam', e.moduleId AS 'module' FROM submissions s, exams e WHERE s.examId =  "+optionalParameter + " AND e.examId = "+optionalParameter;
 		}
 		
 		return null;
@@ -77,7 +77,7 @@ public class GenerateReport {
 	
 	public String getFileNameByIndex(int index, String optionalParameter) {
 		switch(index) {
-			case 1 : return "exam-submission-results-e"+optionalParameter;
+			case 1 : return "exam-"+optionalParameter+"-submission-results";
 		}
 		
 		return null;

@@ -281,20 +281,19 @@ public class UserConnector implements ConnectorInterface<User> {
 	
 	
 	/*
-	 * getBySearch : retrieves all available users filtered by either user id, first name or last name with status active and specified role
+	 * getBySearch : retrieves all available users filtered by either user id, first name or last name with status active
 	 * @params {String, User} obtains a string to base the search and role from user object 
-	 * @return {List<User>} returns a list of filtered users by either user id, first name or last name with status active and specified role if found and null if not
+	 * @return {List<User>} returns a list of filtered users by either user id, first name or last name with status active if found and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
-	public List<User> getBySearch(String searchString, User user) throws ClassNotFoundException, SQLException {
+	public List<User> getBySearch(String searchString) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "SELECT * FROM `users` WHERE `users`.`userId` LIKE ? OR `users`.`firstName` LIKE ? OR `users`.`lastName` LIKE ? AND `users`.`role`= ? AND `users`.`status`='Active'";
+			String sql = "SELECT * FROM `users` WHERE `users`.`userId` LIKE ? OR `users`.`firstName` LIKE ? OR `users`.`lastName` LIKE ? AND `users`.`status`='Active'";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, "%"+searchString+"%");
 			ps.setString(2, "%"+searchString+"%");
 			ps.setString(3, "%"+searchString+"%");
-			ps.setString(4, user.getRole());
 			ResultSet rs = ps.executeQuery();
 
 			List<User> userList = new ArrayList<>();

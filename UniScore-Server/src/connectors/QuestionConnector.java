@@ -244,14 +244,13 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 	 * @return {List<Question>} returns a list of filtered questions by either question id or tile if found and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
-	public List<Question> getBySearch(String searchString, Question question) throws ClassNotFoundException, SQLException {
+	public List<Question> getBySearch(String searchString) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "SELECT * FROM `questions` WHERE `questions`.`questionId` LIKE ? OR `questions`.`question` LIKE ? AND `questions`.`examId`= ?";
+			String sql = "SELECT * FROM `questions` WHERE `questions`.`questionId` LIKE ? OR `questions`.`question` LIKE ?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, "%"+searchString+"%");
 			ps.setString(2, "%"+searchString+"%");
-			ps.setInt(3, question.getExamId());
 			ResultSet rs = ps.executeQuery();
 
 			List<Question> questionList = new ArrayList<>();

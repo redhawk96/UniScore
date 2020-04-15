@@ -38,6 +38,8 @@ public class QuestionnaireContentPanel extends ContentPanel {
 	JScrollPane scrollPane = new JScrollPane();
 	JPanel questionnaireBodyPanel = new JPanel();
 	JPanel examInfoPanel = new JPanel();
+	Exam selectedExam;
+	Module selectedExamModule;
 	
 	public QuestionnaireContentPanel() {
 		
@@ -112,7 +114,7 @@ public class QuestionnaireContentPanel extends ContentPanel {
 	}
 	
 	
-	public void setSelectedExam(String moduleCode, String moduleName, int moduleYear, int moduleSemester, int examId, String examName, int examDuration, String examStatus) {
+	public void setSelectedExam() {
 		examInfoPanel.removeAll();
 		examInfoPanel = new JPanel();
 		examInfoPanel.setLayout(null);
@@ -158,19 +160,19 @@ public class QuestionnaireContentPanel extends ContentPanel {
 		moduleLabel.setBounds(31, 104, 118, 14);
 		examInfoPanel.add(moduleLabel);
 		
-		JLabel selectedModuleCodeLabel = new JLabel(":  "+moduleCode);
+		JLabel selectedModuleCodeLabel = new JLabel(":  "+selectedExamModule.getModuleId());
 		selectedModuleCodeLabel.setForeground(Color.WHITE);
 		selectedModuleCodeLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
 		selectedModuleCodeLabel.setBounds(158, 48, 279, 14);
 		examInfoPanel.add(selectedModuleCodeLabel);
 		
-		JLabel selectedModuleNameLabel = new JLabel(":  "+moduleName);
+		JLabel selectedModuleNameLabel = new JLabel(":  "+selectedExamModule.getModuleName());
 		selectedModuleNameLabel.setForeground(Color.WHITE);
 		selectedModuleNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
 		selectedModuleNameLabel.setBounds(158, 76, 279, 14);
 		examInfoPanel.add(selectedModuleNameLabel);
 		
-		JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+moduleYear+"  - S"+moduleSemester);
+		JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+selectedExamModule.getYear()+"  - S"+selectedExamModule.getSemester());
 		selectedModuleAllocationLabel.setForeground(Color.WHITE);
 		selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
 		selectedModuleAllocationLabel.setBounds(158, 105, 391, 14);
@@ -194,19 +196,19 @@ public class QuestionnaireContentPanel extends ContentPanel {
 		examStatusLabel.setBounds(562, 104, 109, 14);
 		examInfoPanel.add(examStatusLabel);
 		
-		JLabel selectedExamName = new JLabel(":  "+examName);
+		JLabel selectedExamName = new JLabel(":  "+selectedExam.getExamName());
 		selectedExamName.setForeground(Color.WHITE);
 		selectedExamName.setFont(new Font("Roboto", Font.PLAIN, 14));
 		selectedExamName.setBounds(674, 49, 362, 17);
 		examInfoPanel.add(selectedExamName);
 		
-		JLabel selectedExamDuration = new JLabel(":  "+examDuration);
+		JLabel selectedExamDuration = new JLabel(":  "+selectedExam.getDuration());
 		selectedExamDuration.setForeground(Color.WHITE);
 		selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
 		selectedExamDuration.setBounds(674, 76, 362, 14);
 		examInfoPanel.add(selectedExamDuration);
 		
-		JLabel selectedExamStatus = new JLabel(":  "+examStatus.toUpperCase());
+		JLabel selectedExamStatus = new JLabel(":  "+selectedExam.getStatus().toUpperCase());
 		selectedExamStatus.setForeground(Color.WHITE);
 		selectedExamStatus.setFont(new Font("Roboto", Font.PLAIN, 14));
 		selectedExamStatus.setBounds(674, 104, 362, 17);
@@ -217,22 +219,8 @@ public class QuestionnaireContentPanel extends ContentPanel {
 		showQuestionButtonPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
-				Module module = new Module();
-				module.setModuleId(moduleCode);
-				module.setModuleName(moduleName);
-				module.setYear(moduleYear);
-				module.setSemester(moduleSemester);
-				
-				Exam exam = new Exam();
-				exam.setExamId(examId);
-				exam.setExamName(examName);
-				exam.setDuration(examDuration);
-				exam.setStatus(examStatus);
-				
-				
 				LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
-				LecturerPanel.selectedContent = new DisplayQuestionsContentPanel(module, exam);
+				LecturerPanel.selectedContent = new DisplayQuestionsContentPanel(selectedExamModule, selectedExam);
 				LecturerPanel.setSelectedPanel();
 			}
 		});
@@ -276,7 +264,9 @@ public class QuestionnaireContentPanel extends ContentPanel {
 					model.addRow(new Object[] { e.getExamId(), mod.getModuleId(),"     Y" + mod.getYear() + " - S" + mod.getSemester(), "     " + mod.getModuleName(), "     " + e.getExamName() });
 
 					if (count < 1) {
-						setSelectedExam(mod.getModuleId(), mod.getModuleName(), mod.getYear(), mod.getSemester(), e.getExamId(), e.getExamName(), e.getDuration(), e.getStatus());
+						selectedExam = e;
+						selectedExamModule = mod;
+						setSelectedExam();
 					}
 				}
 				count++;
@@ -294,13 +284,15 @@ public class QuestionnaireContentPanel extends ContentPanel {
 						
 						 Exam selectedTempExam = new Exam();
 						 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
-						 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
+						 Exam sExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
 						 
 						 Module selectedTempModule = new Module();
 						 selectedTempModule.setModuleId(selectedExam.getModuleId());
 						 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
 						 
-						 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamId(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
+						selectedExam = sExam;
+						selectedExamModule = selectedModule;
+						setSelectedExam();
 						 
 					} catch (RemoteException e) {
 						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : 400");

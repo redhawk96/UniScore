@@ -193,5 +193,29 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 		}
 		return null;
 	}
+	
+	/*
+	 * getSubmissionCountByExamination : retrieves the count for submissions for the paticular exam
+	 * @params {Submission} Obtains exam id from submission object
+	 * @return {int} returns an integer representing the number of submissions for a paticular exam if exam is found and -1 if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public int getSubmissionCountByExamination(Submission submission) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT COUNT(*) AS 'eCount' FROM `submissions` WHERE `submissions`.`examId`=?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, submission.getExamId());
+			ResultSet rs = ps.executeQuery();
+
+			int eCount = -1;
+
+			while (rs.next()) {
+				eCount = rs.getInt(1);
+			}
+			return eCount;
+		}
+		return -1;
+	}
 
 }

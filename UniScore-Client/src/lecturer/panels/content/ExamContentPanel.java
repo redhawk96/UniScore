@@ -15,13 +15,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
 import com.panels.content.SuccessNotifier;
+import com.utils.BarChart;
 import com.utils.ContentTable;
 import com.utils.UI;
 
@@ -29,6 +35,7 @@ import connectivity.UniScoreClient;
 import models.Activity;
 import models.Exam;
 import models.Module;
+import models.Submission;
 import net.sf.jasperreports.engine.JRException;
 
 @SuppressWarnings("serial")
@@ -39,7 +46,9 @@ public class ExamContentPanel extends ContentPanel {
 	JPanel examInfoPanel = new JPanel();
 	ContentTable table = new ContentTable();
 	JScrollPane scrollPane = new JScrollPane();
-
+	Exam selectedExam;
+	Module selectedExamModule;
+	
 	public ExamContentPanel() {
 		
 		try {
@@ -114,7 +123,7 @@ public class ExamContentPanel extends ContentPanel {
 	}
 	
 	
-	public void setSelectedExam(String moduleCode, String moduleName, int moduleYear, int moduleSemester, Integer examId, String examName, int examDuration, String examStatus) {
+	public void setSelectedExam() {
 		examInfoPanel.removeAll();
 		examInfoPanel = new JPanel();
 		examInfoPanel.setLayout(null);
@@ -126,20 +135,20 @@ public class ExamContentPanel extends ContentPanel {
 		moduleInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		moduleInfoLabel.setForeground(Color.WHITE);
 		moduleInfoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		moduleInfoLabel.setBounds(31, 11, 406, 14);
+		moduleInfoLabel.setBounds(31, 11, 381, 14);
 		examInfoPanel.add(moduleInfoLabel);
 		
 		JLabel examInfoLabel = new JLabel("Exam Information");
 		examInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		examInfoLabel.setForeground(Color.WHITE);
 		examInfoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examInfoLabel.setBounds(562, 11, 474, 14);
+		examInfoLabel.setBounds(489, 11, 349, 14);
 		examInfoPanel.add(examInfoLabel);
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBackground(Color.WHITE);
-		separator.setBounds(510, 11, 11, 116);
+		separator.setBounds(437, 11, 11, 116);
 		examInfoPanel.add(separator);
 		
 		JLabel moduleCodeLabel = new JLabel("Code");
@@ -160,106 +169,192 @@ public class ExamContentPanel extends ContentPanel {
 		moduleLabel.setBounds(31, 104, 118, 14);
 		examInfoPanel.add(moduleLabel);
 		
-		JLabel selectedModuleCodeLabel = new JLabel(":  "+moduleCode);
+		JLabel selectedModuleCodeLabel = new JLabel(":  "+selectedExamModule.getModuleId());
 		selectedModuleCodeLabel.setForeground(Color.WHITE);
 		selectedModuleCodeLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedModuleCodeLabel.setBounds(158, 48, 279, 14);
+		selectedModuleCodeLabel.setBounds(158, 48, 269, 14);
 		examInfoPanel.add(selectedModuleCodeLabel);
 		
-		JLabel selectedModuleNameLabel = new JLabel(":  "+moduleName);
+		JLabel selectedModuleNameLabel = new JLabel(":  "+selectedExamModule.getModuleName());
 		selectedModuleNameLabel.setForeground(Color.WHITE);
 		selectedModuleNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedModuleNameLabel.setBounds(158, 76, 279, 14);
+		selectedModuleNameLabel.setBounds(158, 76, 269, 14);
 		examInfoPanel.add(selectedModuleNameLabel);
 		
-		JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+moduleYear+"  - S"+moduleSemester);
+		JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+selectedExamModule.getYear()+"  - S"+selectedExamModule.getSemester());
 		selectedModuleAllocationLabel.setForeground(Color.WHITE);
 		selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedModuleAllocationLabel.setBounds(158, 105, 391, 14);
+		selectedModuleAllocationLabel.setBounds(158, 105, 269, 14);
 		examInfoPanel.add(selectedModuleAllocationLabel);
 		
 		JLabel examNameLabel = new JLabel("Name");
 		examNameLabel.setForeground(Color.WHITE);
 		examNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examNameLabel.setBounds(562, 48, 109, 14);
+		examNameLabel.setBounds(489, 48, 349, 14);
 		examInfoPanel.add(examNameLabel);
 		
 		JLabel examDurationLabel = new JLabel("Duration");
 		examDurationLabel.setForeground(Color.WHITE);
 		examDurationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examDurationLabel.setBounds(562, 76, 109, 14);
+		examDurationLabel.setBounds(489, 76, 349, 14);
 		examInfoPanel.add(examDurationLabel);
 		
 		JLabel examStatusLabel = new JLabel("Status");
 		examStatusLabel.setForeground(Color.WHITE);
 		examStatusLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		examStatusLabel.setBounds(562, 104, 109, 14);
+		examStatusLabel.setBounds(489, 104, 349, 14);
 		examInfoPanel.add(examStatusLabel);
 		
-		JLabel selectedExamName = new JLabel(":  "+examName);
+		JLabel selectedExamName = new JLabel(":  "+ selectedExam.getExamName());
 		selectedExamName.setForeground(Color.WHITE);
 		selectedExamName.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedExamName.setBounds(674, 49, 362, 17);
+		selectedExamName.setBounds(601, 49, 237, 17);
 		examInfoPanel.add(selectedExamName);
 		
-		JLabel selectedExamDuration = new JLabel(":  "+examDuration);
+		JLabel selectedExamDuration = new JLabel(":  "+selectedExam.getDuration());
 		selectedExamDuration.setForeground(Color.WHITE);
 		selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedExamDuration.setBounds(674, 76, 362, 14);
+		selectedExamDuration.setBounds(601, 76, 237, 14);
 		examInfoPanel.add(selectedExamDuration);
 		
-		JLabel selectedExamStatus = new JLabel(":  "+examStatus.toUpperCase());
+		JLabel selectedExamStatus = new JLabel(":  "+selectedExam.getStatus().toUpperCase());
 		selectedExamStatus.setForeground(Color.WHITE);
 		selectedExamStatus.setFont(new Font("Roboto", Font.PLAIN, 14));
-		selectedExamStatus.setBounds(674, 104, 362, 17);
+		selectedExamStatus.setBounds(601, 104, 237, 17);
 		examInfoPanel.add(selectedExamStatus);
 		
-		JPanel showQuestionButtonPanel = new JPanel();
-		showQuestionButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
-		showQuestionButtonPanel.addMouseListener(new MouseAdapter() {
+		
+		JPanel questionCountPanel = new JPanel();
+		questionCountPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		questionCountPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		questionCountPanel.setBounds(1046, 0, 153, 68);
+		questionCountPanel.setBorder(new MatteBorder(0, 1, 1, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+		examInfoPanel.add(questionCountPanel);
+		questionCountPanel.setLayout(null);
+		
+		questionCountPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				try {
+					
+					BarChart examMarkStats = new BarChart("Exam Statistics", selectedExam.getExamName() + " Exam Statistics", "Score Range", "No of Students", getNewDataset());
+
+					examMarkStats.setSize(950, 600);
+					examMarkStats.setLocationRelativeTo(null);
+					examMarkStats.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+					examMarkStats.setVisible(true);
+
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		JLabel remaningQuestionCountLabel = new JLabel("STATS");
+		remaningQuestionCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		remaningQuestionCountLabel.setBounds(0, 0, 153, 68);
+		remaningQuestionCountLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		remaningQuestionCountLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		questionCountPanel.add(remaningQuestionCountLabel);
+		
+		JPanel goBackButtonPanel = new JPanel();
+		goBackButtonPanel.setBorder(new MatteBorder(0, 1, 0, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+		goBackButtonPanel.setLayout(null);
+		goBackButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		goBackButtonPanel.setBounds(891, 0, 153, 138);
+		examInfoPanel.add(goBackButtonPanel);
+		
+		Integer examSubmissionCount = -1; 
+		
+		try {
+			
+			Submission submission = new Submission();
+			submission.setExamId(selectedExam.getExamId());;
+			examSubmissionCount = UniScoreClient.uniscoreInterface.getExaminationSubmissionCount(submission);
+			
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve exam submissions.\nError refferance : 400");
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve exam submissions.\nError refferance : 600");
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve exam submissions.\nError refferance : 500");
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+		}
+		
+		String examSubmissionCountStr = "";
+		
+		if(examSubmissionCount.toString().length() < 2) {
+			examSubmissionCountStr = "0"+examSubmissionCount.toString();
+		} else {
+			examSubmissionCountStr = examSubmissionCount.toString();
+		}
+		
+		JLabel goBackButtonLabel = new JLabel("ES  "+examSubmissionCountStr);
+		goBackButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		goBackButtonLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		goBackButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		goBackButtonLabel.setBounds(0, 0, 153, 138);
+		goBackButtonPanel.add(goBackButtonLabel);
+		
+		
+
+		JPanel createQuestionPanel = new JPanel();
+		createQuestionPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		createQuestionPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
 				// report location by index, file name by index, SQL query by index and option parameters
 				try {
 					
-					UniScoreClient.uniscoreInterface.printReport(1, 1, 1, examId.toString());
+					UniScoreClient.uniscoreInterface.printReport(1, 1, 1, ""+selectedExam.getExamId());
 										
-					UniScoreClient.uniscoreInterface.addLogActivity(new Activity("New submissions report for exam "+examId+" was printed from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+					UniScoreClient.uniscoreInterface.addLogActivity(new Activity("New submissions report for exam "+selectedExam.getExamId()+" was printed from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
 					
 					SuccessNotifier sn = new SuccessNotifier("Report was successfully saved.", null, null);
 					sn.setVisible(true);
 					
 				} catch (RemoteException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions.\nError refferance : 400");
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions report.\nError refferance : 400");
 					en.setVisible(true);
 					System.out.println("RemoteException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 				} catch (ClassNotFoundException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions.\nError refferance : 600");
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions report.\nError refferance : 600");
 					en.setVisible(true);
 					System.out.println("ClassNotFoundException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 				} catch (SQLException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions.\nError refferance : 500");
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions report.\nError refferance : 500");
 					en.setVisible(true);
 					System.out.println("SQLException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 				} catch (JRException e) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions.\nError refferance : 700");
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save exam submissions report.\nError refferance : 700");
 					en.setVisible(true);
 					System.out.println("JRException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 				}				
 			}
 		});
-		showQuestionButtonPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-		showQuestionButtonPanel.setBounds(1046, 0, 153, 138);
-		examInfoPanel.add(showQuestionButtonPanel);
-		showQuestionButtonPanel.setLayout(null);
+		createQuestionPanel.setLayout(null);
+		createQuestionPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		createQuestionPanel.setBounds(1046, 70, 153, 68);
+		examInfoPanel.add(createQuestionPanel);
 		
-		JLabel showQuestionButtonLabel = new JLabel("PRINT");
-		showQuestionButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		showQuestionButtonLabel.setBounds(0, 0, 153, 138);
-		showQuestionButtonLabel.setForeground(Color.DARK_GRAY);
-		showQuestionButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
-		showQuestionButtonPanel.add(showQuestionButtonLabel);
+		JLabel createQuestionLabel = new JLabel("REPORT");
+		createQuestionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		createQuestionLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		createQuestionLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		createQuestionLabel.setBounds(0, 0, 153, 68);
+		createQuestionPanel.add(createQuestionLabel);	
 		
 		examInfoPanel.repaint();
 	}
@@ -277,16 +372,18 @@ public class ExamContentPanel extends ContentPanel {
 			
 			for (Module mod : moduleList) {
 				
-				Exam exam = new Exam();
-				exam.setModuleId(mod.getModuleId());
+				Exam tempExam = new Exam();
+				tempExam.setModuleId(mod.getModuleId());
 						
-				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(exam);
+				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(tempExam);
 				for(Exam e : examList) {
 					// Adding a exam record to the table each time the loop executes
 					model.addRow(new Object[] {e.getExamId(),   "     "+mod.getModuleName(),  "     "+e.getExamName(), "     "+e.getStatus()});
 					
 					if (count < 1) {
-						setSelectedExam(mod.getModuleId(), mod.getModuleName(), mod.getYear(), mod.getSemester(), e.getExamId(), e.getExamName(), e.getDuration(), e.getStatus());
+						selectedExam = e;
+						selectedExamModule = mod;
+						setSelectedExam();
 					}
 					count++;
 				}		
@@ -302,14 +399,17 @@ public class ExamContentPanel extends ContentPanel {
 							 
 							 Exam selectedTempExam = new Exam();
 							 selectedTempExam.setExamId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
-							 Exam selectedExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
+							 Exam sExam = (Exam) UniScoreClient.uniscoreInterface.getExam(selectedTempExam);
 							 
 							 Module selectedTempModule = new Module();
-							 selectedTempModule.setModuleId(selectedExam.getModuleId());
+							 selectedTempModule.setModuleId(sExam.getModuleId());
 							 Module selectedModule = (Module) UniScoreClient.uniscoreInterface.getModule(selectedTempModule);
+
+							 selectedExam = sExam;
+							 selectedExamModule = selectedModule;
 							 
-							 setSelectedExam(selectedModule.getModuleId(), selectedModule.getModuleName(), selectedModule.getYear(), selectedModule.getSemester(), selectedExam.getExamId(), selectedExam.getExamName(), selectedExam.getDuration(), selectedExam.getStatus());
-						 	
+							 setSelectedExam();
+							 
 						 	} catch (RemoteException e) {
 								ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 400");
 								en.setVisible(true);
@@ -368,6 +468,39 @@ public class ExamContentPanel extends ContentPanel {
 			scrollPane.setBounds(0, 171, 1199, 593);
 			examBodyPanel.add(scrollPane);
 			scrollPane.setViewportView(table);
+	}
+	
+	private CategoryDataset getNewDataset() throws RemoteException, ClassNotFoundException, SQLException {
+		
+		Submission eSubmission = new Submission();
+		eSubmission.setExamId(selectedExam.getExamId());
+		
+		List<Submission> examSubmissionList = (List<Submission>)UniScoreClient.uniscoreInterface.getSubmissionsByRelevance(eSubmission);
+		
+		int a = 0;
+		int b = 0;
+		int c = 0;
+		int d = 0;
+		int e = 0;
+		
+		for (Submission sub : examSubmissionList) {
+			switch (sub.getGrade()) {
+			case "A": a = a + 1; break;
+			case "B": b = b + 1; break;
+			case "C": c = c + 1; break;
+			case "D": d = d + 1; break;
+			case "E": e = e + 1; break;
+			}
+		}
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+		dataset.addValue(a, "MARKS", "75-100");
+		dataset.addValue(b, "MARKS", "65-74");
+		dataset.addValue(c, "MARKS", "55-64");
+		dataset.addValue(d, "MARKS", "35-54");
+		dataset.addValue(e, "MARKS", "0-34");
+
+		return dataset;
 	}
 }
 

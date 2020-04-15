@@ -315,11 +315,11 @@ public interface UniScoreInterface extends Remote {
 	
 	/*
 	 * getExamQuestionsBySearch : retrieves all available questions filtered by either question id or tile
-	 * @params {String, Question} obtains a string to base the search and exam id from question object 
+	 * @params {String} obtains a string to base the search 
 	 * @return {List<Question>} returns a list of filtered questions by either question id or tile if found and null if not
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
-	public List<Question> getExamQuestionsBySearch(String searchString, Question question) throws RemoteException, ClassNotFoundException, SQLException;
+	public List<Question> getExamQuestionsBySearch(String searchString) throws RemoteException, ClassNotFoundException, SQLException;
 	
 	/*
 	 * Ending declaration of question methods
@@ -363,6 +363,13 @@ public interface UniScoreInterface extends Remote {
 	 */
 	public List<Submission> getSubmissions() throws RemoteException, ClassNotFoundException, SQLException;
 
+	/*
+	 * getExaminationSubmissionCount : retrieves the count for submissions for the paticular exam
+	 * @params {Submission} Obtains exam id from submission object
+	 * @return {int} returns an integer representing the number of submissions for a paticular exam if exam is found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getExaminationSubmissionCount(Submission submission) throws RemoteException, ClassNotFoundException, SQLException;
 	/*
 	 * Ending declaration of submission methods
 	 */
@@ -429,12 +436,12 @@ public interface UniScoreInterface extends Remote {
 	public List<User> getUsersByType(User user) throws RemoteException, ClassNotFoundException, SQLException;
 	
 	/*
-	 * getUsersBySearch : retrieves all available users filtered by either user id, first name or last name with status active and specified role
+	 * getUsersBySearch : retrieves all available users filtered by either user id, first name or last name with status active
 	 * @params {String, User} obtains a string to base the search and role from user object 
-	 * @return {List<User>} returns a list of filtered users by either user id, first name or last name with status active and specified role if found and null if not
+	 * @return {List<User>} returns a list of filtered users by either user id, first name or last name with status active if found and null if not
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
-	public List<User> getUsersBySearch(String searchString, User user) throws RemoteException, ClassNotFoundException, SQLException;
+	public List<User> getUsersBySearch(String searchString) throws RemoteException, ClassNotFoundException, SQLException;
 	/*
 	 * Ending declaration of user methods
 	 */
