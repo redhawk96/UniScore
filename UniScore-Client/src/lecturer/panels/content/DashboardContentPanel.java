@@ -4,19 +4,28 @@ import java.awt.Cursor;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import com.panels.ContentPanel;
+import com.panels.content.ErrorNotifier;
 import com.utils.ContentTable;
 import com.utils.UI;
 
+import connectivity.UniScoreClient;
 import lecturer.panels.navigation.ExamNavigationPanel;
+import lecturer.panels.navigation.LogoutNavigationPanel;
 import lecturer.panels.navigation.ModuleNavigationPanel;
 import lecturer.panels.navigation.StudentNavigationPanel;
 import main.panels.LecturerPanel;
+import main.panels.LoginPanel;
+import models.User;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.awt.Color;
 import javax.swing.ImageIcon;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class DashboardContentPanel extends ContentPanel {
@@ -25,8 +34,34 @@ public class DashboardContentPanel extends ContentPanel {
 	ContentTable table = new ContentTable();
 	JScrollPane scrollPane = new JScrollPane();
 	JPanel dashboardBodyPanel = new JPanel();
-
+	Integer moduleCount, studentCount, examCount;
+	
 	public DashboardContentPanel() {
+		
+		try {
+			
+			moduleCount = UniScoreClient.uniscoreInterface.getModuleCountByUser(UniScoreClient.authUser);
+			
+			User user = new User();
+			user.setRole("Student");
+			studentCount = UniScoreClient.uniscoreInterface.getUserCountByRole(user);
+			
+			examCount = UniScoreClient.uniscoreInterface.getExamCountByModules(UniScoreClient.authUser);
+			
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve statistical figures.\nError refferance : 400");
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on DashboardContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve statistical figures.\nError refferance : 600");
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on DashboardContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve statistical figures.\nError refferance : 500");
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on DashboardContentPanel.java file. Error : "+e.getCause());
+		}
+		
 		/*
 		 * Adding contentPanel JPanel name is set to identify content panel when selected
 		 */
@@ -56,14 +91,14 @@ public class DashboardContentPanel extends ContentPanel {
 		navigationIndicatorPanel.setLayout(null);
 		
 		JLabel navigationIndicatorMainLabel = new JLabel("Lecturer /");
-		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel.setBounds(1073, 8, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
 		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
 		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
 		
 		JLabel navigationIndicatorActiveLabel = new JLabel("Home");
 		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorActiveLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorActiveLabel.setBounds(1138, 8, 51, 17);
 		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
@@ -118,7 +153,7 @@ public class DashboardContentPanel extends ContentPanel {
 		moduleCardText.setFont(UI.CARD_LABEL_TEXT_FONT);
 		moduleCardTextPanel.add(moduleCardText);
 		
-		JLabel moduleCardStatNumber = new JLabel("03");
+		JLabel moduleCardStatNumber = new JLabel(refactorStatFigures(moduleCount));
 		moduleCardStatNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		moduleCardStatNumber.setForeground(UI.CARD_LABEL_NUMBER_COLOR);
 		moduleCardStatNumber.setFont(UI.CARD_LABEL_TEXT_FONT);
@@ -159,7 +194,7 @@ public class DashboardContentPanel extends ContentPanel {
 		studentCardText.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
 		studentCardTextPanel.add(studentCardText);
 		
-		JLabel studentCardStatNumber = new JLabel("01");
+		JLabel studentCardStatNumber = new JLabel(refactorStatFigures(studentCount));
 		studentCardStatNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		studentCardStatNumber.setForeground(UI.CARD_LABEL_NUMBER_COLOR);
 		studentCardStatNumber.setFont(UI.CARD_LABEL_TEXT_FONT);
@@ -200,44 +235,70 @@ public class DashboardContentPanel extends ContentPanel {
 		examCardText.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
 		examCardTextPanel.add(examCardText);
 		
-		JLabel examCardStatNumber = new JLabel("00");
+		JLabel examCardStatNumber = new JLabel(refactorStatFigures(examCount));
 		examCardStatNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		examCardStatNumber.setForeground(UI.CARD_LABEL_NUMBER_COLOR);
 		examCardStatNumber.setFont(UI.CARD_LABEL_TEXT_FONT);
 		examCardStatNumber.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
 		examCard.add(examCardStatNumber);
 		
-		JPanel moduleCard_3 = new JPanel();
-		moduleCard_3.setBounds(958, 0, 270, 90);
-		dashboardBodyPanel.add(moduleCard_3);
-		moduleCard_3.setLayout(null);
-		moduleCard_3.setBorder(UI.CARD_BORDER);
-		moduleCard_3.setBackground(UI.CARD_PRIMARY_BACKGROUND_COLOR);
+		JPanel logoutCard = new JPanel();
+		logoutCard.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				LecturerPanel.selectedNavigation = new LogoutNavigationPanel();
+				LecturerPanel.setSelectedPanel();
+				UniScoreClient.authUser = null;
+				UniScoreClient.loginPanel = new LoginPanel();
+				UniScoreClient.loginPanel.setVisible(true);
+				UniScoreClient.lecturerPanel.dispose();
+			}
+		});
+		logoutCard.setBounds(958, 0, 270, 90);
+		dashboardBodyPanel.add(logoutCard);
+		logoutCard.setLayout(null);
+		logoutCard.setBorder(UI.CARD_BORDER);
+		logoutCard.setBackground(UI.CARD_PRIMARY_BACKGROUND_COLOR);
 		
-		JPanel moduleCardTextPanel_3 = new JPanel();
-		moduleCardTextPanel_3.setLayout(null);
-		moduleCardTextPanel_3.setBorder(UI.CARD_BORDER);
-		moduleCardTextPanel_3.setBackground(UI.CARD_SECONDARY_BACKGROUND_COLOR);
-		moduleCardTextPanel_3.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
-		moduleCard_3.add(moduleCardTextPanel_3);
+		JPanel logoutCardTextPanel = new JPanel();
+		logoutCardTextPanel.setLayout(null);
+		logoutCardTextPanel.setBorder(UI.CARD_BORDER);
+		logoutCardTextPanel.setBackground(UI.CARD_SECONDARY_BACKGROUND_COLOR);
+		logoutCardTextPanel.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
+		logoutCard.add(logoutCardTextPanel);
 		
-		JLabel moduleCardText_3 = new JLabel("  MODULES");
-		moduleCardText_3.setHorizontalAlignment(SwingConstants.CENTER);
-		moduleCardText_3.setForeground(UI.CARD_LABEL_TEXT_COLOR);
-		moduleCardText_3.setFont(UI.CARD_LABEL_TEXT_FONT);
-		moduleCardText_3.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
-		moduleCardTextPanel_3.add(moduleCardText_3);
+		JLabel logoutCardText = new JLabel("LOGOUT");
+		logoutCardText.setHorizontalAlignment(SwingConstants.CENTER);
+		logoutCardText.setForeground(UI.CARD_LABEL_TEXT_COLOR);
+		logoutCardText.setFont(UI.CARD_LABEL_TEXT_FONT);
+		logoutCardText.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
+		logoutCardTextPanel.add(logoutCardText);
 		
-		JLabel moduleCardStatNumber_3 = new JLabel("01");
-		moduleCardStatNumber_3.setHorizontalAlignment(SwingConstants.CENTER);
-		moduleCardStatNumber_3.setForeground(UI.CARD_LABEL_NUMBER_COLOR);
-		moduleCardStatNumber_3.setFont(UI.CARD_LABEL_TEXT_FONT);
-		moduleCardStatNumber_3.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
-		moduleCard_3.add(moduleCardStatNumber_3);
+		JLabel logoutCardIcon = new JLabel("");
+		logoutCardIcon.setIcon(new ImageIcon(DashboardContentPanel.class.getResource("/resources/logout_icon.png")));
+		logoutCardIcon.setHorizontalAlignment(SwingConstants.CENTER);
+		logoutCardIcon.setForeground(UI.CARD_LABEL_NUMBER_COLOR);
+		logoutCardIcon.setFont(UI.CARD_LABEL_TEXT_FONT);
+		logoutCardIcon.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
+		logoutCard.add(logoutCardIcon);
 		
 		JLabel dashboardBgLabel = new JLabel("");
 		dashboardBgLabel.setIcon(new ImageIcon(DashboardContentPanel.class.getResource("/resources/dashboard-bg.png")));
 		dashboardBgLabel.setBounds(-11, 145, 1300, 700);
 		dashboardBodyPanel.add(dashboardBgLabel);
+		
+		JLabel loogedInIPAddressLabel = new JLabel("IP Address : "+UniScoreClient.authLocation);
+		loogedInIPAddressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		loogedInIPAddressLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		loogedInIPAddressLabel.setBounds(958, 130, 270, 14);
+		dashboardBodyPanel.add(loogedInIPAddressLabel);
 	}
+	
+	private String refactorStatFigures(Integer statFigure) {
+		if(statFigure.toString().length() < 2) {
+			return "0"+statFigure.toString();
+		} else {
+			return statFigure.toString();
+		}
+	} 
 }

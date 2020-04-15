@@ -244,6 +244,7 @@ public class UserConnector implements ConnectorInterface<User> {
 	
 	/*
 	 * getByType : retrieves all available users filtered by user type
+	 * @params {User} obtains a user role from user object 
 	 * @return {List<User>} returns a list of filtered users by user type if found and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
@@ -318,5 +319,29 @@ public class UserConnector implements ConnectorInterface<User> {
 			return userList;
 		}
 		return null;
+	}
+	
+	/*
+	 * getCountByRole : retrieves count of all available active users filtered by user type
+	 * @params {User} obtains a user role from user object 
+	 * @return {int} returns returns an integer representing the number of users filtered by user type if found and -1 if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public int getCountByRole(User user) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT COUNT(*) AS 'uCount' FROM `users` WHERE `users`.`role`= ? AND `users`.`status`='Active'";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, user.getRole());
+			ResultSet rs = ps.executeQuery();
+
+			int uCount = -1;
+
+			while (rs.next()) {
+				uCount = rs.getInt(1);
+			}
+			return uCount;
+		}
+		return -1;
 	}
 }

@@ -144,6 +144,14 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	public List<Exam> getExams() throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getExamCountByModules : retrieves count of all available exams filtered by allocated modules for an user
+	 * @params {User} obtains user id from user object
+	 * @return {int} returns returns an integer representing the number of exams if found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getExamCountByModules(User user) throws RemoteException, ClassNotFoundException, SQLException;
 
 	/*
 	 * Ending declaration of exam methods
@@ -245,6 +253,14 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	public List<Module> getModulesByRelevance(Module module, int year, int semester) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getModuleCountByUser : retrieves count of all available modules filtered by an user
+	 * @params {User} obtains user id from user object
+	 * @return {int} returns returns an integer representing the number of modules if found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getModuleCountByUser(User user) throws RemoteException, ClassNotFoundException, SQLException;
 
 	/*
 	 * Ending declaration of module methods
@@ -442,6 +458,14 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	public List<User> getUsersBySearch(String searchString) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getUserCountByRole : retrieves count of all available active users filtered by user type
+	 * @params {User} obtains a user role from user object 
+	 * @return {int} returns returns an integer representing the number of users filtered by user type if found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getUserCountByRole(User user) throws RemoteException, ClassNotFoundException, SQLException;
 	/*
 	 * Ending declaration of user methods
 	 */

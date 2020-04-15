@@ -43,6 +43,7 @@ public class UniScoreClient {
 				System.out.println("Database connectied");
 				
 				UniScoreClient.authLocation = UniScoreClient.uniscoreInterface.getLocation();
+				System.out.println("User Located");
 				
 //				UniScoreClient.loginPanel = new LoginPanel();
 //				UniScoreClient.loginPanel.setVisible(true);

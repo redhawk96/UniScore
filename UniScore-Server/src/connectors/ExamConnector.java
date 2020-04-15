@@ -18,6 +18,8 @@ import java.util.List;
 
 import connectivity.DBConnection;
 import models.Exam;
+import models.Module;
+import models.User;
 
 public class ExamConnector implements ConnectorInterface<Exam> {
 
@@ -241,6 +243,36 @@ public class ExamConnector implements ConnectorInterface<Exam> {
 			return examList;
 		}
 		return null;
+	}
+	
+	/*
+	 * getCountByModules : retrieves count of all available exams filtered by allocated modules for an user
+	 * @params {User} obtains user id from user object
+	 * @return {int} returns returns an integer representing the number of exams if found and -1 if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public int getCountByModules(User user) throws ClassNotFoundException, SQLException {
+		
+		if (DBConnection.getDBConnection() != null) {
+			ModuleConnector mc = new ModuleConnector();
+			Module m = new Module();
+			m.setTeacherId(user.getUserId());
+			List<Module> moduleList = mc.getByYearAndUser(m, 0, 0);
+			
+			int eCount = 0;
+			
+			for (Module module : moduleList) {
+				Exam tempExam = new Exam();
+				tempExam.setModuleId(module.getModuleId());
+				List<Exam> examList = getByModule(tempExam);
+
+				for (@SuppressWarnings("unused") Exam e : examList) {
+					eCount = eCount + 1;
+				}
+			}
+			return eCount;
+		}
+		return -1;
 	}
 
 }
