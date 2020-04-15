@@ -81,16 +81,22 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		contentPanel.add(navigationIndicatorPanel);
 		navigationIndicatorPanel.setLayout(null);
 		
-		JLabel navigationIndicatorMainLabel = new JLabel("Questions /");
-		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_SUB_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_SUB_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		JLabel navigationIndicatorMainLabel = new JLabel("Exams  /");
+		navigationIndicatorMainLabel.setBounds(947, 8, 59, 17);
 		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
 		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
 		
-		JLabel navigationIndicatorActiveLabel = new JLabel("Exam Questions");
-		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorActiveLabel.setBounds(UI.NAVIGATION_INDICATOR_SUB_PANEL_ACTIVE_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_SUB_PANEL_ACTIVE_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
-		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
+		JLabel navigationIndicatorMainLabel1 = new JLabel("Questionnaire  /");
+		navigationIndicatorMainLabel1.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
+		navigationIndicatorMainLabel1.setBounds(1009, 8, 105, 17);
+		navigationIndicatorMainLabel1.setForeground(Color.DARK_GRAY);
+		navigationIndicatorPanel.add(navigationIndicatorMainLabel1);
+		
+		JLabel navigationIndicatorActiveLabel = new JLabel("Questions");
+		navigationIndicatorActiveLabel.setForeground(new Color(249, 168, 37));
+		navigationIndicatorActiveLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		navigationIndicatorActiveLabel.setBounds(1113, 8, 76, 17);
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 	

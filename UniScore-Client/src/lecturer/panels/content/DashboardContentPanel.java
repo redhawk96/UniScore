@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
+import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class DashboardContentPanel extends ContentPanel {
@@ -73,7 +74,7 @@ public class DashboardContentPanel extends ContentPanel {
 		setNavigationIndicator();
 		
 		dashboardBodyPanel.setBackground(Color.WHITE);
-		dashboardBodyPanel.setBounds(30, 66, 1199, 813);
+		dashboardBodyPanel.setBounds(0, 66, 1256, 845);
 		contentPanel.add(dashboardBodyPanel);
 		dashboardBodyPanel.setLayout(null);
 		
@@ -83,7 +84,7 @@ public class DashboardContentPanel extends ContentPanel {
 	
 	private void displayCards() {
 		JPanel moduleCard = new JPanel();
-		moduleCard.setBounds(0, 0, 270, 90);
+		moduleCard.setBounds(31, 0, 270, 90);
 		dashboardBodyPanel.add(moduleCard);
 		moduleCard.addMouseListener(new MouseAdapter() {
 			@Override
@@ -125,7 +126,7 @@ public class DashboardContentPanel extends ContentPanel {
 		moduleCard.add(moduleCardStatNumber);
 		
 		JPanel studentCard = new JPanel();
-		studentCard.setBounds(313, 0, 270, 90);
+		studentCard.setBounds(344, 0, 270, 90);
 		dashboardBodyPanel.add(studentCard);
 		studentCard.addMouseListener(new MouseAdapter() {
 			@Override
@@ -166,7 +167,7 @@ public class DashboardContentPanel extends ContentPanel {
 		studentCard.add(studentCardStatNumber);
 		
 		JPanel examCard = new JPanel();
-		examCard.setBounds(620, 0, 270, 90);
+		examCard.setBounds(651, 0, 270, 90);
 		dashboardBodyPanel.add(examCard);
 		examCard.addMouseListener(new MouseAdapter() {
 			@Override
@@ -207,7 +208,7 @@ public class DashboardContentPanel extends ContentPanel {
 		examCard.add(examCardStatNumber);
 		
 		JPanel moduleCard_3 = new JPanel();
-		moduleCard_3.setBounds(927, 0, 270, 90);
+		moduleCard_3.setBounds(958, 0, 270, 90);
 		dashboardBodyPanel.add(moduleCard_3);
 		moduleCard_3.setLayout(null);
 		moduleCard_3.setBorder(UI.CARD_BORDER);
@@ -233,6 +234,10 @@ public class DashboardContentPanel extends ContentPanel {
 		moduleCardStatNumber_3.setFont(UI.CARD_LABEL_TEXT_FONT);
 		moduleCardStatNumber_3.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
 		moduleCard_3.add(moduleCardStatNumber_3);
+		
+		JLabel dashboardBgLabel = new JLabel("");
+		dashboardBgLabel.setIcon(new ImageIcon(DashboardContentPanel.class.getResource("/resources/dashboard-bg.png")));
+		dashboardBgLabel.setBounds(-11, 145, 1300, 700);
+		dashboardBodyPanel.add(dashboardBgLabel);
 	}
-	
 }

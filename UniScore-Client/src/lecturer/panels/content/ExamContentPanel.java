@@ -224,15 +224,15 @@ public class ExamContentPanel extends ContentPanel {
 		examInfoPanel.add(selectedExamStatus);
 		
 		
-		JPanel questionCountPanel = new JPanel();
-		questionCountPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
-		questionCountPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-		questionCountPanel.setBounds(1046, 0, 153, 68);
-		questionCountPanel.setBorder(new MatteBorder(0, 1, 1, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
-		examInfoPanel.add(questionCountPanel);
-		questionCountPanel.setLayout(null);
+		JPanel examStatPanel = new JPanel();
+		examStatPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		examStatPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		examStatPanel.setBounds(1046, 0, 153, 68);
+		examStatPanel.setBorder(new MatteBorder(0, 1, 1, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+		examInfoPanel.add(examStatPanel);
+		examStatPanel.setLayout(null);
 		
-		questionCountPanel.addMouseListener(new MouseAdapter() {
+		examStatPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
@@ -245,31 +245,34 @@ public class ExamContentPanel extends ContentPanel {
 					examMarkStats.setVisible(true);
 
 				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to generate exam submission statistics.\nError refferance : 400");
+					en.setVisible(true);
+					System.out.println("RemoteException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to generate exam submission statistics.\nError refferance : 600");
+					en.setVisible(true);
+					System.out.println("ClassNotFoundException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to generate exam submission statistics.\nError refferance : 500");
+					en.setVisible(true);
+					System.out.println("SQLException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 				}
 			}
 		});
 		
-		JLabel remaningQuestionCountLabel = new JLabel("STATS");
-		remaningQuestionCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		remaningQuestionCountLabel.setBounds(0, 0, 153, 68);
-		remaningQuestionCountLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
-		remaningQuestionCountLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
-		questionCountPanel.add(remaningQuestionCountLabel);
+		JLabel examStatPanelLabel = new JLabel("STATS");
+		examStatPanelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		examStatPanelLabel.setBounds(0, 0, 153, 68);
+		examStatPanelLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		examStatPanelLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		examStatPanel.add(examStatPanelLabel);
 		
-		JPanel goBackButtonPanel = new JPanel();
-		goBackButtonPanel.setBorder(new MatteBorder(0, 1, 0, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
-		goBackButtonPanel.setLayout(null);
-		goBackButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
-		goBackButtonPanel.setBounds(891, 0, 153, 138);
-		examInfoPanel.add(goBackButtonPanel);
+		JPanel examSubmissionCountPanel = new JPanel();
+		examSubmissionCountPanel.setBorder(new MatteBorder(0, 1, 0, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+		examSubmissionCountPanel.setLayout(null);
+		examSubmissionCountPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		examSubmissionCountPanel.setBounds(891, 0, 153, 138);
+		examInfoPanel.add(examSubmissionCountPanel);
 		
 		Integer examSubmissionCount = -1; 
 		
@@ -301,18 +304,18 @@ public class ExamContentPanel extends ContentPanel {
 			examSubmissionCountStr = examSubmissionCount.toString();
 		}
 		
-		JLabel goBackButtonLabel = new JLabel("ES  "+examSubmissionCountStr);
-		goBackButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		goBackButtonLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-		goBackButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
-		goBackButtonLabel.setBounds(0, 0, 153, 138);
-		goBackButtonPanel.add(goBackButtonLabel);
+		JLabel examSubmissionCountPanelLabel = new JLabel("ES  "+examSubmissionCountStr);
+		examSubmissionCountPanelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		examSubmissionCountPanelLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		examSubmissionCountPanelLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		examSubmissionCountPanelLabel.setBounds(0, 0, 153, 138);
+		examSubmissionCountPanel.add(examSubmissionCountPanelLabel);
 		
 		
 
-		JPanel createQuestionPanel = new JPanel();
-		createQuestionPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
-		createQuestionPanel.addMouseListener(new MouseAdapter() {
+		JPanel printSubmissionReportPanel = new JPanel();
+		printSubmissionReportPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		printSubmissionReportPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				// report location by index, file name by index, SQL query by index and option parameters
@@ -344,17 +347,17 @@ public class ExamContentPanel extends ContentPanel {
 				}				
 			}
 		});
-		createQuestionPanel.setLayout(null);
-		createQuestionPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-		createQuestionPanel.setBounds(1046, 70, 153, 68);
-		examInfoPanel.add(createQuestionPanel);
+		printSubmissionReportPanel.setLayout(null);
+		printSubmissionReportPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		printSubmissionReportPanel.setBounds(1046, 70, 153, 68);
+		examInfoPanel.add(printSubmissionReportPanel);
 		
-		JLabel createQuestionLabel = new JLabel("REPORT");
-		createQuestionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		createQuestionLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
-		createQuestionLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
-		createQuestionLabel.setBounds(0, 0, 153, 68);
-		createQuestionPanel.add(createQuestionLabel);	
+		JLabel printSubmissionReportPanelLabel = new JLabel("REPORT");
+		printSubmissionReportPanelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		printSubmissionReportPanelLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		printSubmissionReportPanelLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		printSubmissionReportPanelLabel.setBounds(0, 0, 153, 68);
+		printSubmissionReportPanel.add(printSubmissionReportPanelLabel);	
 		
 		examInfoPanel.repaint();
 	}
@@ -465,7 +468,7 @@ public class ExamContentPanel extends ContentPanel {
 			table.setRowHeight(32);
 			table.setFont(new Font("Roboto", Font.PLAIN, 14));
 			table.isCellEditable(1, 1);
-			scrollPane.setBounds(0, 171, 1199, 593);
+			scrollPane.setBounds(0, 171, 1199, 642);
 			examBodyPanel.add(scrollPane);
 			scrollPane.setViewportView(table);
 	}
