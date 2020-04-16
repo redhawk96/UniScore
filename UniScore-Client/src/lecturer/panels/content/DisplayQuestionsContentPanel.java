@@ -2,7 +2,6 @@ package lecturer.panels.content;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -38,84 +37,71 @@ import models.Question;
 @SuppressWarnings("serial")
 public class DisplayQuestionsContentPanel extends ContentPanel{
 	
-	JPanel contentPanel = new JPanel();
-	ContentTable table = new ContentTable();
-	JScrollPane scrollPane = new JScrollPane();
-	JPanel questionBodyPanel = new JPanel();
-	JPanel examInfoPanel = new JPanel();
-	Module module;
-	Exam exam;
-	Integer questionCount = -1;
+	private JPanel contentPanel = new JPanel();
+	private ContentTable table = new ContentTable();
+	private JScrollPane scrollPane = new JScrollPane();
+	private JPanel questionBodyPanel = new JPanel();
+	private JPanel examInfoPanel = new JPanel();
+	
 	private JTextField searchText;
 	
+	private Module module;
+	private Exam exam;
+	private Integer questionCount = -1;
+
 	public DisplayQuestionsContentPanel(Module module, Exam exam) {
 		this.module = module;
 		this.exam = exam;
 		
-		/*
-		 * Adding contentPanel
-		 * JPanel name is set to identify content panel when selected
-		 */
-		contentPanel.setName("displayQuestions");
+		setContentPanel();
+	}
+
+	private void setContentPanel() {
+		initializeContentPanel();
+		addNavigationIndicator();
+		addExamInfoPanel();
+		addSearchField();
+		addQuestionListTable("");
+	}
+	
+	private void initializeContentPanel(){
 		contentPanel.setLayout(null);
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
-		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
+		contentPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		
-		setQuestionBody();
-		
+		questionBodyPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		questionBodyPanel.setBounds(30, 66, 1199, 813);
+		contentPanel.add(questionBodyPanel);
+		questionBodyPanel.setLayout(null);
 	}
 
-	/*
-	 * returns the JPanel inside ContentPanel
-	 * @returns JPanel
-	 */
-	public JPanel getContent() {
-		return contentPanel;
-	}
-
-	public void setNavigationIndicator() {
+	private void addNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
-		navigationIndicatorPanel.setBackground(UI.NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR);
+		navigationIndicatorPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		navigationIndicatorPanel.setBounds(30, 11, 1199, 36);
 		contentPanel.add(navigationIndicatorPanel);
 		navigationIndicatorPanel.setLayout(null);
 		
 		JLabel navigationIndicatorMainLabel = new JLabel("Exams  /");
-		navigationIndicatorMainLabel.setBounds(947, 8, 59, 17);
-		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
+		navigationIndicatorMainLabel.setBounds(947, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 59, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		navigationIndicatorMainLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
 		
 		JLabel navigationIndicatorMainLabel1 = new JLabel("Questionnaire  /");
-		navigationIndicatorMainLabel1.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorMainLabel1.setBounds(1009, 8, 105, 17);
-		navigationIndicatorMainLabel1.setForeground(Color.DARK_GRAY);
+		navigationIndicatorMainLabel1.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		navigationIndicatorMainLabel1.setBounds(1009, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 105, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel1.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorMainLabel1);
 		
 		JLabel navigationIndicatorActiveLabel = new JLabel("Questions");
-		navigationIndicatorActiveLabel.setForeground(new Color(249, 168, 37));
-		navigationIndicatorActiveLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		navigationIndicatorActiveLabel.setBounds(1113, 8, 76, 17);
+		navigationIndicatorActiveLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		navigationIndicatorActiveLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		navigationIndicatorActiveLabel.setBounds(1113, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 76, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 	
-	
-	public void setQuestionBody() {
-		
-		setNavigationIndicator();
-		
-		questionBodyPanel.setBackground(Color.WHITE);
-		questionBodyPanel.setBounds(30, 66, 1199, 813);
-		contentPanel.add(questionBodyPanel);
-		questionBodyPanel.setLayout(null);
-		
-		setSelectedExam();
-		
-		setSearchField();
-		
-		setQuestionListTable("");
-	}
 	
 	public void setRemaningQuestionCount() {
 		
@@ -139,106 +125,106 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		}
 	}
 	
-	public void setSelectedExam() {
+	private void addExamInfoPanel() {
 		
 		setRemaningQuestionCount();
 		
 		examInfoPanel.removeAll();
 		examInfoPanel = new JPanel();
 		examInfoPanel.setLayout(null);
-		examInfoPanel.setBackground(Color.DARK_GRAY);
+		examInfoPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		examInfoPanel.setBounds(0, 0, 1199, 138);
 		questionBodyPanel.add(examInfoPanel);
 		
 		JLabel moduleInfoLabel = new JLabel("Module Information");
 		moduleInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		moduleInfoLabel.setForeground(Color.WHITE);
-		moduleInfoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		moduleInfoLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		moduleInfoLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		moduleInfoLabel.setBounds(31, 11, 381, 14);
 		examInfoPanel.add(moduleInfoLabel);
 		
 		JLabel examInfoLabel = new JLabel("Exam Information");
 		examInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		examInfoLabel.setForeground(Color.WHITE);
-		examInfoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		examInfoLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		examInfoLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		examInfoLabel.setBounds(489, 11, 349, 14);
 		examInfoPanel.add(examInfoLabel);
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBackground(Color.WHITE);
+		separator.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		separator.setBounds(437, 11, 11, 116);
 		examInfoPanel.add(separator);
 		
 		JLabel moduleCodeLabel = new JLabel("Code");
-		moduleCodeLabel.setForeground(Color.WHITE);
-		moduleCodeLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		moduleCodeLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		moduleCodeLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		moduleCodeLabel.setBounds(31, 48, 99, 14);
 		examInfoPanel.add(moduleCodeLabel);
 		
 		JLabel moduleNameLabel = new JLabel("Name");
-		moduleNameLabel.setForeground(Color.WHITE);
-		moduleNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		moduleNameLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		moduleNameLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		moduleNameLabel.setBounds(31, 76, 99, 14);
 		examInfoPanel.add(moduleNameLabel);
 		
 		JLabel moduleLabel = new JLabel("Allocation");
-		moduleLabel.setForeground(Color.WHITE);
-		moduleLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		moduleLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		moduleLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		moduleLabel.setBounds(31, 104, 118, 14);
 		examInfoPanel.add(moduleLabel);
 		
 		JLabel selectedModuleCodeLabel = new JLabel(":  "+module.getModuleId());
-		selectedModuleCodeLabel.setForeground(Color.WHITE);
-		selectedModuleCodeLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		selectedModuleCodeLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		selectedModuleCodeLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		selectedModuleCodeLabel.setBounds(158, 48, 269, 14);
 		examInfoPanel.add(selectedModuleCodeLabel);
 		
 		JLabel selectedModuleNameLabel = new JLabel(":  "+module.getModuleName());
-		selectedModuleNameLabel.setForeground(Color.WHITE);
-		selectedModuleNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		selectedModuleNameLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		selectedModuleNameLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		selectedModuleNameLabel.setBounds(158, 76, 269, 14);
 		examInfoPanel.add(selectedModuleNameLabel);
 		
 		JLabel selectedModuleAllocationLabel = new JLabel(":  Y"+module.getYear()+"  - S"+module.getSemester());
-		selectedModuleAllocationLabel.setForeground(Color.WHITE);
-		selectedModuleAllocationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		selectedModuleAllocationLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		selectedModuleAllocationLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		selectedModuleAllocationLabel.setBounds(158, 105, 269, 14);
 		examInfoPanel.add(selectedModuleAllocationLabel);
 		
 		JLabel examNameLabel = new JLabel("Name");
-		examNameLabel.setForeground(Color.WHITE);
-		examNameLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		examNameLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		examNameLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		examNameLabel.setBounds(489, 48, 349, 14);
 		examInfoPanel.add(examNameLabel);
 		
 		JLabel examDurationLabel = new JLabel("Duration");
-		examDurationLabel.setForeground(Color.WHITE);
-		examDurationLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		examDurationLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		examDurationLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		examDurationLabel.setBounds(489, 76, 349, 14);
 		examInfoPanel.add(examDurationLabel);
 		
 		JLabel examStatusLabel = new JLabel("Status");
-		examStatusLabel.setForeground(Color.WHITE);
-		examStatusLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		examStatusLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		examStatusLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		examStatusLabel.setBounds(489, 104, 349, 14);
 		examInfoPanel.add(examStatusLabel);
 		
 		JLabel selectedExamName = new JLabel(":  "+ exam.getExamName());
-		selectedExamName.setForeground(Color.WHITE);
-		selectedExamName.setFont(new Font("Roboto", Font.PLAIN, 14));
+		selectedExamName.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		selectedExamName.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		selectedExamName.setBounds(601, 49, 237, 17);
 		examInfoPanel.add(selectedExamName);
 		
 		JLabel selectedExamDuration = new JLabel(":  "+exam.getDuration());
-		selectedExamDuration.setForeground(Color.WHITE);
-		selectedExamDuration.setFont(new Font("Roboto", Font.PLAIN, 14));
+		selectedExamDuration.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		selectedExamDuration.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		selectedExamDuration.setBounds(601, 76, 237, 14);
 		examInfoPanel.add(selectedExamDuration);
 		
 		JLabel selectedExamStatus = new JLabel(":  "+exam.getStatus().toUpperCase());
-		selectedExamStatus.setForeground(Color.WHITE);
-		selectedExamStatus.setFont(new Font("Roboto", Font.PLAIN, 14));
+		selectedExamStatus.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		selectedExamStatus.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		selectedExamStatus.setBounds(601, 104, 237, 17);
 		examInfoPanel.add(selectedExamStatus);
 		
@@ -263,12 +249,12 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		remaningQuestionCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		remaningQuestionCountLabel.setBounds(0, 0, 153, 68);
 		remaningQuestionCountLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-		remaningQuestionCountLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		remaningQuestionCountLabel.setFont(UI.APPLICATION_THEME_FONT_18_PLAIN);
 		questionCountPanel.add(remaningQuestionCountLabel);
 		
 		JPanel goBackButtonPanel = new JPanel();
 		goBackButtonPanel.setBorder(new MatteBorder(0, 1, 0, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
-		goBackButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		goBackButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		goBackButtonPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -285,7 +271,7 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		JLabel goBackButtonLabel = new JLabel("BACK");
 		goBackButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		goBackButtonLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-		goBackButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		goBackButtonLabel.setFont(UI.APPLICATION_THEME_FONT_18_PLAIN);
 		goBackButtonLabel.setBounds(0, 0, 153, 138);
 		goBackButtonPanel.add(goBackButtonLabel);
 		
@@ -293,7 +279,7 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		if(remaningQuestionCount != 0) {
 			
 			JPanel createQuestionPanel = new JPanel();
-			createQuestionPanel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+			createQuestionPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 			createQuestionPanel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
@@ -311,7 +297,7 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			JLabel createQuestionLabel = new JLabel("CREATE");
 			createQuestionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			createQuestionLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
-			createQuestionLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+			createQuestionLabel.setFont(UI.APPLICATION_THEME_FONT_18_PLAIN);
 			createQuestionLabel.setBounds(0, 0, 153, 68);
 			createQuestionPanel.add(createQuestionLabel);
 			
@@ -327,7 +313,7 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			JLabel createQuestionLabel = new JLabel("MAX Q");
 			createQuestionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			createQuestionLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
-			createQuestionLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+			createQuestionLabel.setFont(UI.APPLICATION_THEME_FONT_18_PLAIN);
 			createQuestionLabel.setBounds(0, 0, 153, 68);
 			createQuestionPanel.add(createQuestionLabel);
 		}
@@ -336,7 +322,28 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 	}
 	
 	
-	public void setQuestionListTable(String searchText) {
+	private void addSearchField() {
+		searchText = new JTextField();
+		searchText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				addQuestionListTable(searchText.getText().trim());
+			}
+		});
+		searchText.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		searchText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) UI.APPLICATION_THEME_SECONDARY_COLOR));
+		searchText.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		searchText.setBounds(978, 172, 219, 31);
+		questionBodyPanel.add(searchText);
+		searchText.setColumns(10);
+
+		JLabel searchLabel = new JLabel("Search    :");
+		searchLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		searchLabel.setBounds(908, 172, 60, 31);
+		questionBodyPanel.add(searchLabel);
+	}
+	
+	private void addQuestionListTable(String searchText) {
 			
 		try {
 			
@@ -351,8 +358,6 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 				}
 			}
 				
-			
-			table.setForeground(Color.DARK_GRAY);
 
 			table.addMouseListener(new MouseAdapter() {
 				
@@ -377,6 +382,7 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			    }
 			});
 			
+			table.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 			table.setUpdateSelectionOnSort(false);
 			table.setFocusTraversalKeysEnabled(false);
 			table.setFocusable(false);
@@ -412,17 +418,17 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
             table.setShowHorizontalLines(false);
             
             // Setting cursor type on table hover
-			table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			table.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 			table.setFillsViewportHeight(true);
-			table.setBackground(Color.WHITE);
+			table.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 			table.getTableHeader().setOpaque(false);
-			table.getTableHeader().setBackground(Color.WHITE);
-			table.getTableHeader().setForeground(Color.BLACK);
-			table.getTableHeader().setFont(new Font("Roboto", Font.PLAIN, 14));
+			table.getTableHeader().setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+			table.getTableHeader().setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+			table.getTableHeader().setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 			table.setSelectionBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.setRowHeight(32);
-			table.setFont(new Font("Roboto", Font.PLAIN, 14));
+			table.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 			table.isCellEditable(1, 1);
 			scrollPane.setBounds(0, 220, 1199, 593);
 			questionBodyPanel.add(scrollPane);
@@ -443,24 +449,12 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		} 
 	}
 
-	public void setSearchField() {
-		searchText = new JTextField();
-		searchText.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				setQuestionListTable(searchText.getText().trim());
-			}
-		});
-		searchText.setForeground(Color.GRAY);
-		searchText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.DARK_GRAY));
-		searchText.setFont(new Font("Roboto", Font.PLAIN, 14));
-		searchText.setBounds(978, 172, 219, 31);
-		questionBodyPanel.add(searchText);
-		searchText.setColumns(10);
 
-		JLabel searchLabel = new JLabel("Search    :");
-		searchLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		searchLabel.setBounds(908, 172, 60, 31);
-		questionBodyPanel.add(searchLabel);
+	/*
+	 * returns the JPanel inside ContentPanel
+	 * @returns JPanel
+	 */
+	public JPanel getContent() {
+		return contentPanel;
 	}
 }

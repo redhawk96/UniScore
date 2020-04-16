@@ -58,14 +58,14 @@ public class LoginContentPanel  extends ContentPanel{
 		 */
 		contentPanel.setName("login");
 		contentPanel.setLayout(null);
-		contentPanel.setBounds(0, 0, UI.LOGIN_PANEL_APPLICATION_WIDTH, UI.LOGIN_PANEL_APPLICATION_HEIGHT);
+		contentPanel.setBounds(0, 0, UI.LOGIN_FRAME_WIDTH, UI.LOGIN_FRAME_HEIGHT);
 		contentPanel.setBackground(Color.WHITE);
 		
 		/*
 		 * Adding username label
 		 */
 		usernameLabel = new JLabel("Username");
-		usernameLabel.setFont(UI.LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT);
+		usernameLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		usernameLabel.setBounds(760, 260, 67, 22);
 		contentPanel.add(usernameLabel);
 		
@@ -73,9 +73,9 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding username text-field
 		 */
 		usernameTextField = new JTextField();
-		usernameTextField.setForeground(Color.GRAY);
+		usernameTextField.setForeground(UI.APPLICATION_THEME_QUATERNARY_COLOR);
 		usernameTextField.setMargin(new Insets(2, 10, 2, 2));
-		usernameTextField.setFont(UI.LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT);
+		usernameTextField.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		usernameTextField.setBounds(760, 283, 280, 34);
 		contentPanel.add(usernameTextField);
 		usernameTextField.setColumns(10);
@@ -84,7 +84,7 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding password label
 		 */
 		passwordLabel = new JLabel("Password");
-		passwordLabel.setFont(UI.LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT);
+		passwordLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		passwordLabel.setBounds(760, 343, 67, 22);
 		contentPanel.add(passwordLabel);
 		
@@ -92,10 +92,10 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding password field
 		 */
 		passwordField = new JPasswordField();
-		passwordField.setForeground(Color.GRAY);
+		passwordField.setForeground(UI.APPLICATION_THEME_QUATERNARY_COLOR);
 		passwordField.setMargin(new Insets(2, 10, 2, 2));
 		passwordField.setBounds(760, 365, 280, 34);
-		passwordField.setFont(UI.LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT);
+		passwordField.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		passwordField.setColumns(10);
 		contentPanel.add(passwordField);
 		
@@ -104,8 +104,8 @@ public class LoginContentPanel  extends ContentPanel{
 		 */
 		loginButton = new JPanel();
 		loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		loginButton.setBorder(new LineBorder(UI.LOGIN_PANEL_LOGIN_BUTTON_BORDER_COLOR));
-		loginButton.setBackground(UI.LOGIN_PANEL_LOGIN_BUTTON_COLOR);
+		loginButton.setBorder(new LineBorder(UI.APPLICATION_THEME_PRIMARY_COLOR));
+		loginButton.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		loginButton.setBounds(923, 437, 117, 44);
 		contentPanel.add(loginButton);
 		loginButton.setLayout(null);
@@ -115,15 +115,15 @@ public class LoginContentPanel  extends ContentPanel{
 		 */
 		signinLabel = new JLabel("Sign In");
 		signinLabel.setBounds(31, 11, 63, 20);
-		signinLabel.setFont(UI.LOGIN_PANEL_LOGIN_BUTTON_FONT);
-		signinLabel.setForeground(UI.LOGIN_PANEL_LOGIN_BUTTON_TEXT_COLOR);
+		signinLabel.setFont(UI.APPLICATION_THEME_FONT_17_PLAIN);
+		signinLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 		loginButton.add(signinLabel);
 		
 		/*
 		 * Adding loading label
 		 */
 		loadingLabel = new JLabel("Error authenticating...");
-		loadingLabel.setFont(UI.LOGIN_PANEL_ERROR_LABEL_FONT);
+		loadingLabel.setFont(UI.APPLICATION_THEME_FONT_12_PLAIN);
 		loadingLabel.setIcon(new ImageIcon(LoginPanel.class.getResource("/resources/loading.gif")));
 		loadingLabel.setBounds(760, 437, 153, 44);
 		loadingLabel.setVisible(false);
@@ -133,7 +133,7 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding error label
 		 */
 		errorLabel = new JLabel("Please re-check your credentials");
-		errorLabel.setFont(UI.LOGIN_PANEL_DEFAULT_TEXT_FIELD_FONT);
+		errorLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		errorLabel.setForeground(Color.RED);
 		errorLabel.setBounds(760, 216, 280, 22);
 		errorLabel.setVisible(false);
@@ -147,15 +147,15 @@ public class LoginContentPanel  extends ContentPanel{
 		loginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				loginButton.setBorder(new LineBorder(UI.LOGIN_PANEL_SELECTED_LOGIN_BUTTON_BORDER_COLOR));
-				loginButton.setBackground(UI.LOGIN_PANEL_SELECTED_LOGIN_BUTTON_COLOR);
-				signinLabel.setForeground(UI.LOGIN_PANEL_SELECTED_LOGIN_BUTTON_TEXT_COLOR);
+				loginButton.setBorder(new LineBorder(UI.APPLICATION_THEME_PRIMARY_COLOR));
+				loginButton.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+				signinLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				loginButton.setBorder(new LineBorder(UI.LOGIN_PANEL_LOGIN_BUTTON_BORDER_COLOR));
-				loginButton.setBackground(UI.LOGIN_PANEL_LOGIN_BUTTON_COLOR);
-				signinLabel.setForeground(UI.LOGIN_PANEL_LOGIN_BUTTON_TEXT_COLOR);
+				loginButton.setBorder(new LineBorder(UI.APPLICATION_THEME_PRIMARY_COLOR));
+				loginButton.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+				signinLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 			}
 			@Override
 			public void mouseClicked(MouseEvent arg0) {

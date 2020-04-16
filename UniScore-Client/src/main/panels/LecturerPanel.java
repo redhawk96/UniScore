@@ -58,7 +58,7 @@ public class LecturerPanel extends JFrame {
 		/*
 		 * Setting the size of the application screen
 		 */
-		setSize(UI.APPLICATION_WIDTH, UI.APPLICATION_HEIGHT);
+		setSize(UI.APPLICATION_PRIMARY_FRAME_WIDTH, UI.APPLICATION_PRIMARY_FRAME_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
@@ -76,7 +76,7 @@ public class LecturerPanel extends JFrame {
 		 * Adding left-side JPanel which is on the left side of the application. Used as the application's navigation panel
 		 */
 		JPanel leftSidePanel = new JPanel();
-		leftSidePanel.setBackground(UI.NAVIGATION_PANEL_COLOR);
+		leftSidePanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		leftSidePanel.setBounds(UI.NAVIGATION_PANEL_X_AXIS, UI.NAVIGATION_PANEL_Y_AXIS, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_HEIGHT);
 		getContentPane().add(leftSidePanel);
 		leftSidePanel.setLayout(null);
@@ -145,7 +145,7 @@ public class LecturerPanel extends JFrame {
 			if (NavigationPanel.getNavigation().getName().toString().equalsIgnoreCase(LecturerPanel.selectedNavigation.getNavigation().getName().toString())) {
 				NavigationPanel.getNavigation().setBackground(UI.NAVIGATION_PANEL_SELECTED_BUTTON_COLOR);
 			} else {
-				NavigationPanel.getNavigation().setBackground(UI.NAVIGATION_PANEL_BUTTON_COLOR);
+				NavigationPanel.getNavigation().setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 			}
 		}
 	}
