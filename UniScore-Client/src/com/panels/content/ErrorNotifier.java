@@ -1,7 +1,9 @@
 package com.panels.content;
 
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -12,8 +14,8 @@ import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
+import com.utils.UI;
 
 @SuppressWarnings("serial")
 public class ErrorNotifier extends JFrame {
@@ -24,7 +26,7 @@ public class ErrorNotifier extends JFrame {
 		setTitle("ERROR");
 		setBounds(100, 100, 443, 177);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+		contentPane.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		setLocationRelativeTo(null); 
@@ -41,10 +43,10 @@ public class ErrorNotifier extends JFrame {
 		JTextPane errorText = new JTextPane();
 		errorText.setText(errorMessage);
 		errorText.setEditable(false);
-		errorText.setForeground(Color.DARK_GRAY);
-		errorText.setSelectionColor(Color.WHITE);
+		errorText.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		errorText.setSelectionColor(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		scrollPane.setViewportView(errorText);
-		errorText.setFont(new Font("Roboto", Font.PLAIN, 13));
+		errorText.setFont(UI.APPLICATION_THEME_FONT_13_PLAIN);
 		
 		JLabel errorIconLabel = new JLabel("");
 		errorIconLabel.setIcon(new ImageIcon(ErrorNotifier.class.getResource("/resources/error_icon.png")));
@@ -57,14 +59,8 @@ public class ErrorNotifier extends JFrame {
 		panel.setLayout(null);
 		
 		JPanel okButtonPanel = new JPanel();
-		okButtonPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				dispose();
-			}
-		});
-		
-		okButtonPanel.setBorder(new LineBorder(Color.DARK_GRAY));
+		okButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
+		okButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
 		okButtonPanel.setBackground(new Color(240, 240, 240));
 		okButtonPanel.setBounds(341, 11, 82, 32);
 		panel.add(okButtonPanel);
@@ -73,8 +69,27 @@ public class ErrorNotifier extends JFrame {
 		JLabel okButtonLabel = new JLabel("OK");
 		okButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		okButtonLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-		okButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		okButtonLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		okButtonLabel.setBounds(0, 0, 82, 32);
 		okButtonPanel.add(okButtonLabel);
+		
+		okButtonPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				okButtonPanel.setBorder(new LineBorder(new Color(240, 240, 240)));
+				okButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+				okButtonLabel.setForeground(new Color(240, 240, 240));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				okButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
+				okButtonPanel.setBackground(new Color(240, 240, 240));
+				okButtonLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				dispose();
+			}
+		});
 	}
 }

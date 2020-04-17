@@ -198,7 +198,7 @@ public class StudentContentPanel extends ContentPanel {
 		studentAddressLabel.setBounds(517, 104, 509, 17);
 		studentInfoPanel.add(studentAddressLabel);
 		
-		JLabel studentIDLabel = new JLabel(selectedStudent.getUserId());
+		JLabel studentIDLabel = new JLabel(getFormatedStudentId(selectedStudent));
 		studentIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		studentIDLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		studentIDLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);

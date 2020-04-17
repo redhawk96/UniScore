@@ -98,6 +98,11 @@ public class DashboardContentPanel extends ContentPanel {
 			en.setVisible(true);
 			System.out.println("SQLException execution thrown on DashboardContentPanel.java file. Error : "+e.getCause());
 		}
+		
+		JLabel dashboardBgLabel = new JLabel("");
+		dashboardBgLabel.setIcon(new ImageIcon(DashboardContentPanel.class.getResource("/resources/dashboard-bg.png")));
+		dashboardBgLabel.setBounds(0, 146, 1262, 699);
+		dashboardBodyPanel.add(dashboardBgLabel);
 
 		JPanel moduleCard = new JPanel();
 		moduleCard.setBounds(31, 0, 270, 90);
@@ -133,6 +138,7 @@ public class DashboardContentPanel extends ContentPanel {
 		moduleCardTextPanel.add(moduleCardText);
 		
 		JLabel moduleCardStatNumber = new JLabel(refactorStatFigures(moduleCount));
+		moduleCardStatNumber.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 		moduleCardStatNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		moduleCardStatNumber.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 		moduleCardStatNumber.setFont(UI.APPLICATION_THEME_FONT_20_PLAIN);
@@ -254,11 +260,6 @@ public class DashboardContentPanel extends ContentPanel {
 		logoutCardIcon.setFont(UI.APPLICATION_THEME_FONT_20_PLAIN);
 		logoutCardIcon.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
 		logoutCard.add(logoutCardIcon);
-		
-		JLabel dashboardBgLabel = new JLabel("");
-		dashboardBgLabel.setIcon(new ImageIcon(DashboardContentPanel.class.getResource("/resources/bg-1.png")));
-		dashboardBgLabel.setBounds(-11, 145, 1300, 700);
-		dashboardBodyPanel.add(dashboardBgLabel);
 		
 		JLabel loogedInIPAddressLabel = new JLabel("  IP Address  :  "+UniScoreClient.authLocation);
 		loogedInIPAddressLabel.setIcon(new ImageIcon(DashboardContentPanel.class.getResource("/resources/active_icon.png")));

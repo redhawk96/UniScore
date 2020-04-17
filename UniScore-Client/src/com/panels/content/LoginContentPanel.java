@@ -103,7 +103,7 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding signin button
 		 */
 		loginButton = new JPanel();
-		loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		loginButton.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		loginButton.setBorder(new LineBorder(UI.APPLICATION_THEME_PRIMARY_COLOR));
 		loginButton.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		loginButton.setBounds(923, 437, 117, 44);

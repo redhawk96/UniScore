@@ -1,7 +1,7 @@
 package lecturer.panels.content;
 
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 
 import com.panels.content.ErrorNotifier;
 import com.panels.content.SuccessNotifier;
+import com.utils.UI;
 
 import connectivity.UniScoreClient;
 import lecturer.panels.navigation.QuestionNavigationPanel;
@@ -37,7 +38,7 @@ public class RemoveQuestionNotifier extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 443, 177);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+		contentPane.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		setLocationRelativeTo(null); 
@@ -54,10 +55,10 @@ public class RemoveQuestionNotifier extends JFrame {
 		JTextPane errorText = new JTextPane();
 		errorText.setText("Are you sure that you want to remove question "+question.getQuestionId()+" from "+exam.getExamName()+" questionnaire ?");
 		errorText.setEditable(false);
-		errorText.setForeground(Color.DARK_GRAY);
-		errorText.setSelectionColor(Color.WHITE);
+		errorText.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		errorText.setSelectionColor(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		scrollPane.setViewportView(errorText);
-		errorText.setFont(new Font("Roboto", Font.PLAIN, 13));
+		errorText.setFont(UI.APPLICATION_THEME_FONT_13_PLAIN);
 		
 		JLabel errorIconLabel = new JLabel("");
 		errorIconLabel.setIcon(new ImageIcon(RemoveQuestionNotifier.class.getResource("/resources/warning_icon.png")));
@@ -70,9 +71,35 @@ public class RemoveQuestionNotifier extends JFrame {
 		panel.setLayout(null);
 		
 		JPanel okButtonPanel = new JPanel();
+		okButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
+		okButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
+		okButtonPanel.setBackground(new Color(240, 240, 240));
+		okButtonPanel.setBounds(249, 11, 82, 32);
+		panel.add(okButtonPanel);
+		okButtonPanel.setLayout(null);
+		
+		JLabel okButtonLabel = new JLabel("OK");
+		okButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		okButtonLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+		okButtonLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		okButtonLabel.setBounds(0, 0, 82, 32);
+		okButtonPanel.add(okButtonLabel);
+		
 		okButtonPanel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) {
+				okButtonPanel.setBorder(new LineBorder(new Color(240, 240, 240)));
+				okButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+				okButtonLabel.setForeground(new Color(240, 240, 240));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				okButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
+				okButtonPanel.setBackground(new Color(240, 240, 240));
+				okButtonLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
 				try {
 					boolean executionStatus = (boolean) UniScoreClient.uniscoreInterface.removeQuestion(question);
 	
@@ -98,27 +125,11 @@ public class RemoveQuestionNotifier extends JFrame {
 				}
 			}
 		});
-		okButtonPanel.setBorder(new LineBorder(Color.DARK_GRAY));
-		okButtonPanel.setBackground(new Color(240, 240, 240));
-		okButtonPanel.setBounds(249, 11, 82, 32);
-		panel.add(okButtonPanel);
-		okButtonPanel.setLayout(null);
 		
-		JLabel okButtonLabel = new JLabel("OK");
-		okButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		okButtonLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-		okButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		okButtonLabel.setBounds(0, 0, 82, 32);
-		okButtonPanel.add(okButtonLabel);
 		
 		JButton cancelButtonPanel = new JButton();
-		cancelButtonPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				dispose();
-			}
-		});
-		cancelButtonPanel.setBorder(new LineBorder(Color.DARK_GRAY));
+		cancelButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
+		cancelButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
 		cancelButtonPanel.setLayout(null);
 		cancelButtonPanel.setBackground(new Color(240, 240, 240));
 		cancelButtonPanel.setBounds(341, 11, 82, 32);
@@ -126,9 +137,28 @@ public class RemoveQuestionNotifier extends JFrame {
 		
 		JLabel cancelButtonLabel = new JLabel("Cancel");
 		cancelButtonLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		cancelButtonLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		cancelButtonLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		cancelButtonLabel.setBounds(0, 0, 82, 32);
 		cancelButtonPanel.add(cancelButtonLabel);
+		
+		cancelButtonPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				cancelButtonPanel.setBorder(new LineBorder(new Color(240, 240, 240)));
+				cancelButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+				cancelButtonLabel.setForeground(new Color(240, 240, 240));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				cancelButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
+				cancelButtonPanel.setBackground(new Color(240, 240, 240));
+				cancelButtonLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+			}
+		});
 	}
 	
 }
