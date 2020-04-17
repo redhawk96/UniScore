@@ -27,6 +27,7 @@ public class SuccessNotifier extends JFrame {
 	private JPanel contentPane;
 
 	public SuccessNotifier(String confirmMessage, NavigationPanel navigationRouter, ContentPanel contentRouter) {
+		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		setTitle("SUCCESS");
 		setBounds(100, 100, 443, 177);
 		contentPane = new JPanel();

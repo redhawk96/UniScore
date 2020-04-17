@@ -27,14 +27,18 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import com.panels.ContentPanel;
+import com.utils.ExceptionList;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
 import main.panels.StudentPanel;
+import models.Activity;
 import models.User;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class LoginContentPanel  extends ContentPanel{
@@ -92,6 +96,14 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Adding password field
 		 */
 		passwordField = new JPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == 10) {
+					authenticateUser();
+				}
+			}
+		});
 		passwordField.setForeground(UI.APPLICATION_THEME_QUATERNARY_COLOR);
 		passwordField.setMargin(new Insets(2, 10, 2, 2));
 		passwordField.setBounds(760, 365, 280, 34);
@@ -159,91 +171,7 @@ public class LoginContentPanel  extends ContentPanel{
 			}
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				try {
-					/*
-					 * Setting visibility of loading label true
-					 * Setting visibility of error label false
-					 */
-					errorLabel.setVisible(false);
-					loadingLabel.setVisible(true);
-					
-					/*
-					 * Validating whether the user to be authenticated is of type lecturer or student 
-					 */
-					if (usernameTextField.getText().trim().charAt(0) == 'L' || usernameTextField.getText().trim().charAt(0) == 'S') {
-
-						/*
-						 * Setting user inputed values to user object
-						 */
-						User user = new User();
-
-						user.setUserId(usernameTextField.getText().trim().substring(1));
-						user.setPassword(new String(passwordField.getPassword()));
-
-						/*
-						 * Encrypting user provided password
-						 */
-						user.setPassword((String) UniScoreClient.uniscoreInterface.encrypt(user));
-
-						/*
-						 * Checking if the provided credentials match a user in the database
-						 */
-						boolean authUser = (boolean) UniScoreClient.uniscoreInterface.isUserAvailable(user);
-
-						if (authUser) {
-							/*
-							 * If provided credentials match a user Logged user will be set to a static user object to be used as a user cookie through the application untill logout
-							 * Current login JFrame will be disposed and new Lecturer/Student Panel JFrame will be created
-							 */
-							UniScoreClient.authUser = (User) UniScoreClient.uniscoreInterface.getUser(user);
-							loadingLabel.setVisible(false);
-
-							/*
-							 * Opening up lecturer or student panel accordingly
-							 */
-							if (UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Lecturer") && usernameTextField.getText().trim().charAt(0) == 'L') {
-								UniScoreClient.loginPanel.dispose();
-								UniScoreClient.lecturerPanel = new LecturerPanel();
-								UniScoreClient.lecturerPanel.setVisible(true);
-							} else if (UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Student") && usernameTextField.getText().trim().charAt(0) == 'S') {
-								UniScoreClient.loginPanel.dispose();
-								UniScoreClient.studentPanel = new StudentPanel();
-								UniScoreClient.studentPanel.setVisible(true);
-
-							} else {
-								/*
-								 * If provided credentials match but is role not under any authorized role type (authorized role types are lecturer and student)  
-								 * Setting visibility of loading label false 
-								 * Setting visibility of error label true
-								 */
-								errorLabel.setVisible(true);
-								loadingLabel.setVisible(false);
-							}
-							
-						} else {
-							/*
-							 * If provided credentials are incorrect 
-							 * Setting visibility of loading label false 
-							 * Setting visibility of error label true
-							 */
-							errorLabel.setVisible(true);
-							loadingLabel.setVisible(false);
-						}
-						
-					} else {
-						/*
-						 * If provided first character is invalid 
-						 * Setting visibility of loading label false 
-						 * Setting visibility of error label true
-						 */
-						errorLabel.setVisible(true);
-						loadingLabel.setVisible(false);
-					}
-					
-					
-				} catch (ClassNotFoundException | SQLException | RemoteException | NoSuchAlgorithmException | NoSuchProviderException e) {
-					System.out.println("Failed execution on LoginContentPanel. Error : " + e.toString());
-				}
+				authenticateUser();
 			}
 		});
 		
@@ -267,6 +195,118 @@ public class LoginContentPanel  extends ContentPanel{
 		
 	}
 
+	public void authenticateUser() {
+		try {
+			/*
+			 * Setting visibility of loading label true
+			 * Setting visibility of error label false
+			 */
+			errorLabel.setVisible(false);
+			loadingLabel.setVisible(true);
+			
+			/*
+			 * Validating whether the user to be authenticated is of type lecturer or student 
+			 */
+			if (usernameTextField.getText().trim().charAt(0) == 'L' || usernameTextField.getText().trim().charAt(0) == 'l' || usernameTextField.getText().trim().charAt(0) == 'S' || usernameTextField.getText().trim().charAt(0) == 's') {
+
+				/*
+				 * Setting user inputed values to user object
+				 */
+				User user = new User();
+
+				user.setUserId(usernameTextField.getText().trim().substring(1));
+				user.setPassword(new String(passwordField.getPassword()));
+
+				/*
+				 * Encrypting user provided password
+				 */
+				user.setPassword((String) UniScoreClient.uniscoreInterface.encrypt(user));
+
+				/*
+				 * Checking if the provided credentials match a user in the database
+				 */
+				boolean authUser = (boolean) UniScoreClient.uniscoreInterface.isUserAvailable(user);
+
+				if (authUser) {
+					/*
+					 * If provided credentials match a user Logged user will be set to a static user object to be used as a user cookie through the application untill logout
+					 * Current login JFrame will be disposed and new Lecturer/Student Panel JFrame will be created
+					 */
+					UniScoreClient.authUser = (User) UniScoreClient.uniscoreInterface.getUser(user);
+					loadingLabel.setVisible(false);
+
+					/*
+					 * Opening up lecturer or student panel accordingly
+					 */
+					if (UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Lecturer") && (usernameTextField.getText().trim().charAt(0) == 'L' || usernameTextField.getText().trim().charAt(0) == 'l')) {
+						UniScoreClient.loginPanel.dispose();
+						UniScoreClient.uniscoreInterface.addLogActivity(new Activity(usernameTextField.getText()+" logged in to the system from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+						UniScoreClient.lecturerPanel = new LecturerPanel();
+						UniScoreClient.lecturerPanel.setVisible(true);
+					} else if (UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Student") && (usernameTextField.getText().trim().charAt(0) == 'S' || usernameTextField.getText().trim().charAt(0) == 's')) {
+						UniScoreClient.loginPanel.dispose();
+						UniScoreClient.uniscoreInterface.addLogActivity(new Activity(usernameTextField.getText()+" logged in to the system from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+						UniScoreClient.studentPanel = new StudentPanel();
+						UniScoreClient.studentPanel.setVisible(true);
+
+					} else {
+						/*
+						 * If provided credentials match but is role not under any authorized role type (authorized role types are lecturer and student)  
+						 * Setting visibility of loading label false 
+						 * Setting visibility of error label true
+						 */
+						UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Unauthorized login attempt for "+usernameTextField.getText()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+						errorLabel.setVisible(true);
+						loadingLabel.setVisible(false);
+					}
+					
+				} else {
+					/*
+					 * If provided credentials are incorrect 
+					 * Setting visibility of loading label false 
+					 * Setting visibility of error label true
+					 */
+					UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Unauthorized login attempt for "+usernameTextField.getText()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+					errorLabel.setVisible(true);
+					loadingLabel.setVisible(false);
+				}
+				
+			} else {
+				/*
+				 * If provided first character is invalid 
+				 * Setting visibility of loading label false 
+				 * Setting visibility of error label true
+				 */
+				UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Unauthorized login attempt for "+usernameTextField.getText()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+				errorLabel.setVisible(true);
+				loadingLabel.setVisible(false);
+			}
+			
+			
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying authenticate user.\nError refferance : "+ExceptionList.REMOTE);
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on LoginContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying authenticate user.\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on LoginContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying authenticate user.\nError refferance : "+ExceptionList.SQL);
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on LoginContentPanel.java file. Error : "+e.getCause());
+		} catch (NoSuchAlgorithmException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying authenticate user.\nError refferance : "+ExceptionList.NO_SUCH_ALGORITHM);
+			en.setVisible(true);
+			System.out.println("NoSuchAlgorithmException execution thrown on LoginContentPanel.java file. Error : "+e.getCause());
+		} catch (NoSuchProviderException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying authenticate user.\nError refferance : "+ExceptionList.NO_SUCH_PROVIDER);
+			en.setVisible(true);
+			System.out.println("NoSuchProviderException execution thrown on LoginContentPanel.java file. Error : "+e.getCause());
+		}
+	}
+	
+	
 	@Override
 	public JPanel getContent() {
 		return contentPanel;

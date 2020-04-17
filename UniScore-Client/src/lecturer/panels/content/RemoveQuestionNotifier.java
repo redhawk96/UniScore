@@ -20,10 +20,12 @@ import javax.swing.border.LineBorder;
 
 import com.panels.content.ErrorNotifier;
 import com.panels.content.SuccessNotifier;
+import com.utils.ExceptionList;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
 import lecturer.panels.navigation.QuestionNavigationPanel;
+import models.Activity;
 import models.Exam;
 import models.Module;
 import models.Question;
@@ -34,6 +36,7 @@ public class RemoveQuestionNotifier extends JFrame {
 	private JPanel contentPane;
 
 	public RemoveQuestionNotifier(Module module, Exam exam, Question question) {
+		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		setTitle("WARNING");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 443, 177);
@@ -105,23 +108,29 @@ public class RemoveQuestionNotifier extends JFrame {
 	
 					if(executionStatus) {
 						SuccessNotifier sn = new SuccessNotifier("Question was successfully removed.\nRecord refferance : Question ID - "+question.getQuestionId(), new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
+						
+						UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Question "+question.getQuestionId()+" was removed in exam "+exam.getExamId()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+						
 						sn.setVisible(true);
 						dispose();
 					} else {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 501");
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.SQL_FAILED_EXECUTION);
 						en.setVisible(true);
 						dispose();
 					}
 					
-				} catch (RemoteException re ) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 400");
+				} catch (RemoteException e ) {
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.REMOTE);
 					en.setVisible(true);
-				} catch(ClassNotFoundException ce) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 600");
+					System.out.println("RemoteException execution thrown on RemoveQuestionNotifier.java file. Error : "+e.getCause());
+				} catch(ClassNotFoundException e) {
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
 					en.setVisible(true);
-				} catch(SQLException se) {
-					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 500");
+					System.out.println("ClassNotFoundException execution thrown on RemoveQuestionNotifier.java file. Error : "+e.getCause());
+				} catch(SQLException e) {
+					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.SQL);
 					en.setVisible(true);
+					System.out.println("SQLException execution thrown on RemoveQuestionNotifier.java file. Error : "+e.getCause());
 				}
 			}
 		});

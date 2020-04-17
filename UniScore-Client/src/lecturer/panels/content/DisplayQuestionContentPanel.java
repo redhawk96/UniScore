@@ -25,11 +25,13 @@ import javax.swing.plaf.basic.ComboPopup;
 import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
 import com.panels.content.SuccessNotifier;
+import com.utils.ExceptionList;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
 import lecturer.panels.navigation.QuestionNavigationPanel;
 import main.panels.LecturerPanel;
+import models.Activity;
 import models.Exam;
 import models.Module;
 import models.Question;
@@ -308,22 +310,25 @@ public class DisplayQuestionContentPanel extends ContentPanel{
 		
 						if(executionStatus) {
 							SuccessNotifier sn = new SuccessNotifier("Question was successfully saved.\nRecord refferance : Question ID - "+question.getQuestionId(), new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
+							
+							UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Question "+question.getQuestionId()+" was updated in exam "+exam.getExamId()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+							
 							sn.setVisible(true);
 						} else {
-							ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 501");
+							ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.SQL_FAILED_EXECUTION);
 							en.setVisible(true);
 						}
 					
 					} catch (RemoteException e) {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 400");
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.REMOTE);
 						en.setVisible(true);
 						System.out.println("RemoteException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
 					} catch (ClassNotFoundException e) {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 600");
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
 						en.setVisible(true);
 						System.out.println("ClassNotFoundException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
 					} catch (SQLException e) {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : 500");
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to save question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.SQL);
 						en.setVisible(true);
 						System.out.println("SQLException execution thrown on DisplayQuestionContentPanel.java file. Error : "+e.getCause());
 					}

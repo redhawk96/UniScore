@@ -21,6 +21,7 @@ import javax.swing.table.TableColumnModel;
 import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
 import com.utils.ContentTable;
+import com.utils.ExceptionList;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
@@ -244,15 +245,15 @@ public class QuestionnaireContentPanel extends ContentPanel {
 			}
 			
 		} catch (RemoteException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 400");
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : "+ExceptionList.REMOTE);
 			en.setVisible(true);
 			System.out.println("RemoteException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
 		} catch (ClassNotFoundException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 600");
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
 			en.setVisible(true);
 			System.out.println("ClassNotFoundException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
 		} catch (SQLException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : 500");
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated exams.\nError refferance : "+ExceptionList.SQL);
 			en.setVisible(true);
 			System.out.println("SQLException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
 		}
@@ -279,15 +280,15 @@ public class QuestionnaireContentPanel extends ContentPanel {
 						setSelectedExam();
 						 
 					} catch (RemoteException e) {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : 400");
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : "+ExceptionList.REMOTE);
 						en.setVisible(true);
 						System.out.println("RemoteException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
 					} catch (ClassNotFoundException e) {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : 600");
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
 						en.setVisible(true);
 						System.out.println("ClassNotFoundException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
 					} catch (SQLException e) {
-						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : 500");
+						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected question.\nError refferance : "+ExceptionList.SQL);
 						en.setVisible(true);
 						System.out.println("SQLException execution thrown on QuestionnaireContentPanel.java file. Error : "+e.getCause());
 					}

@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 
 import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
+import com.utils.ExceptionList;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
@@ -86,22 +87,22 @@ public class DashboardContentPanel extends ContentPanel {
 			examCount = UniScoreClient.uniscoreInterface.getExamCountByModules(UniScoreClient.authUser);
 			
 		} catch (RemoteException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve statistical figures.\nError refferance : 400");
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve statistical figures.\nError refferance : "+ExceptionList.REMOTE);
 			en.setVisible(true);
 			System.out.println("RemoteException execution thrown on DashboardContentPanel.java file. Error : "+e.getCause());
 		} catch (ClassNotFoundException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve statistical figures.\nError refferance : 600");
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve statistical figures.\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
 			en.setVisible(true);
 			System.out.println("ClassNotFoundException execution thrown on DashboardContentPanel.java file. Error : "+e.getCause());
 		} catch (SQLException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve statistical figures.\nError refferance : 500");
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve statistical figures.\nError refferance : "+ExceptionList.SQL);
 			en.setVisible(true);
 			System.out.println("SQLException execution thrown on DashboardContentPanel.java file. Error : "+e.getCause());
 		}
 		
 		JLabel dashboardBgLabel = new JLabel("");
-		dashboardBgLabel.setIcon(new ImageIcon(DashboardContentPanel.class.getResource("/resources/dashboard-bg.png")));
-		dashboardBgLabel.setBounds(0, 146, 1262, 699);
+		dashboardBgLabel.setIcon(new ImageIcon(DashboardContentPanel.class.getResource("/resources/dashboard-background.png")));
+		dashboardBgLabel.setBounds(-36, 146, 1336, 699);
 		dashboardBodyPanel.add(dashboardBgLabel);
 
 		JPanel moduleCard = new JPanel();

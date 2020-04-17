@@ -23,6 +23,7 @@ public class ErrorNotifier extends JFrame {
 	private JPanel contentPane;
 
 	public ErrorNotifier(String errorMessage) {
+		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		setTitle("ERROR");
 		setBounds(100, 100, 443, 177);
 		contentPane = new JPanel();

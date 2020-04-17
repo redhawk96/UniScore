@@ -28,7 +28,7 @@ public class StudentNavigationPanel extends NavigationPanel {
 		 */
 		panel.setName("student"); 
 		panel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
-		panel.setBounds(0, 375, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
+		panel.setBounds(0, 435,UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
 		panel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		

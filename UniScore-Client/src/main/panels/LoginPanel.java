@@ -9,6 +9,7 @@
 
 package main.panels;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import com.panels.ContentPanel;
 import com.panels.content.LoginContentPanel;
@@ -20,6 +21,8 @@ public class LoginPanel extends JFrame{
 	private ContentPanel contentPanel = new LoginContentPanel();
 	
 	public LoginPanel() {
+		
+		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		
 		/*
 		 * Setting JFrame title text

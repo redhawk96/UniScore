@@ -28,7 +28,7 @@ public class QuestionNavigationPanel extends NavigationPanel {
 		 */
 		panel.setName("question"); 
 		panel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
-		panel.setBounds(0, 435,UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
+		panel.setBounds(0, 495, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
 		panel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		
