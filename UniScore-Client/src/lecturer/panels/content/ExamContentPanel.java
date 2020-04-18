@@ -20,9 +20,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
-
 import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
 import com.panels.content.SuccessNotifier;
@@ -206,7 +203,10 @@ public class ExamContentPanel extends ContentPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				try {
 					
-					BarChart examMarkStats = new BarChart("Exam Statistics", selectedExam.getExamName() + " Exam Statistics", "Score Range", "No of Students", getNewDataset());
+					Submission tempSubmission = new Submission();
+					tempSubmission.setExamId(selectedExam.getExamId());
+					
+					BarChart examMarkStats = new BarChart("Exam Statistics", selectedExam.getExamName() + " Exam Statistics", "Score Range", "No of Students", UniScoreClient.uniscoreInterface.getSubmissionDatasetByExam(tempSubmission));
 
 					examMarkStats.setSize(950, 600);
 					examMarkStats.setLocationRelativeTo(null);
@@ -291,7 +291,7 @@ public class ExamContentPanel extends ContentPanel {
 				try {
 					
 					UniScoreClient.uniscoreInterface.printReport(1, 1, 1, ""+selectedExam.getExamId());
-										
+
 					UniScoreClient.uniscoreInterface.addLogActivity(new Activity("New submissions report for exam "+selectedExam.getExamId()+" was printed from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
 					
 					SuccessNotifier sn = new SuccessNotifier("Report was successfully saved.", null, null);
@@ -455,39 +455,6 @@ public class ExamContentPanel extends ContentPanel {
 			System.out.println("SQLException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
 		}
 
-	}
-	
-	private CategoryDataset getNewDataset() throws RemoteException, ClassNotFoundException, SQLException {
-		
-		Submission eSubmission = new Submission();
-		eSubmission.setExamId(selectedExam.getExamId());
-		
-		List<Submission> examSubmissionList = (List<Submission>)UniScoreClient.uniscoreInterface.getSubmissionsByRelevance(eSubmission);
-		
-		int a = 0;
-		int b = 0;
-		int c = 0;
-		int d = 0;
-		int e = 0;
-		
-		for (Submission sub : examSubmissionList) {
-			switch (sub.getGrade()) {
-			case "A": a = a + 1; break;
-			case "B": b = b + 1; break;
-			case "C": c = c + 1; break;
-			case "D": d = d + 1; break;
-			case "E": e = e + 1; break;
-			}
-		}
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-		dataset.addValue(a, "MARKS", "75-100");
-		dataset.addValue(b, "MARKS", "65-74");
-		dataset.addValue(c, "MARKS", "55-64");
-		dataset.addValue(d, "MARKS", "35-54");
-		dataset.addValue(e, "MARKS", "0-34");
-
-		return dataset;
 	}
 	
 	/*

@@ -16,7 +16,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import connectivity.DBConnection;
+import models.Module;
 import models.Submission;
 
 public class SubmissionConnector implements ConnectorInterface<Submission> {
@@ -216,6 +220,84 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 			return eCount;
 		}
 		return -1;
+	}
+	
+	/*
+	 * getDatasetByExam : generates a new dataset based on a specific exam
+	 * @params {Submission} Obtains exam id from submission object
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the submission scores of a specific exam successfully generated and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public CategoryDataset getDatasetByExam(Submission submission) throws ClassNotFoundException, SQLException {	
+		List<Submission> examSubmissionList = getByRelevance(submission);
+		
+		int a = 0;
+		int b = 0;
+		int c = 0;
+		int d = 0;
+		int e = 0;
+		
+		for (Submission sub : examSubmissionList) {
+			switch (sub.getGrade()) {
+				case "A": a = a + 1; break;
+				case "B": b = b + 1; break;
+				case "C": c = c + 1; break;
+				case "D": d = d + 1; break;
+				case "E": e = e + 1; break;
+			}
+		}
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+		dataset.addValue(a, "MARKS", "75-100");
+		dataset.addValue(b, "MARKS", "65-74");
+		dataset.addValue(c, "MARKS", "55-64");
+		dataset.addValue(d, "MARKS", "35-54");
+		dataset.addValue(e, "MARKS", "0-34");
+
+		return dataset;
+	}
+	
+	/*
+	 * getDatasetByStudent : generates a new dataset based on a specific student's last submission on all modules, modules will be filtered according to the logged in lecturer
+	 * @params {Module, Submission} Obtains teacher id from module object and student id from submission object
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the scores of last submission on each module is successfully generated and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public CategoryDataset getDatasetByStudent(Module module, Submission submission) throws ClassNotFoundException, SQLException {	
+		ModuleConnector mc = new ModuleConnector();
+		List<Module> moduleList = mc.getByYearAndUser(module, 0, 0);
+		
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		
+		for(Module mod : moduleList) {
+			dataset.addValue(getLastSubmissionByModule(mod, submission), "MARKS", mod.getModuleId());
+		}
+		return dataset;
+	}
+	
+	/*
+	 * getLastSubmissionByModule : returns the score of a specific module's most recent exam
+	 * @params {Module, Submission} Obtains module id from module object and student id from submission object
+	 * @return {int} returns the score of last exam followed by a module if found and 0 if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	private int getLastSubmissionByModule(Module module, Submission submission) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT `overallScore` FROM `submissions` WHERE `moduleId` = ? AND `studentId` = ? ORDER BY `examId` DESC LIMIT 1";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, module.getModuleId());
+			ps.setString(2, submission.getStudentId());
+			ResultSet rs = ps.executeQuery();
+
+			int sScore = 0;
+
+			while (rs.next()) {
+				sScore = rs.getInt(1);
+			}
+			return sScore;
+		}
+		return 0;
 	}
 
 }

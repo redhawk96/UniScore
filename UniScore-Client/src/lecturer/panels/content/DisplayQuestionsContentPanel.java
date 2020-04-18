@@ -361,7 +361,6 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 				
 
 			table.addMouseListener(new MouseAdapter() {
-				
 				@Override
 				public void mousePressed(MouseEvent mouseEvent) {
 			        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {

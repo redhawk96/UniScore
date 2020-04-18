@@ -1,7 +1,6 @@
 package com.utils;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 
 import javax.swing.JFrame;
 
@@ -27,18 +26,16 @@ public class BarChart extends JFrame {
 		
 		ChartPanel panel = new ChartPanel(chart);
 		setContentPane(panel);
-		
-		
+				
 	    StandardChartTheme theme = (StandardChartTheme)org.jfree.chart.StandardChartTheme.createJFreeTheme();
 
-	    String fontName = "Roboto";
 	    theme.setTitlePaint( UI.APPLICATION_THEME_SECONDARY_COLOR );
-	    theme.setExtraLargeFont( new Font(fontName,Font.BOLD, 18) ); //title
-	    theme.setLargeFont( new Font(fontName,Font.PLAIN, 16)); //axis-title
-	    theme.setRegularFont( new Font(fontName,Font.PLAIN, 14));
+	    theme.setExtraLargeFont(UI.APPLICATION_THEME_FONT_18_BOLD); //title
+	    theme.setLargeFont(UI.APPLICATION_THEME_FONT_16_PLAIN); //axis-title
+	    theme.setRegularFont(UI.APPLICATION_THEME_FONT_10_PLAIN);
 	    theme.setRangeGridlinePaint( UI.APPLICATION_THEME_SECONDARY_COLOR);
-	    theme.setPlotBackgroundPaint( Color.white );
-	    theme.setChartBackgroundPaint( Color.white );
+	    theme.setPlotBackgroundPaint(UI.APPLICATION_THEME_TERTIARY_COLOR);
+	    theme.setChartBackgroundPaint(UI.APPLICATION_THEME_TERTIARY_COLOR);
 	    theme.setGridBandPaint( Color.red );
 	    theme.setAxisOffset( new RectangleInsets(0,0,0,0) );
 	    theme.setBarPainter(new StandardBarPainter());

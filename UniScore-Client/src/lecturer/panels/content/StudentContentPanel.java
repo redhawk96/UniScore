@@ -18,6 +18,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -25,11 +26,14 @@ import javax.swing.table.TableColumnModel;
 
 import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
+import com.utils.BarChart;
 import com.utils.ContentTable;
 import com.utils.ExceptionList;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
+import models.Module;
+import models.Submission;
 import models.User;
 
 @SuppressWarnings("serial")
@@ -235,14 +239,31 @@ public class StudentContentPanel extends ContentPanel {
 			
 			table.addMouseListener(new MouseAdapter() {
 				@Override
-				public void mouseClicked(MouseEvent arg0) {
+				public void mouseClicked(MouseEvent mouseEvent) {
 					if (table.getSelectedRow() != -1) {
 						try {
-							User selectedTempUser = new User();
-							selectedTempUser.setUserId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
-							selectedStudent = (User) UniScoreClient.uniscoreInterface.getUser(selectedTempUser);
-							setSelectedStudent();
-							
+							 if (mouseEvent.getClickCount() == 2) {
+						           
+						        Submission submission = new Submission();
+						        submission.setStudentId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
+								
+								Module module = new Module();
+								module.setTeacherId(UniScoreClient.authUser.getUserId());
+									
+								BarChart studentStats = new BarChart(table.getModel().getValueAt(table.getSelectedRow(), 2).toString().trim()+" "+table.getModel().getValueAt(table.getSelectedRow(), 3).toString().trim()+"'s Statistics", "Recent Performance", "Modules", "No of Marks", UniScoreClient.uniscoreInterface.getGradedDatasetByStudent(module, submission));
+
+								studentStats.setSize(950, 600);
+								studentStats.setLocationRelativeTo(null);
+								studentStats.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+								studentStats.setVisible(true);
+						         
+							} else if (mouseEvent.getClickCount() == 1) {
+								User selectedTempUser = new User();
+								selectedTempUser.setUserId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
+								selectedStudent = (User) UniScoreClient.uniscoreInterface.getUser(selectedTempUser);
+								setSelectedStudent();
+							}
+							 
 						} catch (RemoteException e) {
 							ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected student details.\nError refferance : "+ExceptionList.REMOTE);
 							en.setVisible(true);

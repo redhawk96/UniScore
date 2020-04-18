@@ -18,6 +18,8 @@ import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.jfree.data.category.CategoryDataset;
+
 import models.Activity;
 import models.Exam;
 import models.Grade;
@@ -386,6 +388,23 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	public int getExaminationSubmissionCount(Submission submission) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getSubmissionDatasetByExam : generates a new dataset based on a specific exam
+	 * @params {Submission} Obtains exam id from submission object
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the submission scores of a specific exam successfully generated and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public CategoryDataset getSubmissionDatasetByExam(Submission submission) throws RemoteException, ClassNotFoundException, SQLException;
+	
+
+	/*
+	 * getGradedDatasetByStudent : generates a new dataset based on a specific student's last submission on all modules, modules will be filtered according to the logged in lecturer
+	 * @params {Module, Submission} Obtains teacher id from module object and student id from submission object
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the scores of last submission on each module is successfully generated and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public CategoryDataset getGradedDatasetByStudent(Module module, Submission submission) throws RemoteException, ClassNotFoundException, SQLException;
 	/*
 	 * Ending declaration of submission methods
 	 */
