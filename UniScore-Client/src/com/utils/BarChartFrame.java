@@ -3,7 +3,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 import javax.swing.JFrame;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -14,11 +13,11 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.ui.RectangleInsets;
 
-public class BarChart extends JFrame {
+public class BarChartFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public BarChart(String chartFrameTitle, String chartTitle, String xAxis, String yAxis, CategoryDataset dataset) {
+	public BarChartFrame(String chartFrameTitle, String chartTitle, String xAxis, String yAxis, CategoryDataset dataset) {
 		super(chartFrameTitle);
 		
 		// Create chart

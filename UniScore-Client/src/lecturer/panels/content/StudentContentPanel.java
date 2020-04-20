@@ -26,7 +26,7 @@ import javax.swing.table.TableColumnModel;
 
 import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
-import com.utils.BarChart;
+import com.utils.BarChartFrame;
 import com.utils.ContentTable;
 import com.utils.ExceptionList;
 import com.utils.UI;
@@ -250,7 +250,7 @@ public class StudentContentPanel extends ContentPanel {
 								Module module = new Module();
 								module.setTeacherId(UniScoreClient.authUser.getUserId());
 									
-								BarChart studentStats = new BarChart(table.getModel().getValueAt(table.getSelectedRow(), 2).toString().trim()+" "+table.getModel().getValueAt(table.getSelectedRow(), 3).toString().trim()+"'s Statistics", "Recent Performance", "Modules", "No of Marks", UniScoreClient.uniscoreInterface.getGradedDatasetByStudent(module, submission));
+								BarChartFrame studentStats = new BarChartFrame(table.getModel().getValueAt(table.getSelectedRow(), 2).toString().trim()+" "+table.getModel().getValueAt(table.getSelectedRow(), 3).toString().trim()+"'s Statistics", "Recent Performance", "Modules", "No of Marks", UniScoreClient.uniscoreInterface.getGradedDatasetByStudent(module, submission));
 
 								studentStats.setSize(950, 600);
 								studentStats.setLocationRelativeTo(null);

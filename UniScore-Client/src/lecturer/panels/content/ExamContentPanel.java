@@ -23,7 +23,7 @@ import javax.swing.table.TableColumnModel;
 import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
 import com.panels.content.SuccessNotifier;
-import com.utils.BarChart;
+import com.utils.BarChartFrame;
 import com.utils.ContentTable;
 import com.utils.ExceptionList;
 import com.utils.UI;
@@ -206,7 +206,8 @@ public class ExamContentPanel extends ContentPanel {
 					Submission tempSubmission = new Submission();
 					tempSubmission.setExamId(selectedExam.getExamId());
 					
-					BarChart examMarkStats = new BarChart("Exam Statistics", selectedExam.getExamName() + " Exam Statistics", "Score Range", "No of Students", UniScoreClient.uniscoreInterface.getSubmissionDatasetByExam(tempSubmission));
+					
+					BarChartFrame examMarkStats = new BarChartFrame("Exam Statistics", selectedExam.getExamName() + " Exam Statistics", "Score Range", "No of Students", UniScoreClient.uniscoreInterface.getSubmissionDatasetByExam(tempSubmission));
 
 					examMarkStats.setSize(950, 600);
 					examMarkStats.setLocationRelativeTo(null);
@@ -290,7 +291,7 @@ public class ExamContentPanel extends ContentPanel {
 				// report location by index, file name by index, SQL query by index and option parameters
 				try {
 					
-					UniScoreClient.uniscoreInterface.printReport(1, 1, 1, ""+selectedExam.getExamId());
+					UniScoreClient.uniscoreInterface.printSubmissionReport(selectedExam.getExamId(), selectedExam.getExamName(), selectedExam.getModuleId());
 
 					UniScoreClient.uniscoreInterface.addLogActivity(new Activity("New submissions report for exam "+selectedExam.getExamId()+" was printed from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
 					

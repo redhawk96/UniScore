@@ -257,6 +257,30 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 		return dataset;
 	}
 	
+	public String getExamDatasetToString(Submission submission) throws ClassNotFoundException, SQLException {
+		
+		List<Submission> examSubmissionList = getByRelevance(submission);
+		
+		int a = 0;
+		int b = 0;
+		int c = 0;
+		int d = 0;
+		int e = 0;
+		
+		for (Submission sub : examSubmissionList) {
+			switch (sub.getGrade()) {
+				case "A": a = a + 1; break;
+				case "B": b = b + 1; break;
+				case "C": c = c + 1; break;
+				case "D": d = d + 1; break;
+				case "E": e = e + 1; break;
+			}
+		}
+
+//		return "data={\"75-100\" : '"+a+"', \"65-75\" : "+b+", \"55-64\" : '"+c+"',  \"35-54\" : '"+d+"', \"0-34\" : '"+e+"'}";
+		return "data=\"[{\"Letter\":\"A\",\"Freq\":20},{\"Letter\":\"B\",\"Freq\":12},{\"Letter\":\"C\",\"Freq\":47},{\"Letter\":\"D\",\"Freq\":34},{\"Letter\":\"E\",\"Freq\":54},{\"Letter\":\"F\",\"Freq\":21},{\"Letter\":\"G\",\"Freq\":57},{\"Letter\":\"H\",\"Freq\":31},{\"Letter\":\"I\",\"Freq\":17},{\"Letter\":\"J\",\"Freq\":5},{\"Letter\":\"K\",\"Freq\":23},{\"Letter\":\"L\",\"Freq\":39},{\"Letter\":\"M\",\"Freq\":29},{\"Letter\":\"N\",\"Freq\":33},{\"Letter\":\"O\",\"Freq\":18},{\"Letter\":\"P\",\"Freq\":35},{\"Letter\":\"Q\",\"Freq\":11},{\"Letter\":\"R\",\"Freq\":45},{\"Letter\":\"S\",\"Freq\":43},{\"Letter\":\"T\",\"Freq\":28},{\"Letter\":\"U\",\"Freq\":26},{\"Letter\":\"V\",\"Freq\":30},{\"Letter\":\"X\",\"Freq\":5},{\"Letter\":\"Y\",\"Freq\":4},{\"Letter\":\"Z\",\"Freq\":2}]\"";
+	}
+	
 	/*
 	 * getDatasetByStudent : generates a new dataset based on a specific student's last submission on all modules, modules will be filtered according to the logged in lecturer
 	 * @params {Module, Submission} Obtains teacher id from module object and student id from submission object

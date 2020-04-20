@@ -509,13 +509,13 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException
 	 */
 	public String encrypt(User user) throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException;
-	
+
 	/*
-	 * printReport : prints a report based on user given report location by index, file name by index, SQL query by index and option parameters needed to execute the query
-	 * @params {int, int, int, String} report location by index, file name by index, SQL query by index and option parameters
+	 * printSubmissionReport : prints a report for a given exam. Report will contain all the submissions for that given exam with gradings 
+	 * @params {int, String, String} exam id as an int, exam name as a string and module id as a string
 	 * @throws RemoteException, ClassNotFoundException, SQLException, JRException
 	 */
-	public void printReport(int reportIndex, int fileIndex, int queryIndex, String optionalParameter) throws RemoteException, ClassNotFoundException, SQLException, JRException;
+	public void printSubmissionReport(int examId, String examName, String moduleId) throws RemoteException, ClassNotFoundException, SQLException, JRException;
 	
 	/*
 	 * getLocation : locates the IP4 of the current user through an public web API call

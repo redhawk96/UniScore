@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 
 import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
+import com.utils.BarChartPanel;
 import com.utils.ExceptionList;
 import com.utils.UI;
 
@@ -24,6 +25,7 @@ import lecturer.panels.navigation.StudentNavigationPanel;
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
 import models.Activity;
+import models.Submission;
 import models.User;
 
 @SuppressWarnings("serial")
@@ -100,11 +102,6 @@ public class DashboardContentPanel extends ContentPanel {
 			en.setVisible(true);
 			System.out.println("SQLException execution thrown on DashboardContentPanel.java file. Error : "+e.getCause());
 		}
-		
-		JLabel dashboardBgLabel = new JLabel("");
-		dashboardBgLabel.setIcon(new ImageIcon(DashboardContentPanel.class.getResource("/resources/dashboard-background.png")));
-		dashboardBgLabel.setBounds(-36, 146, 1336, 699);
-		dashboardBodyPanel.add(dashboardBgLabel);
 
 		JPanel moduleCard = new JPanel();
 		moduleCard.setBounds(31, 0, 270, 90);
@@ -288,6 +285,35 @@ public class DashboardContentPanel extends ContentPanel {
 		loogedInIPAddressLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		loogedInIPAddressLabel.setBounds(956, 130, 270, 14);
 		dashboardBodyPanel.add(loogedInIPAddressLabel);
+		
+		
+		
+		
+		try {
+			
+			Submission tempSubmission = new Submission();
+			tempSubmission.setExamId(1);
+			
+			BarChartPanel examMarkStats = new BarChartPanel("Exam Statistics", 1 + " Exam Statistics", "Score Range", "No of Students", UniScoreClient.uniscoreInterface.getSubmissionDatasetByExam(tempSubmission));
+			
+			JLabel lblNewLabel = new JLabel("");
+			lblNewLabel.setIcon(examMarkStats.getChart());
+			lblNewLabel.setBounds(31, 169, 1197, 657);
+			dashboardBodyPanel.add(lblNewLabel);
+			
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to generate exam submission statistics.\nError refferance : "+ExceptionList.REMOTE);
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to generate exam submission statistics.\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to generate exam submission statistics.\nError refferance : "+ExceptionList.SQL);
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on ExamContentPanel.java file. Error : "+e.getCause());
+		}
 	}
 	
 	private String refactorStatFigures(Integer statFigure) {

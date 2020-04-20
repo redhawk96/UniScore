@@ -21,7 +21,6 @@ import java.util.List;
 import org.jfree.data.category.CategoryDataset;
 
 import com.utils.Encryptor;
-import com.utils.GenerateReport;
 import com.utils.IpifyAPI;
 
 import connectors.ActivityConnector;
@@ -40,6 +39,7 @@ import models.Question;
 import models.Submission;
 import models.User;
 import net.sf.jasperreports.engine.JRException;
+import reports.SubmissionReport;
 
 @SuppressWarnings("serial")
 public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
@@ -634,12 +634,12 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 	}
 	
 	/*
-	 * printReport : prints a report based on user given report location by index, file name by index, SQL query by index and option parameters needed to execute the query
-	 * @params {int, int, int, String} report location by index, file name by index, SQL query by index and option parameters
+	 * printSubmissionReport : prints a report for a given exam. Report will contain all the submissions for that given exam with gradings 
+	 * @params {int, String, String} exam id as an int, exam name as a string and module id as a string
 	 * @throws RemoteException, ClassNotFoundException, SQLException, JRException
 	 */
-	public void printReport(int reportIndex, int fileIndex, int queryIndex, String optionalParameter) throws RemoteException, ClassNotFoundException, SQLException, JRException {
-		new GenerateReport(reportIndex, fileIndex, queryIndex, optionalParameter);
+	public void printSubmissionReport(int examId, String examName, String moduleId) throws RemoteException, ClassNotFoundException, SQLException, JRException {
+		new SubmissionReport(examId, examName, moduleId);
 	}
 	
 	/*

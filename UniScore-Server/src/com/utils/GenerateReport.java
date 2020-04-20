@@ -1,5 +1,6 @@
 package com.utils;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -23,13 +24,13 @@ public class GenerateReport {
 	
 	private static Date currentDate = new Date();
 	
-	public GenerateReport(int reportIndex, int fileIndex, int queryIndex, String optionalParameter) throws ClassNotFoundException, SQLException, JRException {
+	public GenerateReport(String reportName, String fileName, String query, String folderPath) throws ClassNotFoundException, SQLException, JRException {
 		
 		if (DBConnection.getDBConnection() != null) {
 
             Connection con = DBConnection.getDBConnection();
 
-            String reportPath = "C:\\Users\\RED-HAWK\\Documents\\Ecplise-workspace\\UniScore\\UniScore-Server\\src\\com\\reports\\templates\\"+ getReportNameByIndex(reportIndex);
+            String reportPath = new File("").getAbsolutePath()+"\\src\\reports\\templates\\"+ reportName;
 
             Map<String, Object> parameters = new HashMap<String, Object>();
 
@@ -40,7 +41,7 @@ public class GenerateReport {
             JRDesignQuery newQuery = new JRDesignQuery();
 
             //setting the query text
-            newQuery.setText(getQueryByIndex(queryIndex, optionalParameter));
+            newQuery.setText(query);
 
             //seeting the query for the report design
             jasperDesign.setQuery(newQuery);
@@ -51,36 +52,8 @@ public class GenerateReport {
             //creating a JasperPrint object to fill the report
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, con);
 
-            //JasperViewer.viewReport(jasperPrint);
-            String folderPath = "C:\\Users\\RED-HAWK\\Desktop\\UniScore\\Reports\\";
-            
-            JasperExportManager.exportReportToPdfFile(jasperPrint, folderPath + getFileNameByIndex(fileIndex, optionalParameter) + "-" + getDate() + "-" + getMonth() + "-" + getYear() + ".pdf");            
+            JasperExportManager.exportReportToPdfFile(jasperPrint, folderPath + fileName + "-" + getDate() + "-" + getMonth() + "-" + getYear() + ".pdf");            
         }
-	}
-	
-	
-	public String getQueryByIndex(int index, String optionalParameter) {
-		switch(index) {
-			case 1 : return "SELECT s.studentId AS 'studentId', s.overallScore AS 'overallScore', s.grade AS 'grade', e.examName AS 'exam', e.moduleId AS 'module' FROM submissions s, exams e WHERE s.examId =  "+optionalParameter + " AND e.examId = "+optionalParameter;
-		}
-		
-		return null;
-	}
-	
-	public String getReportNameByIndex(int index) {
-		switch(index) {
-			case 1 : return "exam_submission_report.jrxml";
-		}
-		
-		return null;
-	}
-	
-	public String getFileNameByIndex(int index, String optionalParameter) {
-		switch(index) {
-			case 1 : return "exam-"+optionalParameter+"-submission-results";
-		}
-		
-		return null;
 	}
 	
 

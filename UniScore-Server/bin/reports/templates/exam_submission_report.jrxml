@@ -43,16 +43,7 @@
 	<subDataset name="tableDataset" uuid="cff064df-c2f1-43bb-bbc3-e10134c48019">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="localhost"/>
 		<queryString language="SQL">
-			<![CDATA[SELECT
-    s.studentId AS 'studentId',
-    s.overallScore AS 'overallScore',
-    s.grade AS 'grade',
-    e.examName AS 'exam',
-    e.moduleId AS 'module'
-FROM
-    submissions s, exams e
-WHERE
-    s.examId = '1' AND e.examId = '1']]>
+			<![CDATA[SELECT s.studentId AS 'studentId', s.overallScore AS 'overallScore', s.grade AS 'grade', e.examName AS 'exam', e.moduleId AS 'module' FROM submissions s, exams e WHERE s.examId = "1" AND e.examId = "1" AND s.moduleId = "CIS0031"]]>
 		</queryString>
 		<field name="studentId" class="java.lang.Long">
 			<property name="com.jaspersoft.studio.field.label" value="studentId"/>
@@ -68,7 +59,7 @@ WHERE
 		</field>
 	</subDataset>
 	<queryString>
-		<![CDATA[SELECT s.studentId AS 'studentId', s.overallScore AS 'overallScore', s.grade AS 'grade', e.examName AS 'exam', e.moduleId AS 'module' FROM submissions s, exams e WHERE s.examId = '1' AND e.examId = '1']]>
+		<![CDATA[SELECT s.studentId AS 'studentId', s.overallScore AS 'overallScore', s.grade AS 'grade', e.examName AS 'exam', e.moduleId AS 'module' FROM submissions s, exams e WHERE s.examId = "1" AND e.examId = "1" AND s.moduleId = "CIS0031"]]>
 	</queryString>
 	<field name="studentId" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.label" value="studentId"/>
