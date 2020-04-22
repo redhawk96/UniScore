@@ -23,13 +23,13 @@ import javax.swing.SwingConstants;
 import com.panels.NavigationPanel;
 import com.panels.content.ErrorNotifier;
 import com.utils.ExceptionList;
+import com.utils.Identification;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
 import models.Activity;
-import models.User;
 
 @SuppressWarnings("serial")
 public class LogoutNavigationPanel extends NavigationPanel {
@@ -60,8 +60,8 @@ public class LogoutNavigationPanel extends NavigationPanel {
 				
 				try {
 					
-					UniScoreClient.uniscoreInterface.addLogActivity(new Activity(getFormatedLecturerId(UniScoreClient.authUser)+" has ended session from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
-				
+					UniScoreClient.uniscoreInterface.addLogActivity(new Activity(Identification.getFormatedId(UniScoreClient.authUser.getUserId(), "L")+" has ended session from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+					
 				} catch (RemoteException ex) {
 					ErrorNotifier en = new ErrorNotifier("Failed to terminate connection with the server !\nPlease contact the administrator\nError refferance : "+ExceptionList.REMOTE);
 					en.setVisible(true);
@@ -101,19 +101,6 @@ public class LogoutNavigationPanel extends NavigationPanel {
 		navigationIcon.setBounds(UI.NAVIGATION_PANEL_BUTTON_ICON_X_AXIS, UI.NAVIGATION_PANEL_BUTTON_ICON_Y_AXIS, UI.NAVIGATION_PANEL_BUTTON_ICON_WIDTH, UI.NAVIGATION_PANEL_BUTTON_ICON_HEIGHT);
 		panel.add(navigationIcon);
 
-	}
-	
-	private String getFormatedLecturerId(User user) {
-		String userId = "L";
-		
-		switch(user.getUserId().length()) {
-			case 1 : userId = userId.concat("00000").concat(user.getUserId()); break;
-			case 2 : userId = userId.concat("0000").concat(user.getUserId()); break;
-			case 3 : userId = userId.concat("000").concat(user.getUserId()); break;
-			case 4 : userId = userId.concat("00").concat(user.getUserId()); break;
-			case 5 : userId = userId.concat("0").concat(user.getUserId()); break;
-		}
-		return userId;
 	}
 
 	@Override

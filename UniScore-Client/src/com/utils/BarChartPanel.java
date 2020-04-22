@@ -1,7 +1,6 @@
 package com.utils;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Paint;
 
 import javax.swing.ImageIcon;
@@ -34,17 +33,17 @@ public class BarChartPanel {
 		theme.setPlotOutlinePaint((Paint)UI.APPLICATION_THEME_SECONDARY_COLOR);
 		theme.setPlotBackgroundPaint(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		theme.setChartBackgroundPaint(UI.APPLICATION_THEME_TERTIARY_COLOR);
-		theme.setGridBandPaint(Color.red);
+		theme.setDomainGridlinePaint(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		theme.setAxisOffset(new RectangleInsets(0, 0, 0, 0));
 		theme.setBarPainter(new StandardBarPainter());
-		theme.setAxisLabelPaint(Color.decode("#666666"));
+		theme.setAxisLabelPaint(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		theme.apply(chart);
 		chart.getCategoryPlot().setOutlineVisible(false);
 		chart.getCategoryPlot().getRangeAxis().setAxisLineVisible(false);
 		chart.getCategoryPlot().getRangeAxis().setTickMarksVisible(false);
 		chart.getCategoryPlot().setRangeGridlineStroke(new BasicStroke());
-		chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(Color.decode("#666666"));
-		chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(Color.decode("#666666"));
+		chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		ValueAxis yAxisRange = chart.getCategoryPlot().getRangeAxis();
 		yAxisRange.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		chart.setTextAntiAlias(true);
@@ -54,8 +53,9 @@ public class BarChartPanel {
 		rend.setShadowVisible(true);
 		rend.setShadowXOffset(2);
 		rend.setShadowYOffset(0);
-		rend.setShadowPaint(Color.decode("#C0C0C0"));
+		rend.setShadowPaint(UI.APPLICATION_THEME_QUATERNARY_COLOR);
 		rend.setMaximumBarWidth(0.1);
+		chart.removeLegend();
 	}
 
 	public ImageIcon getChart() {

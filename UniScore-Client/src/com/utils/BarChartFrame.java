@@ -3,6 +3,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 import javax.swing.JFrame;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -58,7 +59,7 @@ public class BarChartFrame extends JFrame {
 		rend.setShadowXOffset(2);
 		rend.setShadowYOffset(0);
 		rend.setShadowPaint(Color.decode("#C0C0C0"));
-		rend.setMaximumBarWidth(0.1);
-	    
+		rend.setMaximumBarWidth(0.1);	 
+		chart.removeLegend();
 	}
 }

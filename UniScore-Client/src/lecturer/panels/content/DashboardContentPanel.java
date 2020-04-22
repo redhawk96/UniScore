@@ -16,6 +16,7 @@ import com.panels.ContentPanel;
 import com.panels.content.ErrorNotifier;
 import com.utils.BarChartPanel;
 import com.utils.ExceptionList;
+import com.utils.Identification;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
@@ -234,7 +235,7 @@ public class DashboardContentPanel extends ContentPanel {
 				
 				try {
 					
-					UniScoreClient.uniscoreInterface.addLogActivity(new Activity(getFormatedLecturerId(UniScoreClient.authUser)+" has ended session from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+					UniScoreClient.uniscoreInterface.addLogActivity(new Activity(Identification.getFormatedId(UniScoreClient.authUser.getUserId(), "L")+" has ended session from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
 				
 				} catch (RemoteException ex) {
 					ErrorNotifier en = new ErrorNotifier("Failed to terminate connection with the server !\nPlease contact the administrator\nError refferance : "+ExceptionList.REMOTE);
@@ -262,6 +263,7 @@ public class DashboardContentPanel extends ContentPanel {
 		logoutCard.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		
 		JPanel logoutCardTextPanel = new JPanel();
+		logoutCardTextPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		logoutCardTextPanel.setLayout(null);
 		logoutCardTextPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		logoutCardTextPanel.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
@@ -347,19 +349,6 @@ public class DashboardContentPanel extends ContentPanel {
 			return statFigure.toString();
 		}
 	} 
-	
-	private String getFormatedLecturerId(User user) {
-		String userId = "L";
-		
-		switch(user.getUserId().length()) {
-			case 1 : userId = userId.concat("00000").concat(user.getUserId()); break;
-			case 2 : userId = userId.concat("0000").concat(user.getUserId()); break;
-			case 3 : userId = userId.concat("000").concat(user.getUserId()); break;
-			case 4 : userId = userId.concat("00").concat(user.getUserId()); break;
-			case 5 : userId = userId.concat("0").concat(user.getUserId()); break;
-		}
-		return userId;
-	}
 
 	/*
 	 * returns the JPanel inside ContentPanel

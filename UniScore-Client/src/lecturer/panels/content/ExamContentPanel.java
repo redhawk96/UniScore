@@ -213,6 +213,9 @@ public class ExamContentPanel extends ContentPanel {
 					examMarkStats.setLocationRelativeTo(null);
 					examMarkStats.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					examMarkStats.setVisible(true);
+					
+					UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Academic performance on exam "+selectedExam.getExamId()+" was viewed from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+					
 
 				} catch (RemoteException e) {
 					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to generate exam submission statistics.\nError refferance : "+ExceptionList.REMOTE);
@@ -372,7 +375,7 @@ public class ExamContentPanel extends ContentPanel {
 	
 		try { 
 			
-			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Module", "Exam Name", "Exam Status"}, 0);
+			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Allocation", "Module ID", "Module", "Exam Name", "Exam Status"}, 0);
 		
 			Module module = new Module();
 			module.setTeacherId(UniScoreClient.authUser.getUserId());
@@ -390,7 +393,7 @@ public class ExamContentPanel extends ContentPanel {
 					
 					if(e.getStatus().equalsIgnoreCase("Started") || e.getStatus().equalsIgnoreCase("Finished")) {
 						// Adding a exam record to the table each time the loop executes
-						model.addRow(new Object[] {e.getExamId(),   "     "+mod.getModuleName(),  "     "+e.getExamName(), "     "+e.getStatus()});
+						model.addRow(new Object[] {e.getExamId(), "Y" + mod.getYear() + " - S" + mod.getSemester(), mod.getModuleId(), "     "+mod.getModuleName(),  "     "+e.getExamName(), "     "+e.getStatus()});
 						
 						if (count < 1) {
 							selectedExam = e;
@@ -459,8 +462,12 @@ public class ExamContentPanel extends ContentPanel {
 	        // Setting width to colums in JTable
 	        TableColumnModel columnModel = table.getColumnModel();
 	        
-	        columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
-	        columnModel.getColumn(3).setCellRenderer(centerAlingedCell);
+	        columnModel.getColumn(1).setCellRenderer(centerAlingedCell);
+	        columnModel.getColumn(2).setCellRenderer(centerAlingedCell);
+	        columnModel.getColumn(5).setCellRenderer(centerAlingedCell);
+	        
+	        // Removing question id column, but will still be able to access by column index
+	        columnModel.removeColumn(columnModel.getColumn(0));
 			
 	        // Removing horizontal cell borders
 	        table.setShowHorizontalLines(false);

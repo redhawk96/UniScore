@@ -24,6 +24,7 @@ import com.utils.UI;
 
 import connectivity.UniScoreClient;
 import lecturer.panels.navigation.ExamNavigationPanel;
+import models.Activity;
 import models.Exam;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -102,6 +103,8 @@ public class SubmissionMailer extends JFrame {
 					} else {
 						
 						UniScoreClient.uniscoreInterface.sendMail(recipientsText.getText().trim(), subjectText.getText().trim(), UniScoreClient.uniscoreInterface.getSubmissionTableByExam(exam));
+						
+						UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Exam "+exam.getExamId()+" submission grading report has been sent to "+recipientsText.getText().trim()+" through email from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
 						
 						SuccessNotifier sn = new SuccessNotifier("Mail(s) has been successfully sent.", new ExamNavigationPanel(), new ExamContentPanel());
 						sn.setVisible(true);

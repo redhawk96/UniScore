@@ -377,7 +377,6 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			            LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
 						LecturerPanel.selectedContent = new DisplayQuestionContentPanel(module, exam, selectedQuestion);
 						LecturerPanel.setSelectedPanel();
-			            
 			        }
 			    }
 			});

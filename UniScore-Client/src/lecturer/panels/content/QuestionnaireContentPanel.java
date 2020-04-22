@@ -212,7 +212,7 @@ public class QuestionnaireContentPanel extends ContentPanel {
 	
 	private void addExamListTable(){
 	
-		DefaultTableModel model = new DefaultTableModel(new String[] {"EID", "MID", "Allocation", "Module", "Exam Name"}, 0);
+		DefaultTableModel model = new DefaultTableModel(new String[] {"EID", "Allocation",  "Module ID", "Module", "Exam Name"}, 0);
 
 		try {
 			Module module = new Module();
@@ -232,7 +232,7 @@ public class QuestionnaireContentPanel extends ContentPanel {
 	
 					// Adding a exam record to the table each time the loop executes
 					if (e.getStatus().equalsIgnoreCase("Not started")) {
-						model.addRow(new Object[] { e.getExamId(), mod.getModuleId(),"     Y" + mod.getYear() + " - S" + mod.getSemester(), "     " + mod.getModuleName(), "     " + e.getExamName() });
+						model.addRow(new Object[] { e.getExamId(), "     Y" + mod.getYear() + " - S" + mod.getSemester(), mod.getModuleId(), "     " + mod.getModuleName(), "     " + e.getExamName() });
 	
 						if (count < 1) {
 							selectedExam = e;

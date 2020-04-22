@@ -29,9 +29,11 @@ import com.panels.content.ErrorNotifier;
 import com.utils.BarChartFrame;
 import com.utils.ContentTable;
 import com.utils.ExceptionList;
+import com.utils.Identification;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
+import models.Activity;
 import models.Module;
 import models.Submission;
 import models.User;
@@ -203,7 +205,7 @@ public class StudentContentPanel extends ContentPanel {
 		studentAddressLabel.setBounds(517, 104, 509, 17);
 		studentInfoPanel.add(studentAddressLabel);
 		
-		JLabel studentIDLabel = new JLabel(getFormatedStudentId(selectedStudent));
+		JLabel studentIDLabel = new JLabel(Identification.getFormatedId(selectedStudent.getUserId(), "S"));
 		studentIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		studentIDLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		studentIDLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
@@ -227,7 +229,7 @@ public class StudentContentPanel extends ContentPanel {
 				for (User user : userList) {
 					if(user.getRole().equalsIgnoreCase("Student")) {
 						// Adding a new user record to the table each time the loop executes
-						model.addRow(new Object[] { user.getUserId(), getFormatedStudentId(user), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender(), "     " + user.getEmail(), "     " + user.getPhone() });
+						model.addRow(new Object[] { user.getUserId(), Identification.getFormatedId(user.getUserId(), "S"), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender(), "     " + user.getEmail(), "     " + user.getPhone() });
 						
 						if (count < 1) {
 							selectedStudent = user;
@@ -249,13 +251,15 @@ public class StudentContentPanel extends ContentPanel {
 								
 								Module module = new Module();
 								module.setTeacherId(UniScoreClient.authUser.getUserId());
-									
+															
 								BarChartFrame studentStats = new BarChartFrame(table.getModel().getValueAt(table.getSelectedRow(), 2).toString().trim()+" "+table.getModel().getValueAt(table.getSelectedRow(), 3).toString().trim()+"'s Statistics", "Recent Performance", "Modules", "No of Marks", UniScoreClient.uniscoreInterface.getGradedDatasetByStudent(module, submission));
 
 								studentStats.setSize(950, 600);
 								studentStats.setLocationRelativeTo(null);
 								studentStats.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 								studentStats.setVisible(true);
+								
+								UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Academic performance of "+Identification.getFormatedId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString(), "S")+" was viewed from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));	
 						         
 							} else if (mouseEvent.getClickCount() == 1) {
 								User selectedTempUser = new User();
@@ -346,19 +350,6 @@ public class StudentContentPanel extends ContentPanel {
 			en.setVisible(true);
 			System.out.println("SQLException execution thrown on StudentContentPanel.java file. Error : "+e.getCause());
 		}
-	}
-	
-	private String getFormatedStudentId(User user) {
-		String studentId = "S";
-		
-		switch(user.getUserId().length()) {
-			case 1 : studentId = studentId.concat("00000").concat(user.getUserId()); break;
-			case 2 : studentId = studentId.concat("0000").concat(user.getUserId()); break;
-			case 3 : studentId = studentId.concat("000").concat(user.getUserId()); break;
-			case 4 : studentId = studentId.concat("00").concat(user.getUserId()); break;
-			case 5 : studentId = studentId.concat("0").concat(user.getUserId()); break;
-		}
-		return studentId;
 	}
 	
 	private void setSearchField() {
