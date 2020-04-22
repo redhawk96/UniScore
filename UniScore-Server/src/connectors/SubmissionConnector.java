@@ -30,8 +30,12 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 
 	/*
 	 * add : This will add a submission into the databse reffered by exam and module
+	 * 
 	 * @params {Submission}
-	 * @return {boolen} returns true if the submission was added to the database and false if not
+	 * 
+	 * @return {boolen} returns true if the submission was added to the database and
+	 * false if not
+	 * 
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	@Override
@@ -76,8 +80,11 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 
 	/*
 	 * get : retrieves a paticular submission by its id
+	 * 
 	 * @params {Submission} obtains submission id from the submission object
+	 * 
 	 * @return {Submission} returns submission object if found and null if not
+	 * 
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	@Override
@@ -122,7 +129,10 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 
 	/*
 	 * getAll : retrieves all available submissions
-	 * @return {List<Submission>} returns a list of submissions if found and null if not
+	 * 
+	 * @return {List<Submission>} returns a list of submissions if found and null if
+	 * not
+	 * 
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	@Override
@@ -154,12 +164,18 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 	}
 
 	/*
-	 * getByRelevance : retrieves all submissions filtered by its either the module id, student id, or exam id
-	 * @params {Submission} obtains either submission id, student id or module id from the submission object
-	 * @return {List<Submission>} returns a list of submissions filtered by the relevance if found and null if not
+	 * getByRelevance : retrieves all submissions filtered by its either the module
+	 * id, student id, or exam id
+	 * 
+	 * @params {Submission} obtains either submission id, student id or module id
+	 * from the submission object
+	 * 
+	 * @return {List<Submission>} returns a list of submissions filtered by the
+	 * relevance if found and null if not
+	 * 
 	 * @throws ClassNotFoundException, SQLException
 	 */
-	public List<Submission> getByRelevance(Submission submission) throws ClassNotFoundException, SQLException{
+	public List<Submission> getByRelevance(Submission submission) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
 			String sql = null;
@@ -180,7 +196,7 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 			}
 
 			ResultSet rs = ps.executeQuery();
-			
+
 			List<Submission> submissionList = new ArrayList<>();
 
 			while (rs.next()) {
@@ -200,11 +216,16 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 		}
 		return null;
 	}
-	
+
 	/*
-	 * getSubmissionCountByExamination : retrieves the count for submissions for the paticular exam
+	 * getSubmissionCountByExamination : retrieves the count for submissions for the
+	 * paticular exam
+	 * 
 	 * @params {Submission} Obtains exam id from submission object
-	 * @return {int} returns an integer representing the number of submissions for a paticular exam if exam is found and -1 if not
+	 * 
+	 * @return {int} returns an integer representing the number of submissions for a
+	 * paticular exam if exam is found and -1 if not
+	 * 
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	public int getSubmissionCountByExamination(Submission submission) throws ClassNotFoundException, SQLException {
@@ -224,29 +245,43 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 		}
 		return -1;
 	}
-	
+
 	/*
 	 * getDatasetByExam : generates a new dataset based on a specific exam
+	 * 
 	 * @params {Submission} Obtains exam id from submission object
-	 * @return {CategoryDataset} returns a categoryDataset contaning all the submission scores of a specific exam successfully generated and null if not
+	 * 
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the
+	 * submission scores of a specific exam successfully generated and null if not
+	 * 
 	 * @throws ClassNotFoundException, SQLException
 	 */
-	public CategoryDataset getDatasetByExam(Submission submission) throws ClassNotFoundException, SQLException {	
+	public CategoryDataset getDatasetByExam(Submission submission) throws ClassNotFoundException, SQLException {
 		List<Submission> examSubmissionList = getByRelevance(submission);
-		
+
 		int a = 0;
 		int b = 0;
 		int c = 0;
 		int d = 0;
 		int e = 0;
-		
+
 		for (Submission sub : examSubmissionList) {
 			switch (sub.getGrade()) {
-				case "A": a = a + 1; break;
-				case "B": b = b + 1; break;
-				case "C": c = c + 1; break;
-				case "D": d = d + 1; break;
-				case "E": e = e + 1; break;
+			case "A":
+				a = a + 1;
+				break;
+			case "B":
+				b = b + 1;
+				break;
+			case "C":
+				c = c + 1;
+				break;
+			case "D":
+				d = d + 1;
+				break;
+			case "E":
+				e = e + 1;
+				break;
 			}
 		}
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -259,32 +294,47 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 
 		return dataset;
 	}
-	
+
 	/*
-	 * getDatasetByStudent : generates a new dataset based on a specific student's last submission on all modules, modules will be filtered according to the logged in lecturer
-	 * @params {Module, Submission} Obtains teacher id from module object and student id from submission object
-	 * @return {CategoryDataset} returns a categoryDataset contaning all the scores of last submission on each module is successfully generated and null if not
+	 * getDatasetByStudent : generates a new dataset based on a specific student's
+	 * last submission on all modules, modules will be filtered according to the
+	 * logged in lecturer
+	 * 
+	 * @params {Module, Submission} Obtains teacher id from module object and
+	 * student id from submission object
+	 * 
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the scores
+	 * of last submission on each module is successfully generated and null if not
+	 * 
 	 * @throws ClassNotFoundException, SQLException
 	 */
-	public CategoryDataset getDatasetByStudent(Module module, Submission submission) throws ClassNotFoundException, SQLException {	
+	public CategoryDataset getDatasetByStudent(Module module, Submission submission)
+			throws ClassNotFoundException, SQLException {
 		ModuleConnector mc = new ModuleConnector();
 		List<Module> moduleList = mc.getByYearAndUser(module, 0, 0);
-		
+
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		
-		for(Module mod : moduleList) {
+
+		for (Module mod : moduleList) {
 			dataset.addValue(getLastSubmissionByModule(mod, submission), "MARKS", mod.getModuleId());
 		}
 		return dataset;
 	}
-	
+
 	/*
-	 * getLastSubmissionByModule : returns the score of a specific module's most recent exam
-	 * @params {Module, Submission} Obtains module id from module object and student id from submission object
-	 * @return {int} returns the score of last exam followed by a module if found and 0 if not
+	 * getLastSubmissionByModule : returns the score of a specific module's most
+	 * recent exam
+	 * 
+	 * @params {Module, Submission} Obtains module id from module object and student
+	 * id from submission object
+	 * 
+	 * @return {int} returns the score of last exam followed by a module if found
+	 * and 0 if not
+	 * 
 	 * @throws ClassNotFoundException, SQLException
 	 */
-	private int getLastSubmissionByModule(Module module, Submission submission) throws ClassNotFoundException, SQLException {
+	private int getLastSubmissionByModule(Module module, Submission submission)
+			throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
 			String sql = "SELECT `overallScore` FROM `submissions` WHERE `moduleId` = ? AND `studentId` = ? ORDER BY `examId` DESC LIMIT 1";
@@ -302,18 +352,23 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 		}
 		return 0;
 	}
-	
+
 	/*
-	 * getListAsTable : returns a string contaning html table of all the submissions for a paticular exam of a paticular module
+	 * getListAsTable : returns a string contaning html table of all the submissions
+	 * for a paticular exam of a paticular module
+	 * 
 	 * @params {Exam} Obtains exam id and module id from exam object
-	 * @return {String} returns a string contaning html table if found and null if not
+	 * 
+	 * @return {String} returns a string contaning html table if found and null if
+	 * not
+	 * 
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	public String getListAsTable(Exam exam) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
 			String sql = "SELECT s.studentId AS 'studentId', s.overallScore AS 'overallScore', s.grade AS 'grade' FROM submissions s, exams e WHERE s.examId = ? AND e.examId = ? AND s.moduleId = ?";
-	        PreparedStatement ps = con.prepareStatement(sql);
+			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, exam.getExamId());
 			ps.setInt(2, exam.getExamId());
 			ps.setString(3, exam.getModuleId());
@@ -322,17 +377,24 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 			String submissionTable = "<html><head></head><body><table style=\"border-spacing: 0px !important; border: 1px solid #404040 !important; border-bottom: 0 !important;\"><tr style=\"background-color: #404040!important; color : #f9a825!important; font-size: 17px !important;\"><th style=\"padding: 7px !important;\">SID</th><th style=\"text-align: center !important; padding: 7px !important;\">SCORE</th><th style=\"padding: 7px !important;\">GRADE</th></tr>";
 
 			String bgColor = "";
-			
+
 			while (rs.next()) {
-				if(rs.getString(3).equals("E")) {
+				if (rs.getString(3).equals("E")) {
 					bgColor = "#ff000059";
 				} else {
 					bgColor = "#ffffff";
 				}
-				submissionTable = submissionTable +"<tr style=\"font-size: 17px !important; background-color:"+bgColor+" !important;\"><td style=\"width: 100px !important; border-bottom: 1px solid #404040 !important; padding: 5px !important; text-align: center !important;\">"+Identification.getFormatedId(rs.getString(1), "S")+"</td><td style=\"width: 100px !important;  text-align: center !important; border-bottom: 1px solid #404040 !important; padding: 5px !important;\">"+rs.getString(2)+"</td><td style=\"width: 50px !important; text-align: center !important; border-bottom: 1px solid #404040 !important; padding: 5px !important;\">"+rs.getString(3)+"</td></tr>";
+				submissionTable = submissionTable + "<tr style=\"font-size: 17px !important; background-color:"
+						+ bgColor
+						+ " !important;\"><td style=\"width: 100px !important; border-bottom: 1px solid #404040 !important; padding: 5px !important; text-align: center !important;\">"
+						+ Identification.getFormatedId(rs.getString(1), "S")
+						+ "</td><td style=\"width: 100px !important;  text-align: center !important; border-bottom: 1px solid #404040 !important; padding: 5px !important;\">"
+						+ rs.getString(2)
+						+ "</td><td style=\"width: 50px !important; text-align: center !important; border-bottom: 1px solid #404040 !important; padding: 5px !important;\">"
+						+ rs.getString(3) + "</td></tr>";
 			}
-			
-			submissionTable = submissionTable +"</table></body></html>";
+
+			submissionTable = submissionTable + "</table></body></html>";
 			return submissionTable;
 		}
 		return null;

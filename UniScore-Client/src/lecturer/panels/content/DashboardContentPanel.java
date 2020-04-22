@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -25,6 +26,8 @@ import lecturer.panels.navigation.StudentNavigationPanel;
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
 import models.Activity;
+import models.Exam;
+import models.Module;
 import models.Submission;
 import models.User;
 
@@ -289,10 +292,33 @@ public class DashboardContentPanel extends ContentPanel {
 		
 		try {
 			
-			Submission tempSubmission = new Submission();
-			tempSubmission.setExamId(1);
+			Module module = new Module();
+			module.setTeacherId(UniScoreClient.authUser.getUserId());
 			
-			BarChartPanel examMarkStats = new BarChartPanel( 1 + " Exam Statistics", "Score Range", "No of Students", UniScoreClient.uniscoreInterface.getSubmissionDatasetByExam(tempSubmission));
+			List<Module> moduleList = (List<Module>) UniScoreClient.uniscoreInterface.getModulesByRelevance(module, 0, 0);
+			
+			int count = 0;
+			
+			Submission recentExamStats = new Submission();
+			String recentExamName = "";
+			
+			for (Module mod : moduleList) {
+				
+				Exam tempExam = new Exam();
+				tempExam.setModuleId(mod.getModuleId());
+						
+				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(tempExam);
+				for(Exam e : examList) {
+					
+					if((e.getStatus().equalsIgnoreCase("Started") || e.getStatus().equalsIgnoreCase("Finished")) && count == 0) {
+						recentExamName = e.getModuleId()+" - "+e.getExamName();
+						recentExamStats.setExamId(e.getExamId());
+						count++;
+					}
+				}		
+			}
+			
+			BarChartPanel examMarkStats = new BarChartPanel( recentExamName + " Exam Statistics", "Score Range", "No of Students", UniScoreClient.uniscoreInterface.getSubmissionDatasetByExam(recentExamStats));
 			
 			JLabel lblNewLabel = new JLabel("");
 			lblNewLabel.setIcon(examMarkStats.getChart());

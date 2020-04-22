@@ -231,7 +231,7 @@ public class QuestionnaireContentPanel extends ContentPanel {
 				for (Exam e : examList) {
 	
 					// Adding a exam record to the table each time the loop executes
-					if (e.getStatus().equalsIgnoreCase("disabled")) {
+					if (e.getStatus().equalsIgnoreCase("Not started")) {
 						model.addRow(new Object[] { e.getExamId(), mod.getModuleId(),"     Y" + mod.getYear() + " - S" + mod.getSemester(), "     " + mod.getModuleName(), "     " + e.getExamName() });
 	
 						if (count < 1) {
@@ -239,8 +239,9 @@ public class QuestionnaireContentPanel extends ContentPanel {
 							selectedExamModule = mod;
 							setSelectedExam();
 						}
+						count++;
 					}
-					count++;
+					
 				}
 			}
 			
