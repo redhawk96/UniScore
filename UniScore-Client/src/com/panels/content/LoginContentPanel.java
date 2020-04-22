@@ -255,7 +255,7 @@ public class LoginContentPanel  extends ContentPanel{
 						 * Setting visibility of loading label false 
 						 * Setting visibility of error label true
 						 */
-						UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Unauthorized login attempt for "+usernameTextField.getText()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+						UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Unauthorized login attempt for "+usernameTextField.getText()+" from "+UniScoreClient.authLocation, "000001"));
 						errorLabel.setVisible(true);
 						loadingLabel.setVisible(false);
 					}
@@ -266,7 +266,7 @@ public class LoginContentPanel  extends ContentPanel{
 					 * Setting visibility of loading label false 
 					 * Setting visibility of error label true
 					 */
-					UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Unauthorized login attempt for "+usernameTextField.getText()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+					UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Unauthorized login attempt for "+usernameTextField.getText()+" from "+UniScoreClient.authLocation, "000001"));
 					errorLabel.setVisible(true);
 					loadingLabel.setVisible(false);
 				}
@@ -277,7 +277,7 @@ public class LoginContentPanel  extends ContentPanel{
 				 * Setting visibility of loading label false 
 				 * Setting visibility of error label true
 				 */
-				UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Unauthorized login attempt for "+usernameTextField.getText()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+				UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Unauthorized login attempt for "+usernameTextField.getText()+" from "+UniScoreClient.authLocation, "000001"));
 				errorLabel.setVisible(true);
 				loadingLabel.setVisible(false);
 			}
