@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
@@ -43,6 +45,8 @@ public class BarChartPanel {
 		chart.getCategoryPlot().setRangeGridlineStroke(new BasicStroke());
 		chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(Color.decode("#666666"));
 		chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(Color.decode("#666666"));
+		ValueAxis yAxisRange = chart.getCategoryPlot().getRangeAxis();
+		yAxisRange.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		chart.setTextAntiAlias(true);
 		chart.setAntiAlias(true);
 		chart.getCategoryPlot().getRenderer().setSeriesPaint(0, UI.APPLICATION_THEME_PRIMARY_COLOR);
