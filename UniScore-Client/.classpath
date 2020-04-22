@@ -73,5 +73,6 @@
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/xmlbeans-2.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/xmpcore-5.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/javax.mail-1.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

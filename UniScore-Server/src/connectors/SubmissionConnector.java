@@ -19,7 +19,10 @@ import java.util.List;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import com.utils.Identification;
+
 import connectivity.DBConnection;
+import models.Exam;
 import models.Module;
 import models.Submission;
 
@@ -257,30 +260,6 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 		return dataset;
 	}
 	
-	public String getExamDatasetToString(Submission submission) throws ClassNotFoundException, SQLException {
-		
-		List<Submission> examSubmissionList = getByRelevance(submission);
-		
-		int a = 0;
-		int b = 0;
-		int c = 0;
-		int d = 0;
-		int e = 0;
-		
-		for (Submission sub : examSubmissionList) {
-			switch (sub.getGrade()) {
-				case "A": a = a + 1; break;
-				case "B": b = b + 1; break;
-				case "C": c = c + 1; break;
-				case "D": d = d + 1; break;
-				case "E": e = e + 1; break;
-			}
-		}
-
-//		return "data={\"75-100\" : '"+a+"', \"65-75\" : "+b+", \"55-64\" : '"+c+"',  \"35-54\" : '"+d+"', \"0-34\" : '"+e+"'}";
-		return "data=\"[{\"Letter\":\"A\",\"Freq\":20},{\"Letter\":\"B\",\"Freq\":12},{\"Letter\":\"C\",\"Freq\":47},{\"Letter\":\"D\",\"Freq\":34},{\"Letter\":\"E\",\"Freq\":54},{\"Letter\":\"F\",\"Freq\":21},{\"Letter\":\"G\",\"Freq\":57},{\"Letter\":\"H\",\"Freq\":31},{\"Letter\":\"I\",\"Freq\":17},{\"Letter\":\"J\",\"Freq\":5},{\"Letter\":\"K\",\"Freq\":23},{\"Letter\":\"L\",\"Freq\":39},{\"Letter\":\"M\",\"Freq\":29},{\"Letter\":\"N\",\"Freq\":33},{\"Letter\":\"O\",\"Freq\":18},{\"Letter\":\"P\",\"Freq\":35},{\"Letter\":\"Q\",\"Freq\":11},{\"Letter\":\"R\",\"Freq\":45},{\"Letter\":\"S\",\"Freq\":43},{\"Letter\":\"T\",\"Freq\":28},{\"Letter\":\"U\",\"Freq\":26},{\"Letter\":\"V\",\"Freq\":30},{\"Letter\":\"X\",\"Freq\":5},{\"Letter\":\"Y\",\"Freq\":4},{\"Letter\":\"Z\",\"Freq\":2}]\"";
-	}
-	
 	/*
 	 * getDatasetByStudent : generates a new dataset based on a specific student's last submission on all modules, modules will be filtered according to the logged in lecturer
 	 * @params {Module, Submission} Obtains teacher id from module object and student id from submission object
@@ -322,6 +301,41 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 			return sScore;
 		}
 		return 0;
+	}
+	
+	/*
+	 * getListAsTable : returns a string contaning html table of all the submissions for a paticular exam of a paticular module
+	 * @params {Exam} Obtains exam id and module id from exam object
+	 * @return {String} returns a string contaning html table if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public String getListAsTable(Exam exam) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT s.studentId AS 'studentId', s.overallScore AS 'overallScore', s.grade AS 'grade' FROM submissions s, exams e WHERE s.examId = ? AND e.examId = ? AND s.moduleId = ?";
+	        PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, exam.getExamId());
+			ps.setInt(2, exam.getExamId());
+			ps.setString(3, exam.getModuleId());
+			ResultSet rs = ps.executeQuery();
+
+			String submissionTable = "<html><head></head><body><table style=\"border-spacing: 0px !important; border: 1px solid #404040 !important; border-bottom: 0 !important;\"><tr style=\"background-color: #404040!important; color : #f9a825!important; font-size: 17px !important;\"><th style=\"padding: 7px !important;\">SID</th><th style=\"text-align: center !important; padding: 7px !important;\">SCORE</th><th style=\"padding: 7px !important;\">GRADE</th></tr>";
+
+			String bgColor = "";
+			
+			while (rs.next()) {
+				if(rs.getString(3).equals("E")) {
+					bgColor = "#ff000059";
+				} else {
+					bgColor = "#ffffff";
+				}
+				submissionTable = submissionTable +"<tr style=\"font-size: 17px !important; background-color:"+bgColor+" !important;\"><td style=\"width: 100px !important; border-bottom: 1px solid #404040 !important; padding: 5px !important; text-align: center !important;\">"+Identification.getFormatedId(rs.getString(1), "S")+"</td><td style=\"width: 100px !important;  text-align: center !important; border-bottom: 1px solid #404040 !important; padding: 5px !important;\">"+rs.getString(2)+"</td><td style=\"width: 50px !important; text-align: center !important; border-bottom: 1px solid #404040 !important; padding: 5px !important;\">"+rs.getString(3)+"</td></tr>";
+			}
+			
+			submissionTable = submissionTable +"</table></body></html>";
+			return submissionTable;
+		}
+		return null;
 	}
 
 }

@@ -18,6 +18,9 @@ import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import org.jfree.data.category.CategoryDataset;
 
 import models.Activity;
@@ -405,6 +408,14 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	public CategoryDataset getGradedDatasetByStudent(Module module, Submission submission) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getSubmissionTableByExam : returns a string contaning html table of all the submissions for a paticular exam of a paticular module
+	 * @params {Exam} Obtains exam id and module id from exam object
+	 * @return {String} returns a string contaning html table if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public String getSubmissionTableByExam(Exam exam) throws RemoteException, ClassNotFoundException, SQLException;
 	/*
 	 * Ending declaration of submission methods
 	 */
@@ -524,6 +535,12 @@ public interface UniScoreInterface extends Remote {
 	 */
 	public String getLocation() throws RemoteException, ClassNotFoundException, MalformedURLException, IOException;
 	
+	/*
+	 * sendMail : send mails with user specified recepients, subject and body 
+	 * @params {String, String, String} multiple recepients as a string, email subject as a string, email body in html format as a string
+	 * @throws RemoteException,  AddressException, MessagingException
+	 */
+	public void sendMail(String recepients, String subject, String htmlBody) throws RemoteException,  AddressException, MessagingException;
 	/*
 	 * Ending declaration of common methods
 	 */

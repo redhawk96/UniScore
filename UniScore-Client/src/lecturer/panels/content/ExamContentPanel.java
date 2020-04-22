@@ -238,10 +238,10 @@ public class ExamContentPanel extends ContentPanel {
 		examStatPanel.add(examStatPanelLabel);
 		
 		JPanel examSubmissionCountPanel = new JPanel();
-		examSubmissionCountPanel.setBorder(new MatteBorder(0, 1, 0, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+		examSubmissionCountPanel.setBorder(new MatteBorder(0, 1, 1, 1, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
 		examSubmissionCountPanel.setLayout(null);
 		examSubmissionCountPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
-		examSubmissionCountPanel.setBounds(891, 0, 153, 138);
+		examSubmissionCountPanel.setBounds(891, 0, 153, 68);
 		examInfoPanel.add(examSubmissionCountPanel);
 		
 		Integer examSubmissionCount = -1; 
@@ -278,10 +278,46 @@ public class ExamContentPanel extends ContentPanel {
 		examSubmissionCountPanelLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		examSubmissionCountPanelLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 		examSubmissionCountPanelLabel.setFont(UI.APPLICATION_THEME_FONT_18_PLAIN);
-		examSubmissionCountPanelLabel.setBounds(0, 0, 153, 138);
+		examSubmissionCountPanelLabel.setBounds(0, 0, 153, 68);
 		examSubmissionCountPanel.add(examSubmissionCountPanelLabel);
-		
-		
+
+		if(examSubmissionCount != 0) {
+			JPanel sendMailPanel = new JPanel();
+			sendMailPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
+			sendMailPanel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					SubmissionMailer sm = new SubmissionMailer(selectedExam);	
+					sm.setVisible(true);
+				}
+			});
+			sendMailPanel.setLayout(null);
+			sendMailPanel.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+			sendMailPanel.setBounds(891, 70, 153, 68);
+			examInfoPanel.add(sendMailPanel);
+			
+			JLabel sendMailPanelLabel = new JLabel("MAIL");
+			sendMailPanelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			sendMailPanelLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+			sendMailPanelLabel.setFont(UI.APPLICATION_THEME_FONT_18_PLAIN);
+			sendMailPanelLabel.setBounds(0, 0, 153, 68);
+			sendMailPanel.add(sendMailPanelLabel);	
+		} else {
+			JPanel sendMailPanel = new JPanel();
+			sendMailPanel.setBorder(new MatteBorder(1, 1, 0, 1, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
+			sendMailPanel.setLayout(null);
+			sendMailPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+			sendMailPanel.setBounds(891, 70, 153, 68);
+			examInfoPanel.add(sendMailPanel);
+			
+			JLabel sendMailPanelLabel = new JLabel("MAIL");
+			sendMailPanelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			sendMailPanelLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+			sendMailPanelLabel.setFont(UI.APPLICATION_THEME_FONT_18_PLAIN);
+			sendMailPanelLabel.setBounds(0, 0, 153, 68);
+			sendMailPanel.add(sendMailPanelLabel);	
+		}
+
 
 		JPanel printSubmissionReportPanel = new JPanel();
 		printSubmissionReportPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));

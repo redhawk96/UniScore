@@ -11,4 +11,6 @@ public class ExceptionList {
 	public static int NOT_BOUND = 600;
 	public static int IO = 700;
 	public static int JASPER_REPORT = 800;
+	public static int ADDRESS = 900;
+	public static int MESSAGING = 1000;
 }

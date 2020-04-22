@@ -297,9 +297,7 @@ public class CreateQuestionContentPanel extends ContentPanel{
 					en.setVisible(true);
 					
 				} else {
-					
-					System.out.println(answersComboBox.getSelectedIndex());
-					
+
 					Question newQuestion = new Question();
 					newQuestion.setExamId(exam.getExamId());
 					newQuestion.setQuestion(questionText.getText());

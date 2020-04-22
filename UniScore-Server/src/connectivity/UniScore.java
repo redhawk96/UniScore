@@ -18,10 +18,14 @@ import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import org.jfree.data.category.CategoryDataset;
 
 import com.utils.Encryptor;
 import com.utils.IpifyAPI;
+import com.utils.Mail;
 
 import connectors.ActivityConnector;
 import connectors.ExamConnector;
@@ -508,6 +512,18 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 		SubmissionConnector sc = new SubmissionConnector();
 		return sc.getDatasetByStudent(module, submission);
 	}
+	
+
+	/*
+	 * getSubmissionTableByExam : returns a string contaning html table of all the submissions for a paticular exam of a paticular module
+	 * @params {Exam} Obtains exam id and module id from exam object
+	 * @return {String} returns a string contaning html table if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public String getSubmissionTableByExam(Exam exam) throws RemoteException, ClassNotFoundException, SQLException {
+		SubmissionConnector sc = new SubmissionConnector();
+		return sc.getListAsTable(exam);
+	}
 
 	/*
 	 * addUser : This will add a user into the databse and will not have any refference tables
@@ -649,6 +665,15 @@ public class UniScore extends UnicastRemoteObject implements UniScoreInterface {
 	 */
 	public String getLocation() throws RemoteException, ClassNotFoundException, MalformedURLException, IOException {
 		return IpifyAPI.getIP();
+	}
+	
+	/*
+	 * sendMail : send mails with user specified recepients, subject and body 
+	 * @params {String, String, String} multiple recepients as a string, email subject as a string, email body in html format as a string
+	 * @throws RemoteException,  AddressException, MessagingException
+	 */
+	public void sendMail(String recepients, String subject, String htmlBody) throws RemoteException,  AddressException, MessagingException {
+		Mail.send(recepients, subject, htmlBody);
 	}
 	
 }

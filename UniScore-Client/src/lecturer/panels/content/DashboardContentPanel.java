@@ -287,14 +287,12 @@ public class DashboardContentPanel extends ContentPanel {
 		dashboardBodyPanel.add(loogedInIPAddressLabel);
 		
 		
-		
-		
 		try {
 			
 			Submission tempSubmission = new Submission();
 			tempSubmission.setExamId(1);
 			
-			BarChartPanel examMarkStats = new BarChartPanel("Exam Statistics", 1 + " Exam Statistics", "Score Range", "No of Students", UniScoreClient.uniscoreInterface.getSubmissionDatasetByExam(tempSubmission));
+			BarChartPanel examMarkStats = new BarChartPanel( 1 + " Exam Statistics", "Score Range", "No of Students", UniScoreClient.uniscoreInterface.getSubmissionDatasetByExam(tempSubmission));
 			
 			JLabel lblNewLabel = new JLabel("");
 			lblNewLabel.setIcon(examMarkStats.getChart());

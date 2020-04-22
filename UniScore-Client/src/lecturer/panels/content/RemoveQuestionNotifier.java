@@ -38,7 +38,7 @@ public class RemoveQuestionNotifier extends JFrame {
 	public RemoveQuestionNotifier(Module module, Exam exam, Question question) {
 		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		setTitle("WARNING");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 443, 177);
 		contentPane = new JPanel();
 		contentPane.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);

@@ -18,7 +18,7 @@ public class BarChartPanel {
 
 	JFreeChart chart;
 
-	public BarChartPanel(String chartFrameTitle, String chartTitle, String xAxis, String yAxis, CategoryDataset dataset) {
+	public BarChartPanel(String chartTitle, String xAxis, String yAxis, CategoryDataset dataset) {
 		// Create chart
 		chart = ChartFactory.createBarChart(chartTitle, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
 
