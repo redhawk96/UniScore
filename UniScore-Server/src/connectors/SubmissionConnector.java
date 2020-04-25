@@ -187,6 +187,8 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 				sql = "SELECT * FROM `submissions` WHERE `submissions`.`examId`=?";
 				ps = con.prepareStatement(sql);
 				ps.setInt(1, submission.getExamId());
+			} else {
+				return null;
 			}
 
 			ResultSet rs = ps.executeQuery();
@@ -249,26 +251,29 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 		int c = 0;
 		int d = 0;
 		int e = 0;
-
-		for (Submission sub : examSubmissionList) {
-			switch (sub.getGrade()) {
-			case "A":
-				a = a + 1;
-				break;
-			case "B":
-				b = b + 1;
-				break;
-			case "C":
-				c = c + 1;
-				break;
-			case "D":
-				d = d + 1;
-				break;
-			case "E":
-				e = e + 1;
-				break;
+		
+		if (examSubmissionList != null) {
+			for (Submission sub : examSubmissionList) {
+				switch (sub.getGrade()) {
+				case "A":
+					a = a + 1;
+					break;
+				case "B":
+					b = b + 1;
+					break;
+				case "C":
+					c = c + 1;
+					break;
+				case "D":
+					d = d + 1;
+					break;
+				case "E":
+					e = e + 1;
+					break;
+				}
 			}
 		}
+
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
 		dataset.addValue(a, "MARKS", "75-100");
