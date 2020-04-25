@@ -219,21 +219,20 @@ public class QuestionnaireContentPanel extends ContentPanel {
 			module.setTeacherId(UniScoreClient.authUser.getUserId());
 			
 			List<Module> moduleList = (List<Module>) UniScoreClient.uniscoreInterface.getModulesByRelevance(module, 0, 0);
-	
+			int count = 0;
+			
 			for (Module mod : moduleList) {
-	
-				Exam exam = new Exam();
-				exam.setModuleId(mod.getModuleId());
-	
-				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(exam);
-				int count = 0;
-	
-				for (Exam e : examList) {
-	
-					// Adding a exam record to the table each time the loop executes
-					if (e.getStatus().equalsIgnoreCase("Not started")) {
-						model.addRow(new Object[] { e.getExamId(), "     Y" + mod.getYear() + " - S" + mod.getSemester(), mod.getModuleId(), "     " + mod.getModuleName(), "     " + e.getExamName() });
-	
+				
+				Exam tempExam = new Exam();
+				tempExam.setModuleId(mod.getModuleId());
+						
+				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(tempExam);
+				for(Exam e : examList) {
+					
+					if(e.getStatus().equalsIgnoreCase("Started") || e.getStatus().equalsIgnoreCase("Finished")) {
+						// Adding a exam record to the table each time the loop executes
+						model.addRow(new Object[] {e.getExamId(), "Y" + mod.getYear() + " - S" + mod.getSemester(), mod.getModuleId(), "     "+mod.getModuleName(),  "     "+e.getExamName(), "     "+e.getStatus()});
+						
 						if (count < 1) {
 							selectedExam = e;
 							selectedExamModule = mod;
@@ -242,7 +241,7 @@ public class QuestionnaireContentPanel extends ContentPanel {
 						count++;
 					}
 					
-				}
+				}		
 			}
 			
 		} catch (RemoteException e) {

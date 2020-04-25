@@ -88,6 +88,7 @@ public class SubmissionMailer extends JFrame {
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				
 				try {
 					
 					if(recipientsText.getText().trim().length() < 1) {
@@ -116,22 +117,27 @@ public class SubmissionMailer extends JFrame {
 					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to send mail(s).\nError refferance : "+ExceptionList.REMOTE);
 					en.setVisible(true);
 					System.out.println("RemoteException execution thrown on SubmissionMailer.java file. Error : "+e.getCause());
+					dispose();
 				} catch (ClassNotFoundException e) {
 					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to send mail(s).\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
 					en.setVisible(true);
 					System.out.println("ClassNotFoundException execution thrown on SubmissionMailer.java file. Error : "+e.getCause());
+					dispose();
 				} catch (SQLException e) {
 					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to send mail(s).\nError refferance : "+ExceptionList.SQL);
 					en.setVisible(true);
 					System.out.println("SQLException execution thrown on SubmissionMailer.java file. Error : "+e.getCause());
+					dispose();
 				} catch (AddressException e) {
 					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to send mail(s).\nError refferance : "+ExceptionList.ADDRESS);
 					en.setVisible(true);
 					System.out.println("AddressException execution thrown on SubmissionMailer.java file. Error : "+e.getCause());
+					dispose();
 				} catch (MessagingException e) {
 					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to send mail(s).\nError refferance : "+ExceptionList.MESSAGING);
 					en.setVisible(true);
 					System.out.println("MessagingException execution thrown on SubmissionMailer.java file. Error : "+e.getCause());
+					dispose();
 				}			
 			}
 		});

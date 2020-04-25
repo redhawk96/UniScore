@@ -164,15 +164,9 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 	}
 
 	/*
-	 * getByRelevance : retrieves all submissions filtered by its either the module
-	 * id, student id, or exam id
-	 * 
-	 * @params {Submission} obtains either submission id, student id or module id
-	 * from the submission object
-	 * 
-	 * @return {List<Submission>} returns a list of submissions filtered by the
-	 * relevance if found and null if not
-	 * 
+	 * getByRelevance : retrieves all submissions filtered by its either the module id, student id, or exam id
+	 * @params {Submission} obtains either submission id, student id or module id from the submission object
+	 * @return {List<Submission>} returns a list of submissions filtered by the relevance if found and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	public List<Submission> getByRelevance(Submission submission) throws ClassNotFoundException, SQLException {
@@ -218,14 +212,9 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 	}
 
 	/*
-	 * getSubmissionCountByExamination : retrieves the count for submissions for the
-	 * paticular exam
-	 * 
+	 * getSubmissionCountByExamination : retrieves the count for submissions for the paticular exam
 	 * @params {Submission} Obtains exam id from submission object
-	 * 
-	 * @return {int} returns an integer representing the number of submissions for a
-	 * paticular exam if exam is found and -1 if not
-	 * 
+	 * @return {int} returns an integer representing the number of submissions for a paticular exam if exam is found and -1 if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	public int getSubmissionCountByExamination(Submission submission) throws ClassNotFoundException, SQLException {
@@ -248,12 +237,8 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 
 	/*
 	 * getDatasetByExam : generates a new dataset based on a specific exam
-	 * 
 	 * @params {Submission} Obtains exam id from submission object
-	 * 
-	 * @return {CategoryDataset} returns a categoryDataset contaning all the
-	 * submission scores of a specific exam successfully generated and null if not
-	 * 
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the submission scores of a specific exam successfully generated and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	public CategoryDataset getDatasetByExam(Submission submission) throws ClassNotFoundException, SQLException {
@@ -296,16 +281,9 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 	}
 
 	/*
-	 * getDatasetByStudent : generates a new dataset based on a specific student's
-	 * last submission on all modules, modules will be filtered according to the
-	 * logged in lecturer
-	 * 
-	 * @params {Module, Submission} Obtains teacher id from module object and
-	 * student id from submission object
-	 * 
-	 * @return {CategoryDataset} returns a categoryDataset contaning all the scores
-	 * of last submission on each module is successfully generated and null if not
-	 * 
+	 * getDatasetByStudent : generates a new dataset based on a specific student's last submission on all modules, modules will be filtered according to the logged in lecturer
+	 * @params {Module, Submission} Obtains teacher id from module object and student id from submission object
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the scores of last submission on each module is successfully generated and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	public CategoryDataset getDatasetByStudent(Module module, Submission submission)
@@ -322,15 +300,9 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 	}
 
 	/*
-	 * getLastSubmissionByModule : returns the score of a specific module's most
-	 * recent exam
-	 * 
-	 * @params {Module, Submission} Obtains module id from module object and student
-	 * id from submission object
-	 * 
-	 * @return {int} returns the score of last exam followed by a module if found
-	 * and 0 if not
-	 * 
+	 * getLastSubmissionByModule : returns the score of a specific module's most recent exam
+	 * @params {Module, Submission} Obtains module id from module object and student id from submission object
+	 * @return {int} returns the score of last exam followed by a module if found and 0 if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	private int getLastSubmissionByModule(Module module, Submission submission)
@@ -354,14 +326,9 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 	}
 
 	/*
-	 * getListAsTable : returns a string contaning html table of all the submissions
-	 * for a paticular exam of a paticular module
-	 * 
+	 * getListAsTable : returns a string contaning html table of all the submissions for a paticular exam of a paticular module
 	 * @params {Exam} Obtains exam id and module id from exam object
-	 * 
-	 * @return {String} returns a string contaning html table if found and null if
-	 * not
-	 * 
+	 * @return {String} returns a string contaning html table if found and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
 	public String getListAsTable(Exam exam) throws ClassNotFoundException, SQLException {
@@ -374,11 +341,21 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 			ps.setString(3, exam.getModuleId());
 			ResultSet rs = ps.executeQuery();
 
-			String submissionTable = "<html><head></head><body><table style=\"border-spacing: 0px !important; border: 1px solid #404040 !important; border-bottom: 0 !important;\"><tr style=\"background-color: #404040!important; color : #f9a825!important; font-size: 17px !important;\"><th style=\"padding: 7px !important;\">SID</th><th style=\"text-align: center !important; padding: 7px !important;\">SCORE</th><th style=\"padding: 7px !important;\">GRADE</th></tr>";
+			String submissionDoc = "<html><head></head><body>";
+			
+			String submissionTable = "<table style=\"border-spacing: 0px !important; border: 1px solid #404040 !important; border-bottom: 0 !important;\">"
+					+ "<tr style=\"background-color: #404040!important; color : #f9a825!important; font-size: 17px !important;\">"
+					+ "<th style=\"padding: 7px !important;\"> </th>"	
+					+ "<th style=\"padding: 7px !important;\">SID</th>"
+					+ "<th style=\"text-align: center !important; padding: 7px !important;\">SCORE</th>"
+					+ "<th style=\"padding: 7px !important;\">GRADE</th></tr>";
 
 			String bgColor = "";
 
+			int count = 1;
+			// Data for the table
 			while (rs.next()) {
+
 				if (rs.getString(3).equals("E")) {
 					bgColor = "#ff000059";
 				} else {
@@ -386,16 +363,54 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 				}
 				submissionTable = submissionTable + "<tr style=\"font-size: 17px !important; background-color:"
 						+ bgColor
-						+ " !important;\"><td style=\"width: 100px !important; border-bottom: 1px solid #404040 !important; padding: 5px !important; text-align: center !important;\">"
+						+ " !important;\">"
+						+ "<td style=\"width: 100px !important; border-bottom: 1px solid #404040 !important; padding: 5px !important; text-align: center !important;\">"+count+""
+						+ "</td><td style=\"width: 100px !important; border-bottom: 1px solid #404040 !important; padding: 5px !important; text-align: center !important;\">"
 						+ Identification.getFormatedId(rs.getString(1), "S")
 						+ "</td><td style=\"width: 100px !important;  text-align: center !important; border-bottom: 1px solid #404040 !important; padding: 5px !important;\">"
 						+ rs.getString(2)
 						+ "</td><td style=\"width: 50px !important; text-align: center !important; border-bottom: 1px solid #404040 !important; padding: 5px !important;\">"
 						+ rs.getString(3) + "</td></tr>";
+				count ++;
 			}
 
-			submissionTable = submissionTable + "</table></body></html>";
-			return submissionTable;
+
+			// Getting data for the graph
+			Submission submission = new Submission();
+			submission.setExamId(exam.getExamId());
+			List<Submission> examSubmissionList = getByRelevance(submission);
+
+			int a = 0;
+			int b = 0;
+			int c = 0;
+			int d = 0;
+			int e = 0;
+
+			for (Submission sub : examSubmissionList) {
+				switch (sub.getGrade()) {
+				case "A":
+					a = a + 1;
+					break;
+				case "B":
+					b = b + 1;
+					break;
+				case "C":
+					c = c + 1;
+					break;
+				case "D":
+					d = d + 1;
+					break;
+				case "E":
+					e = e + 1;
+					break;
+				}
+			}
+			
+			String submissionBarChart = "<img src=\"https://quickchart.io/chart?width=400&height=300&format=png&c={'type':'bar','data':{'labels':['75-100','65-74','55-64','35-54','0-34'],'datasets':[{'label':'Marks','data':["+a+","+b+","+c+","+d+","+e+"],'backgroundColor':'rgb(249, 168, 37)'}]}}\" style=\"float: right;padding-right: 200px;\"><br><br>";
+			submissionDoc = submissionDoc + submissionBarChart;
+			submissionDoc = submissionDoc + submissionTable;
+			submissionDoc = submissionDoc + "</table></body></html>";
+			return submissionDoc;
 		}
 		return null;
 	}
