@@ -1,10 +1,8 @@
-/*
- * Institute	: SLIIT
- * Module		: Comparative Integrated Systems
- * Project Name	: UniScore
- * Project		: Online Examination Management System
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
  * Group		: 19
- * Author		: Subarshan Thiyagarajah (UOB-1939088)
+ * @author		: Uditha Silva (UOB-1938086)
  */
 
 package main.panels;
