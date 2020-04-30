@@ -10,8 +10,8 @@ public class Mail {
 	
 	public static void send(String recepients, String subject, String htmlBody) throws AddressException, MessagingException {
 
-		final String username = "uditha1003@gmail.com";
-		final String password = "bpkryfkiapfxrbnt";
+		final String username = ""; // Your gmail address
+		final String password = ""; // Your gmail app password
 
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com");

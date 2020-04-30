@@ -411,7 +411,7 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 				}
 			}
 			
-			String submissionBarChart = "<img src=\"https://quickchart.io/chart?width=400&height=300&format=png&c={'type':'bar','data':{'labels':['75-100','65-74','55-64','35-54','0-34'],'datasets':[{'label':'Marks','data':["+a+","+b+","+c+","+d+","+e+"],'backgroundColor':'rgb(249, 168, 37)'}]}}\" style=\"float: right;padding-right: 200px;\"><br><br>";
+			String submissionBarChart = "<img src=\"https://quickchart.io/chart?width=400&height=300&format=png&c={'type':'pie','data':{'labels':['75-100','65-74','55-64','35-54','0-34'],'datasets':[{'label':'Marks','data':["+a+","+b+","+c+","+d+","+e+"]}]}}\" style=\"float: right;padding-right: 200px;\"><br><br>";
 			submissionDoc = submissionDoc + submissionBarChart;
 			submissionDoc = submissionDoc + submissionTable;
 			submissionDoc = submissionDoc + "</table></body></html>";

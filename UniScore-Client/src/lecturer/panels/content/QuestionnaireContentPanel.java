@@ -236,7 +236,7 @@ public class QuestionnaireContentPanel extends ContentPanel {
 				List<Exam> examList = (List<Exam>) UniScoreClient.uniscoreInterface.getExamsByModule(tempExam);
 				for(Exam e : examList) {
 					
-					if(e.getStatus().equalsIgnoreCase("Started") || e.getStatus().equalsIgnoreCase("Finished")) {
+					if(e.getStatus().equalsIgnoreCase("Not started")) {
 						// Adding a exam record to the table each time the loop executes
 						model.addRow(new Object[] {e.getExamId(), "Y" + mod.getYear() + " - S" + mod.getSemester(), mod.getModuleId(), "     "+mod.getModuleName(),  "     "+e.getExamName(), "     "+e.getStatus()});
 						
