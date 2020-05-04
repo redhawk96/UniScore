@@ -49,8 +49,8 @@ public class UniScoreServer {
 				/*
 				 * Opening login panel
 				 */
-				loginPanel = new LoginPanel();
-				loginPanel.setVisible(true);
+//				loginPanel = new LoginPanel();
+//				loginPanel.setVisible(true);
 			}
 			
 			/* 

@@ -1,14 +1,13 @@
-/*
- * Institute	: SLIIT
- * Module		: Comparative Integrated Systems
- * Project Name	: UniScore
- * Project		: Online Examination Management System
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
  * Group		: 19
- * Author		: Subarshan Thiyagarajah (UOB-1939088)
+ * @author		: Uditha Silva (UOB-1938086)
  */
 
 package main.panels;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import com.panels.ContentPanel;
 import com.panels.content.LoginContentPanel;
@@ -21,6 +20,8 @@ public class LoginPanel extends JFrame{
 	
 	public LoginPanel() {
 		
+		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
+		
 		/*
 		 * Setting JFrame title text
 		 */
@@ -29,7 +30,7 @@ public class LoginPanel extends JFrame{
 		/*
 		 * Setting the size of the application screen
 		 */
-		setSize(UI.LOGIN_PANEL_APPLICATION_WIDTH, UI.LOGIN_PANEL_APPLICATION_HEIGHT);
+		setSize(UI.LOGIN_FRAME_WIDTH, UI.LOGIN_FRAME_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		

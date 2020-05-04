@@ -62,16 +62,15 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 	public boolean update(Question question) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "UPDATE `questions` SET `examId`=?, `question`=?, `option1`=?, `option2`=?, `option3`=?, `option4`=?, `answer`=? WHERE `questions`.`questionsId`=?";
+			String sql = "UPDATE `questions` SET `question`=?, `option1`=?, `option2`=?, `option3`=?, `option4`=?, `answer`=? WHERE `questions`.`questionId`=?";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setInt(1, question.getExamId());
-			ps.setString(2, question.getQuestion());
-			ps.setString(3, question.getOption1());
-			ps.setString(4, question.getOption2());
-			ps.setString(5, question.getOption3());
-			ps.setString(6, question.getOption4());
-			ps.setInt(7, question.getAnswer());
-			ps.setInt(8, question.getQuestionId());
+			ps.setString(1, question.getQuestion());
+			ps.setString(2, question.getOption1());
+			ps.setString(3, question.getOption2());
+			ps.setString(4, question.getOption3());
+			ps.setString(5, question.getOption4());
+			ps.setInt(6, question.getAnswer());
+			ps.setInt(7, question.getQuestionId());
 
 			int execution = ps.executeUpdate();
 
@@ -94,7 +93,7 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 	public boolean remove(Question question) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "DELETE FROM `questions` WHERE `questions`.`questionsId`=?";
+			String sql = "DELETE FROM `questions` WHERE `questions`.`questionId`=?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, question.getQuestionId());
 
@@ -133,7 +132,7 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 				q.setOption1(rs.getString(4));
 				q.setOption2(rs.getString(5));
 				q.setOption3(rs.getString(6));
-				q.setOption4(rs.getString(8));
+				q.setOption4(rs.getString(7));
 				q.setAnswer(rs.getInt(8));
 				q.setCreatedAt(rs.getTimestamp(9));
 				q.setUpdatedAt(rs.getTimestamp(10));
@@ -166,7 +165,7 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 				q.setOption1(rs.getString(4));
 				q.setOption2(rs.getString(5));
 				q.setOption3(rs.getString(6));
-				q.setOption4(rs.getString(8));
+				q.setOption4(rs.getString(7));
 				q.setAnswer(rs.getInt(8));
 				q.setCreatedAt(rs.getTimestamp(9));
 				q.setUpdatedAt(rs.getTimestamp(10));
@@ -202,7 +201,69 @@ public class QuestionConnector implements ConnectorInterface<Question> {
 				q.setOption1(rs.getString(4));
 				q.setOption2(rs.getString(5));
 				q.setOption3(rs.getString(6));
-				q.setOption4(rs.getString(8));
+				q.setOption4(rs.getString(7));
+				q.setAnswer(rs.getInt(8));
+				q.setCreatedAt(rs.getTimestamp(9));
+				q.setUpdatedAt(rs.getTimestamp(10));
+				
+				questionList.add(q);
+			}
+			return questionList;
+		}
+		return null;
+	}
+	
+	
+	/*
+	 * getQuestionCountByExamination : retrieves the count for questions for the paticular exam
+	 * @params {Question} Obtains exam id from question object
+	 * @return {int} returns an integer representing the number of questions for a paticular exam if exam is found and -1 if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public int getQuestionCountByExamination(Question question) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT COUNT(*) as 'qCount' FROM `questions` WHERE `questions`.`examId` = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, question.getExamId());
+			ResultSet rs = ps.executeQuery();
+
+			int qCount = -1;
+
+			while (rs.next()) {
+				qCount = rs.getInt(1);
+			}
+			return qCount;
+		}
+		return -1;
+	}
+	
+	/*
+	 * getBySearch : retrieves all available questions filtered by either question id or tile
+	 * @params {String, Question} obtains a string to base the search and exam id from question object 
+	 * @return {List<Question>} returns a list of filtered questions by either question id or tile if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public List<Question> getBySearch(String searchString) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT * FROM `questions` WHERE `questions`.`questionId` LIKE ? OR `questions`.`question` LIKE ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, "%"+searchString+"%");
+			ps.setString(2, "%"+searchString+"%");
+			ResultSet rs = ps.executeQuery();
+
+			List<Question> questionList = new ArrayList<>();
+
+			while (rs.next()) {
+				Question q = new Question();
+				q.setQuestionId(rs.getInt(1));
+				q.setExamId(rs.getInt(2));
+				q.setQuestion(rs.getString(3));
+				q.setOption1(rs.getString(4));
+				q.setOption2(rs.getString(5));
+				q.setOption3(rs.getString(6));
+				q.setOption4(rs.getString(7));
 				q.setAnswer(rs.getInt(8));
 				q.setCreatedAt(rs.getTimestamp(9));
 				q.setUpdatedAt(rs.getTimestamp(10));

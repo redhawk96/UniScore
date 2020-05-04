@@ -1,10 +1,8 @@
-/*
- * Institute	: SLIIT
- * Module		: Comparative Integrated Systems
- * Project Name	: UniScore
- * Project		: Online Examination Management System
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
  * Group		: 19
- * Author		: Subarshan Thiyagarajah (UOB-1939088)
+ * @author		: Uditha Silva (UOB-1938086)
  */
 
 package lecturer.panels.navigation;
@@ -12,17 +10,24 @@ package lecturer.panels.navigation;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.panels.NavigationPanel;
+import com.panels.content.ErrorNotifier;
+import com.utils.ExceptionList;
+import com.utils.Identification;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
 import main.panels.LecturerPanel;
 import main.panels.LoginPanel;
+import models.Activity;
 
 @SuppressWarnings("serial")
 public class LogoutNavigationPanel extends NavigationPanel {
@@ -36,10 +41,10 @@ public class LogoutNavigationPanel extends NavigationPanel {
 		 * JPanel name is set to identify navigation panel when selected
 		 */
 		panel.setName("logout");
-		panel.setBackground(UI.NAVIGATION_PANEL_BUTTON_COLOR);
+		panel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		panel.setBounds(0, 615, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
-		panel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		panel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -50,6 +55,25 @@ public class LogoutNavigationPanel extends NavigationPanel {
 				 */
 				LecturerPanel.selectedNavigation = new LogoutNavigationPanel();
 				LecturerPanel.setSelectedPanel();
+				
+				try {
+					
+					UniScoreClient.uniscoreInterface.addLogActivity(new Activity(Identification.getFormatedId(UniScoreClient.authUser.getUserId(), "L")+" has ended session from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
+					
+				} catch (RemoteException ex) {
+					ErrorNotifier en = new ErrorNotifier("Failed to terminate connection with the server !\nPlease contact the administrator\nError refferance : "+ExceptionList.REMOTE);
+					en.setVisible(true);
+					System.out.println("RemoteException execution thrown on LogoutNavigationPanel.java file. Error : "+ex.getCause());
+				} catch (ClassNotFoundException ex) {
+					ErrorNotifier en = new ErrorNotifier("Failed to terminate connection with the server !\nPlease contact the administrator\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
+					en.setVisible(true);
+					System.out.println("ClassNotFoundException execution thrown on LogoutNavigationPanel.java file. Error : "+ex.getCause());
+				} catch (SQLException ex) {
+					ErrorNotifier en = new ErrorNotifier("Failed to terminate connection with the server !\nPlease contact the administrator\nError refferance : "+ExceptionList.SQL);
+					en.setVisible(true);
+					System.out.println("SQLException execution thrown on LogoutNavigationPanel.java file. Error : "+ex.getCause());
+				}
+				
 				UniScoreClient.authUser = null;
 				UniScoreClient.loginPanel = new LoginPanel();
 				UniScoreClient.loginPanel.setVisible(true);
@@ -61,8 +85,8 @@ public class LogoutNavigationPanel extends NavigationPanel {
 		 * Adding navigation button text to NavigationPanel
 		 */
 		JLabel navigationLabel = new JLabel("LOGOUT");
-		navigationLabel.setForeground(UI.NAVIGATION_PANEL_BUTTON_TEXT_COLOR);
-		navigationLabel.setFont(UI.NAVIGATION_PANEL_BUTTON_FONT);
+		navigationLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		navigationLabel.setFont(UI.APPLICATION_THEME_FONT_14_BOLD);
 		navigationLabel.setBounds(UI.NAVIGATION_PANEL_BUTTON_TEXT_X_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_Y_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_WIDTH, UI.NAVIGATION_PANEL_BUTTON_TEXT_HEIGHT);
 		panel.add(navigationLabel);
 

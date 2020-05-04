@@ -1,6 +1,14 @@
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
+ * Group		: 19
+ * @author		: Uditha Silva (UOB-1938086)
+ */
+
 package main.panels;
 
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import com.panels.ContentPanel;
 import com.panels.NavigationPanel;
@@ -11,10 +19,10 @@ import lecturer.panels.navigation.DashboardNavigationPanel;
 import lecturer.panels.navigation.ExamNavigationPanel;
 import lecturer.panels.navigation.LogoutNavigationPanel;
 import lecturer.panels.navigation.ModuleNavigationPanel;
-import lecturer.panels.navigation.NavigationUserAvatar;
+import lecturer.panels.navigation.AvatarPanel;
 import lecturer.panels.navigation.QuestionNavigationPanel;
-import lecturer.panels.navigation.SettingsNavigationPanel;
 import lecturer.panels.navigation.StudentNavigationPanel;
+import lecturer.panels.navigation.NamePanel;
 
 import java.util.ArrayList;
 
@@ -30,7 +38,6 @@ public class LecturerPanel extends JFrame {
 	private NavigationPanel studentNavigationPanel = new StudentNavigationPanel();
 	private NavigationPanel questionNavigationPanel = new QuestionNavigationPanel();
 	private NavigationPanel examNavigationPanel = new ExamNavigationPanel();
-	private NavigationPanel settingsNavigationPanel = new SettingsNavigationPanel();
 	private NavigationPanel logoutNavigationPanel = new LogoutNavigationPanel();
 	private static ArrayList<NavigationPanel> navigationPanelList;
 	public static NavigationPanel selectedNavigation;
@@ -42,14 +49,15 @@ public class LecturerPanel extends JFrame {
 	public static ContentPanel selectedContent;
 	
 	/*
-	 * User avatar icon component
+	 * Avatar and auth user name components
 	 */
-	private NavigationUserAvatar avatar = new NavigationUserAvatar();
-
+	private AvatarPanel avatar = new AvatarPanel();
+	private NamePanel authUserName = new NamePanel();
 	private static JPanel rightSidePanel;
 	
 	public LecturerPanel() {
 
+		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		/*
 		 * Setting JFrame title text
 		 */
@@ -58,7 +66,7 @@ public class LecturerPanel extends JFrame {
 		/*
 		 * Setting the size of the application screen
 		 */
-		setSize(UI.APPLICATION_WIDTH, UI.APPLICATION_HEIGHT);
+		setSize(UI.APPLICATION_PRIMARY_FRAME_WIDTH, UI.APPLICATION_PRIMARY_FRAME_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
@@ -76,15 +84,16 @@ public class LecturerPanel extends JFrame {
 		 * Adding left-side JPanel which is on the left side of the application. Used as the application's navigation panel
 		 */
 		JPanel leftSidePanel = new JPanel();
-		leftSidePanel.setBackground(UI.NAVIGATION_PANEL_COLOR);
+		leftSidePanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		leftSidePanel.setBounds(UI.NAVIGATION_PANEL_X_AXIS, UI.NAVIGATION_PANEL_Y_AXIS, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_HEIGHT);
 		getContentPane().add(leftSidePanel);
 		leftSidePanel.setLayout(null);
 
 		/*
-		 * Adding user avatar to left-side JPanel
+		 * Adding avatar and auth user's name to left-side JPanel
 		 */
 		leftSidePanel.add(avatar.getAvatar());
+		leftSidePanel.add(authUserName.getName());
 
 		/*
 		 * Adding the navigation panels to an ArrayList.
@@ -97,7 +106,6 @@ public class LecturerPanel extends JFrame {
 		navigationPanelList.add(studentNavigationPanel);
 		navigationPanelList.add(questionNavigationPanel);
 		navigationPanelList.add(examNavigationPanel);
-		navigationPanelList.add(settingsNavigationPanel);
 		navigationPanelList.add(logoutNavigationPanel);
 		
 		/*
@@ -108,7 +116,6 @@ public class LecturerPanel extends JFrame {
 		leftSidePanel.add(studentNavigationPanel.getNavigation());
 		leftSidePanel.add(questionNavigationPanel.getNavigation());
 		leftSidePanel.add(examNavigationPanel.getNavigation());
-		leftSidePanel.add(settingsNavigationPanel.getNavigation());
 		leftSidePanel.add(logoutNavigationPanel.getNavigation());
 
 		/*
@@ -145,7 +152,7 @@ public class LecturerPanel extends JFrame {
 			if (NavigationPanel.getNavigation().getName().toString().equalsIgnoreCase(LecturerPanel.selectedNavigation.getNavigation().getName().toString())) {
 				NavigationPanel.getNavigation().setBackground(UI.NAVIGATION_PANEL_SELECTED_BUTTON_COLOR);
 			} else {
-				NavigationPanel.getNavigation().setBackground(UI.NAVIGATION_PANEL_BUTTON_COLOR);
+				NavigationPanel.getNavigation().setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 			}
 		}
 	}

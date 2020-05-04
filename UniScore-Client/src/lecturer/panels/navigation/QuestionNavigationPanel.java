@@ -1,3 +1,10 @@
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
+ * Group		: 19
+ * @author		: Uditha Silva (UOB-1938086)
+ */
+
 package lecturer.panels.navigation;
 
 import java.awt.Cursor;
@@ -12,7 +19,7 @@ import javax.swing.SwingConstants;
 import com.panels.NavigationPanel;
 import com.utils.UI;
 
-import lecturer.panels.content.QuestionContentPanel;
+import lecturer.panels.content.QuestionnaireContentPanel;
 import main.panels.LecturerPanel;
 
 @SuppressWarnings("serial")
@@ -27,10 +34,10 @@ public class QuestionNavigationPanel extends NavigationPanel {
 		 * JPanel name is set to identify navigation panel when selected
 		 */
 		panel.setName("question"); 
-		panel.setBackground(UI.NAVIGATION_PANEL_BUTTON_COLOR);
-		panel.setBounds(0, 435,UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
+		panel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		panel.setBounds(0, 495, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
-		panel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		panel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -40,7 +47,7 @@ public class QuestionNavigationPanel extends NavigationPanel {
 				 * setSelectedPanel() will be executed to update the already selected NavigationPanel with current selected NavigationPanel along with relevant ContentPanel
 				 */
 				LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
-				LecturerPanel.selectedContent = new QuestionContentPanel();
+				LecturerPanel.selectedContent = new QuestionnaireContentPanel();
 				LecturerPanel.setSelectedPanel();
 			}
 		});
@@ -49,8 +56,8 @@ public class QuestionNavigationPanel extends NavigationPanel {
 		 * Adding navigation button text to NavigationPanel
 		 */
 		JLabel navigationLabel = new JLabel("QUESTIONS");
-		navigationLabel.setForeground(UI.NAVIGATION_PANEL_BUTTON_TEXT_COLOR);
-		navigationLabel.setFont(UI.NAVIGATION_PANEL_BUTTON_FONT);
+		navigationLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		navigationLabel.setFont(UI.APPLICATION_THEME_FONT_14_BOLD);
 		navigationLabel.setBounds(UI.NAVIGATION_PANEL_BUTTON_TEXT_X_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_Y_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_WIDTH, UI.NAVIGATION_PANEL_BUTTON_TEXT_HEIGHT);
 		panel.add(navigationLabel);
 

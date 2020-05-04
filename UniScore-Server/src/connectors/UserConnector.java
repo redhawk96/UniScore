@@ -244,6 +244,7 @@ public class UserConnector implements ConnectorInterface<User> {
 	
 	/*
 	 * getByType : retrieves all available users filtered by user type
+	 * @params {User} obtains a user role from user object 
 	 * @return {List<User>} returns a list of filtered users by user type if found and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
@@ -277,5 +278,70 @@ public class UserConnector implements ConnectorInterface<User> {
 			return userList;
 		}
 		return null;
+	}
+	
+	
+	/*
+	 * getBySearch : retrieves all available users filtered by either user id, first name or last name with status active
+	 * @params {String, User} obtains a string to base the search and role from user object 
+	 * @return {List<User>} returns a list of filtered users by either user id, first name or last name with status active if found and null if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public List<User> getBySearch(String searchString) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT * FROM `users` WHERE `users`.`userId` LIKE ? OR `users`.`firstName` LIKE ? OR `users`.`lastName` LIKE ? AND `users`.`status`='Active'";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, "%"+searchString+"%");
+			ps.setString(2, "%"+searchString+"%");
+			ps.setString(3, "%"+searchString+"%");
+			ResultSet rs = ps.executeQuery();
+
+			List<User> userList = new ArrayList<>();
+
+			while (rs.next()) {
+				User u = new User();
+
+				u.setUserId(rs.getString(1));
+				u.setFirstName(rs.getString(2));
+				u.setLastName(rs.getString(3));
+				u.setGender(rs.getString(4));
+				u.setEmail(rs.getString(5));
+				u.setNic(rs.getString(6));
+				u.setPhone(rs.getInt(7));
+				u.setAddress(rs.getString(8));
+				u.setRole(rs.getString(9));
+				u.setRegisteredDate(rs.getTimestamp(10));
+				u.setStatus(rs.getString(12));
+
+				userList.add(u);
+			}
+			return userList;
+		}
+		return null;
+	}
+	
+	/*
+	 * getCountByRole : retrieves count of all available active users filtered by user type
+	 * @params {User} obtains a user role from user object 
+	 * @return {int} returns returns an integer representing the number of users filtered by user type if found and -1 if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public int getCountByRole(User user) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			Connection con = DBConnection.getDBConnection();
+			String sql = "SELECT COUNT(*) AS 'uCount' FROM `users` WHERE `users`.`role`= ? AND `users`.`status`='Active'";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, user.getRole());
+			ResultSet rs = ps.executeQuery();
+
+			int uCount = -1;
+
+			while (rs.next()) {
+				uCount = rs.getInt(1);
+			}
+			return uCount;
+		}
+		return -1;
 	}
 }

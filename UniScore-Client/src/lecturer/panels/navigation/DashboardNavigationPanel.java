@@ -1,3 +1,10 @@
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
+ * Group		: 19
+ * @author		: Uditha Silva (UOB-1938086)
+ */
+
 package lecturer.panels.navigation;
 
 import java.awt.Cursor;
@@ -27,10 +34,10 @@ public class DashboardNavigationPanel extends NavigationPanel {
 		 * JPanel name is set to identify navigation panel when selected
 		 */
 		panel.setName("dashboard");
-		panel.setBackground(UI.NAVIGATION_PANEL_BUTTON_COLOR);
-		panel.setBounds(0, 255, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
+		panel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		panel.setBounds(0, 315, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
-		panel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		panel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -49,8 +56,8 @@ public class DashboardNavigationPanel extends NavigationPanel {
 		 * Adding navigation button text to NavigationPanel
 		 */
 		JLabel navigationLabel = new JLabel("DASHBOARD");
-		navigationLabel.setForeground(UI.NAVIGATION_PANEL_BUTTON_TEXT_COLOR);
-		navigationLabel.setFont(UI.NAVIGATION_PANEL_BUTTON_FONT);
+		navigationLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		navigationLabel.setFont(UI.APPLICATION_THEME_FONT_14_BOLD);
 		navigationLabel.setBounds(UI.NAVIGATION_PANEL_BUTTON_TEXT_X_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_Y_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_WIDTH, UI.NAVIGATION_PANEL_BUTTON_TEXT_HEIGHT);
 		panel.add(navigationLabel);
 

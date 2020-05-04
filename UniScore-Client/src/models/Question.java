@@ -1,3 +1,10 @@
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
+ * Group		: 19
+ * @author		: Uditha Silva (UOB-1938086)
+ */
+
 package models;
 
 import java.io.Serializable;
@@ -6,8 +13,8 @@ import java.sql.Timestamp;
 @SuppressWarnings("serial")
 public class Question implements Serializable {
 
-	private int questionId, examId;
-	private String question, option1, option2, option3, option4, answer;
+	private int questionId, examId, answer;
+	private String question, option1, option2, option3, option4;
 	private Timestamp createdAt, updatedAt;
 
 	public Question() {}
@@ -23,7 +30,7 @@ public class Question implements Serializable {
 	 * @param createdAt
 	 * @param updatedAt
 	 */
-	public Question(int examId, String question, String option1, String option2, String option3, String option4, String answer, Timestamp createdAt, Timestamp updatedAt) {
+	public Question(int examId, String question, String option1, String option2, String option3, String option4, int answer, Timestamp createdAt, Timestamp updatedAt) {
 		this.examId = examId;
 		this.question = question;
 		this.option1 = option1;
@@ -47,7 +54,7 @@ public class Question implements Serializable {
 	 * @param createdAt
 	 * @param updatedAt
 	 */
-	public Question(int questionId, int examId, String question, String option1, String option2, String option3, String option4, String answer, Timestamp createdAt, Timestamp updatedAt) {
+	public Question(int questionId, int examId, String question, String option1, String option2, String option3, String option4, int answer, Timestamp createdAt, Timestamp updatedAt) {
 		this.questionId = questionId;
 		this.examId = examId;
 		this.question = question;
@@ -116,11 +123,11 @@ public class Question implements Serializable {
 		this.option4 = option4;
 	}
 
-	public String getAnswer() {
+	public int getAnswer() {
 		return answer;
 	}
 
-	public void setAnswer(String answer) {
+	public void setAnswer(int answer) {
 		this.answer = answer;
 	}
 

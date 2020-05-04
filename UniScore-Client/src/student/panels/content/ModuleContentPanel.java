@@ -36,7 +36,7 @@ public class ModuleContentPanel extends ContentPanel {
 		 */
 		contentPanel.setName("module");
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
-		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
+		contentPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		contentPanel.setLayout(null);
 
 		displayNavigationIndicator();
@@ -60,21 +60,21 @@ public class ModuleContentPanel extends ContentPanel {
 	public void displayNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
-		navigationIndicatorPanel.setBackground(UI.NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR);
+		navigationIndicatorPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		navigationIndicatorPanel.setBounds(30, 11, 1199, 36);
 		contentPanel.add(navigationIndicatorPanel);
 		navigationIndicatorPanel.setLayout(null);
 		
 		JLabel navigationIndicatorMainLabel = new JLabel("Student /");
-		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
-		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
+		navigationIndicatorMainLabel.setBounds(1054, 1119, 71, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		navigationIndicatorMainLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
 		
 		JLabel navigationIndicatorActiveLabel = new JLabel("Modules");
-		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorActiveLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
-		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
+		navigationIndicatorActiveLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		navigationIndicatorActiveLabel.setBounds(1054, 1119, 65, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorActiveLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 		
 		JLayeredPane layeredPane = new JLayeredPane();

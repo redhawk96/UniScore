@@ -18,6 +18,7 @@ import java.util.List;
 
 import connectivity.DBConnection;
 import models.Module;
+import models.User;
 
 public class ModuleConnector implements ConnectorInterface<Module> {
 
@@ -219,6 +220,30 @@ public class ModuleConnector implements ConnectorInterface<Module> {
 			return moduleList;
 		}
 		return null;
+	}
+	
+	/*
+	 * getCountByUser : retrieves count of all available modules filtered by an user
+	 * @params {User} obtains user id from user object
+	 * @return {int} returns returns an integer representing the number of modules if found and -1 if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public int getCountByUser(User user) throws ClassNotFoundException, SQLException {
+		if (DBConnection.getDBConnection() != null) {
+			int mCount = 0;
+
+			Module m = new Module();
+			m.setTeacherId(user.getUserId());
+
+			List<Module> moduleList = getByYearAndUser(m, 0, 0);
+
+			for (@SuppressWarnings("unused")
+			Module module : moduleList) {
+				mCount = mCount + 1;
+			}
+			return mCount;
+		}
+		return -1;
 	}
 
 }

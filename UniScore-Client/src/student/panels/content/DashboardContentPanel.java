@@ -30,7 +30,7 @@ public class DashboardContentPanel extends ContentPanel{
 	public DashboardContentPanel() {
 		contentPanel.setName("dashboard");
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
-		contentPanel.setBackground(UI.CONTENT_PANEL_BACKGROUND_COLOR);
+		contentPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		contentPanel.setLayout(null);
 		
 		try {
@@ -68,16 +68,14 @@ public class DashboardContentPanel extends ContentPanel{
 				StudentPanel.setSelectedPanel();
 			}
 		});
-		moduleCard.setBorder(UI.CARD_BORDER);
-		moduleCard.setBackground(UI.CARD_PRIMARY_BACKGROUND_COLOR);
+		moduleCard.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		moduleCard.setBounds(30, 66, UI.CARD_WIDTH, UI.CARD_HEIGHT);
 		moduleCard.setLayout(null);
-		moduleCard.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		moduleCard.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		contentPanel.add(moduleCard);
 		
 		JPanel moduleCardTextPanel = new JPanel();
-		moduleCardTextPanel.setBorder(UI.CARD_BORDER);
-		moduleCardTextPanel.setBackground(UI.CARD_SECONDARY_BACKGROUND_COLOR);
+		moduleCardTextPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		moduleCardTextPanel.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
 		moduleCard.add(moduleCardTextPanel);
 		moduleCardTextPanel.setLayout(null);
@@ -86,14 +84,14 @@ public class DashboardContentPanel extends ContentPanel{
 		moduleCardText.setHorizontalAlignment(SwingConstants.CENTER);
 		moduleCardText.setIcon(null);
 		moduleCardText.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
-		moduleCardText.setForeground(UI.CARD_LABEL_TEXT_COLOR);
-		moduleCardText.setFont(UI.CARD_LABEL_TEXT_FONT);
+		moduleCardText.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		moduleCardText.setFont(UI.APPLICATION_THEME_FONT_20_PLAIN);
 		moduleCardTextPanel.add(moduleCardText);
 		
 		JLabel moduleCardStatNumber = new JLabel("03");
 		moduleCardStatNumber.setHorizontalAlignment(SwingConstants.CENTER);
-		moduleCardStatNumber.setForeground(UI.CARD_LABEL_NUMBER_COLOR);
-		moduleCardStatNumber.setFont(UI.CARD_LABEL_TEXT_FONT);
+		moduleCardStatNumber.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		moduleCardStatNumber.setFont(UI.APPLICATION_THEME_FONT_20_PLAIN);
 		moduleCardStatNumber.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
 		moduleCard.add(moduleCardStatNumber);
 		
@@ -111,30 +109,28 @@ public class DashboardContentPanel extends ContentPanel{
 			}
 		});
 		submissionCard.setLayout(null);
-		submissionCard.setBorder(UI.CARD_BORDER);
-		submissionCard.setBackground(UI.CARD_PRIMARY_BACKGROUND_COLOR);
+		submissionCard.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		submissionCard.setBounds(640, 66, UI.CARD_WIDTH, UI.CARD_HEIGHT);
-		submissionCard.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		submissionCard.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		contentPanel.add(submissionCard);
 		
 		JPanel submissionCardTextPanel = new JPanel();
 		submissionCardTextPanel.setLayout(null);
-		submissionCardTextPanel.setBorder(UI.CARD_BORDER);
-		submissionCardTextPanel.setBackground(UI.CARD_SECONDARY_BACKGROUND_COLOR);
+		submissionCardTextPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		submissionCardTextPanel.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
 		submissionCard.add(submissionCardTextPanel);
 		
 		JLabel submissionCardText = new JLabel("SUBMISSIONS");
 		submissionCardText.setHorizontalAlignment(SwingConstants.CENTER);
-		submissionCardText.setForeground(UI.CARD_LABEL_TEXT_COLOR);
-		submissionCardText.setFont(UI.CARD_LABEL_TEXT_FONT);
+		submissionCardText.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		submissionCardText.setFont(UI.APPLICATION_THEME_FONT_20_PLAIN);
 		submissionCardText.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
 		submissionCardTextPanel.add(submissionCardText);
 		
 		JLabel submissionCardStatNumber = new JLabel("01");
 		submissionCardStatNumber.setHorizontalAlignment(SwingConstants.CENTER);
-		submissionCardStatNumber.setForeground(UI.CARD_LABEL_NUMBER_COLOR);
-		submissionCardStatNumber.setFont(UI.CARD_LABEL_TEXT_FONT);
+		submissionCardStatNumber.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		submissionCardStatNumber.setFont(UI.APPLICATION_THEME_FONT_20_PLAIN);
 		submissionCardStatNumber.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
 		submissionCard.add(submissionCardStatNumber);
 		
@@ -152,30 +148,28 @@ public class DashboardContentPanel extends ContentPanel{
 			}
 		});
 		examCard.setLayout(null);
-		examCard.setBorder(UI.CARD_BORDER);
-		examCard.setBackground(UI.CARD_PRIMARY_BACKGROUND_COLOR);
+		examCard.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		examCard.setBounds(340, 66, UI.CARD_WIDTH, UI.CARD_HEIGHT);
-		examCard.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		examCard.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		contentPanel.add(examCard);
 		
 		JPanel examCardTextPanel = new JPanel();
 		examCardTextPanel.setLayout(null);
-		examCardTextPanel.setBorder(UI.CARD_BORDER);
-		examCardTextPanel.setBackground(UI.CARD_SECONDARY_BACKGROUND_COLOR);
+		examCardTextPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		examCardTextPanel.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
 		examCard.add(examCardTextPanel);
 		
 		JLabel examCardText = new JLabel("EXAMS");
 		examCardText.setHorizontalAlignment(SwingConstants.CENTER);
-		examCardText.setForeground(UI.CARD_LABEL_TEXT_COLOR);
-		examCardText.setFont(UI.CARD_LABEL_TEXT_FONT);
+		examCardText.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		examCardText.setFont(UI.APPLICATION_THEME_FONT_20_PLAIN);
 		examCardText.setBounds(0, 0, UI.CARD_LABEL_TEXT_WIDTH, UI.CARD_HEIGHT);
 		examCardTextPanel.add(examCardText);
 		
 		JLabel examCardStatNumber = new JLabel("00");
 		examCardStatNumber.setHorizontalAlignment(SwingConstants.CENTER);
-		examCardStatNumber.setForeground(UI.CARD_LABEL_NUMBER_COLOR);
-		examCardStatNumber.setFont(UI.CARD_LABEL_TEXT_FONT);
+		examCardStatNumber.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		examCardStatNumber.setFont(UI.APPLICATION_THEME_FONT_20_PLAIN);
 		examCardStatNumber.setBounds(189, 0, UI.CARD_LABEL_NUMBER_WIDTH, UI.CARD_HEIGHT);
 		examCard.add(examCardStatNumber);
 		
@@ -186,21 +180,21 @@ public class DashboardContentPanel extends ContentPanel{
 	public void displayNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
-		navigationIndicatorPanel.setBackground(UI.NAVIGATION_INDICATOR_PANEL_BACKGRIOUND_COLOR);
+		navigationIndicatorPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		navigationIndicatorPanel.setBounds(30, 11, 1199, 36);
 		contentPanel.add(navigationIndicatorPanel);
 		navigationIndicatorPanel.setLayout(null);
 		
 		JLabel navigationIndicatorMainLabel = new JLabel("Student /");
-		navigationIndicatorMainLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_MAIN_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
-		navigationIndicatorMainLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorMainLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_MAIN_TEXT_COLOR);
+		navigationIndicatorMainLabel.setBounds(1054, 1119, 71, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorMainLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		navigationIndicatorMainLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorMainLabel);
 		
 		JLabel navigationIndicatorActiveLabel = new JLabel("Home");
-		navigationIndicatorActiveLabel.setFont(UI.NAVIGATION_INDICATOR_PANEL_FONT);
-		navigationIndicatorActiveLabel.setBounds(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_X_AXIS, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_LABEL_WIDTH, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
-		navigationIndicatorActiveLabel.setForeground(UI.NAVIGATION_INDICATOR_PANEL_ACTIVE_TEXT_COLOR);
+		navigationIndicatorActiveLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		navigationIndicatorActiveLabel.setBounds(1119, UI.NAVIGATION_INDICATOR_PANEL_Y_AXIS, 65, UI.NAVIGATION_INDICATOR_PANEL_HEIGHT);
+		navigationIndicatorActiveLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 
