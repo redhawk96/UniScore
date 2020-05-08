@@ -12,9 +12,9 @@ import javax.swing.SwingConstants;
 import com.panels.NavigationPanel;
 import com.utils.UI;
 
+import main.panels.StudentPanel;
 import student.panels.content.ModuleContentPanel;
 import student.panels.navigation.ModuleNavigationPanel;
-import main.panels.StudentPanel;
 
 @SuppressWarnings("serial")
 public class ModuleNavigationPanel extends NavigationPanel {

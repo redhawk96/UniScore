@@ -15,7 +15,7 @@ import javax.swing.border.BevelBorder;
 
 public class UI {
 
-	// Common Ui class implemented to reduce complexity and to avoid various properties been implemented for the identical components
+	// Common Ui class implemented to reduce complexity and to avoid different values been set for the identical components
 	
 	/*
 	 * Primary Application properties

@@ -24,28 +24,32 @@ import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class ErrorNotifier extends JFrame {
-
-	private JPanel contentPane;
-
+	/*
+	 * ErrorNotifier method : used to initialize JPanel and required properties and add UI elements to the JFrame, JFrame will be used as a pop-up windows for error messages
+	 * @param errorMessage 	  String is accepted to display the type of error, the error message according to different situvations 
+	 */
 	public ErrorNotifier(String errorMessage) {
+		// Defining the JFrame properties
 		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		setTitle("ERROR");
 		setBounds(100, 100, 443, 177);
-		contentPane = new JPanel();
+		
+		// Creating a JPanel to containt all the sub elements, panel buttons, message and icon
+		JPanel contentPane = new JPanel();
 		contentPane.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
 		setLocationRelativeTo(null); 
 		setResizable(false);
-		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		// Adding a JScrollPane incase of an overflow with the message
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(102, 24, 325, 62);
 		contentPane.add(scrollPane);
 		
+		// Defining error message in JTextPane
 		JTextPane errorText = new JTextPane();
 		errorText.setText(errorMessage);
 		errorText.setEditable(false);
@@ -54,16 +58,19 @@ public class ErrorNotifier extends JFrame {
 		scrollPane.setViewportView(errorText);
 		errorText.setFont(UI.APPLICATION_THEME_FONT_13_PLAIN);
 		
+		// Adding icon 
 		JLabel errorIconLabel = new JLabel("");
 		errorIconLabel.setIcon(new ImageIcon(ErrorNotifier.class.getResource("/resources/error_icon.png")));
 		errorIconLabel.setBounds(21, 21, 50, 50);
 		contentPane.add(errorIconLabel);
 		
+		// Adding a new JPanel to set the look and feel of the pop-up like native windows pop-up(UX)
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 92, 437, 56);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
+		// Styling JPanel as a button 
 		JPanel okButtonPanel = new JPanel();
 		okButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		okButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));

@@ -16,8 +16,12 @@ import com.utils.UI;
 @SuppressWarnings("serial")
 public class LoginPanel extends JFrame{
 
-	private ContentPanel contentPanel = new LoginContentPanel();
+	// Declaring and initializing new LoginContentPanel
+	private ContentPanel loginContentPanel = new LoginContentPanel();
 	
+	/*
+	 * LoginPanel method : used to initialize JFrame, UI elements to style and support functionality of JFrame implemented here  
+	 */
 	public LoginPanel() {
 		
 		// Setting LoginPanel JFrame's icon
@@ -38,6 +42,6 @@ public class LoginPanel extends JFrame{
 		setResizable(false);
 		
 		// Adding login screen to JFrame
-		getContentPane().add(contentPanel.getContent());
+		getContentPane().add(loginContentPanel.getContent());
 	}
 }

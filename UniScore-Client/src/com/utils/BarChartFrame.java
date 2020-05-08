@@ -26,17 +26,25 @@ import org.jfree.ui.RectangleInsets;
 @SuppressWarnings("serial")
 public class BarChartFrame extends JFrame {
 
+	/*
+	 * Method BarChartFrame : used to initialize JFrame, required properties and add UI elements to the JFrame
+	 * @params chartFrameTitle	JFrame title
+	 * @params chartTitle		The title used to name the graph, heading
+	 * @params xAxis		 	Title at the bottom of the graph
+	 * @params dataset		 	Title at the left grid line of the graph
+	 */
 	public BarChartFrame(String chartFrameTitle, String chartTitle, String xAxis, String yAxis, CategoryDataset dataset) {
 		super(chartFrameTitle);
 		
-		// Create chart
+		// Plotting a new chart object with, graph title, x-axis title, y-axis title, and dataset which is provided
 		JFreeChart chart = ChartFactory.createBarChart3D(chartTitle, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
 		
+		// Creating a new chart panel to hold the chart
 		ChartPanel panel = new ChartPanel(chart);
 		setContentPane(panel);
 				
+		// Styling the chart
 	    StandardChartTheme theme = (StandardChartTheme)org.jfree.chart.StandardChartTheme.createJFreeTheme();
-
 	    theme.setTitlePaint( UI.APPLICATION_THEME_SECONDARY_COLOR );
 	    theme.setExtraLargeFont(UI.APPLICATION_THEME_FONT_18_BOLD); //title
 	    theme.setLargeFont(UI.APPLICATION_THEME_FONT_16_PLAIN); //axis-title

@@ -20,10 +20,13 @@ import connectivity.UniScoreClient;
 
 public class NamePanel {
 
+	// Declaring and initializing new JPanel to act as an wrapper to contain the sub UI elements and their properties and styling
 	private JPanel panel = new JPanel();
 
+	/*
+	 * NamePanel method : used to initialize JPanel, required properties and add UI elements to the JPanel
+	 */
 	public NamePanel() {
-
 		/*
 		 * Adding navigation button to NavigationPanel
 		 * JPanel name is set to identify navigation panel when selected
@@ -33,9 +36,8 @@ public class NamePanel {
 		panel.setBounds(0, 225, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
 		panel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
-		/*
-		 * Adding navigation button text to NavigationPanel
-		 */
+
+		// navigationLabel used to display the logged in lecturer's first and last name
 		JLabel navigationLabel = new JLabel(UniScoreClient.authUser.getFirstName().toUpperCase()+" "+UniScoreClient.authUser.getLastName().toUpperCase());
 		navigationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		navigationLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
@@ -50,6 +52,10 @@ public class NamePanel {
 		panel.add(separator);
 	}
 
+	/*
+	 * getName : Method is used to return the JPanel which has the styling of its sub elements (signed-in lecturer's name)
+	 * @return JPanel which contains the sub elements with added styling 
+	 */
 	public JPanel getName() {
 		return panel;
 	}

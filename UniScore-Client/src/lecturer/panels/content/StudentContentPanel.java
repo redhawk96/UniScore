@@ -32,9 +32,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import com.panels.ContentPanel;
-import com.utils.ErrorNotifier;
 import com.utils.BarChartFrame;
 import com.utils.ContentTable;
+import com.utils.ErrorNotifier;
 import com.utils.ExceptionList;
 import com.utils.Identification;
 import com.utils.UI;
@@ -48,26 +48,50 @@ import models.User;
 @SuppressWarnings("serial")
 public class StudentContentPanel extends ContentPanel {
 
+	// Declaring and initializing new JPanel to act as an wrapper to contain navigationIndicatorPanel and studentBodyPanel
 	private JPanel contentPanel = new JPanel();
-	private ContentTable table = new ContentTable();
-	private JScrollPane scrollPane = new JScrollPane();
+		
+	// Declaring and initializing new JPanel to act as an wrapper to contain studentInfoPanel and scrollPane
 	private JPanel studentBodyPanel = new JPanel();
+	
+	// Declaring and initializing new JPanel to act as an wrapper to contain the elements which is responsible to display selected student information. Located below navigationIndicatorPanel
 	private JPanel studentInfoPanel = new JPanel();
+	
+	// Declaring and initializing new ContentTable(JTable with overridden methods) to display all the students 
+	private ContentTable table = new ContentTable();
+	
+	// Declaring and initializing new JScrollPane to contain the ContentTable in an overflow 
+	private JScrollPane scrollPane = new JScrollPane();
+	
+	// Declaring JTextField to act as the search field to lookup for any paticular student by first/last names or student id
 	private JTextField searchText;
 	
+	// Declaring User object selectedStudent to hold the selectd student's properties(information)
 	private User selectedStudent;
 	
+	/*
+	 * StudentContentPanel method : used to initialize ContentPanel, required properties and add UI elements to the ContentPanel
+	 */
 	public StudentContentPanel() {
+		// Adding elements to the ContentPanel
 		setContentPanel();
 	}
 	
+	/*
+	 * Method setContentPanel adds swing/awt and other elements to the ContentPanel
+	 */
 	private void setContentPanel() {
 		initializeContentPanel();
 		addNavigationIndicator();
 		setSearchField();
-		addStudentListTable("");
+		// Calling displayStudentList method with an empty string to retrieve all students without filtering
+		displayStudentList("");
 	}
 	
+	/*
+	 * Method initializeContentPanel adds the necessary UI layout(styling) to the ContentPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color
+	 */
 	private void initializeContentPanel() {
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
@@ -79,6 +103,11 @@ public class StudentContentPanel extends ContentPanel {
 		studentBodyPanel.setLayout(null);
 	}
 	
+	/*
+	 * Method addNavigationIndicator adds UI layout(styling) to navigationIndicatorPanel which shows the current navigated panel on the top of ContentPanel
+	 * navigationIndicatorPanel is a sub element under ContentPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color, JLabel text/text-color/font-size/boundaries 
+	 */
 	private void addNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
@@ -100,6 +129,11 @@ public class StudentContentPanel extends ContentPanel {
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 
+	/*
+	 * Method setSelectedStudent adds UI layout(styling) to studentInfoPanel which holds the information of the selected student on the top of studentBodyPanel
+	 * studentInfoPanel is a sub element under studentBodyPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color/border, JLabel text/text-color/font-size/boundaries, JSeparator orientation/backgroung-color/boundaries
+	 */
 	private void setSelectedStudent() {
 		studentInfoPanel.removeAll();
 		studentInfoPanel = new JPanel();
@@ -222,59 +256,90 @@ public class StudentContentPanel extends ContentPanel {
 		studentInfoPanel.repaint();
 	}
 
-	private void addStudentListTable(String searchText) {
+	/*
+	 * Method displayStudentList adds UI layout(styling) to studentBodyPanel below the studentInfoPanel
+	 * @param searchText contains the text which is used to filter the student list by first/last or student id
+	 * scrollPane which acts as an wrapper to the ContentTable is a sub element under studentBodyPanel
+	 * UI layout categorized as ContentTable text/text-color/font-size/columns/background-color
+	 */
+	private void displayStudentList(String searchText) {
 		try {
-			
+			// Creating a new DefaultTableModel to declare the column names  
 			DefaultTableModel model = new DefaultTableModel(new String[] { "UID", "SID", "First Name", "Last Name", "Gender", "Email", "Phone" }, 0);
 			
-				
-				User tempUser = new User();
-				tempUser.setRole("Student");
-				List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersBySearch(searchText);
-				int count = 0;
-				
-				for (User user : userList) {
-					if(user.getRole().equalsIgnoreCase("Student")) {
-						// Adding a new user record to the table each time the loop executes
-						model.addRow(new Object[] { user.getUserId(), Identification.getFormatedId(user.getUserId(), "S"), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender(), "     " + user.getEmail(), "     " + user.getPhone() });
-						
-						if (count < 1) {
-							selectedStudent = user;
-							setSelectedStudent();
-						}
-						count++;
+			// Method getUsersBySearch will retrieve all the user filtered through the searched keyword, initially the search text will be empty to retrieve all users without filtering
+			List<User> userList = (List<User>) UniScoreClient.uniscoreInterface.getUsersBySearch(searchText);
+			
+			// Count is set to 0 to set the first row on the model to and display it on studentInfoPanel
+			int count = 0;
+			
+			// Looping the retrieved list of users through a foreach loop to add rows to the model(DefaultTableModel). One database record is equal to one row in the model(DefaultTableModel)
+			for (User user : userList) {
+				if(user.getRole().equalsIgnoreCase("Student")) {
+					// When adding a row to the model, make sure than column values are parallel(relevant) to the column headers. White spaces are added to enhance UX and not required by default
+					model.addRow(new Object[] { user.getUserId(), Identification.getFormatedId(user.getUserId(), "S"), "     " + user.getFirstName(), "     " + user.getLastName(), user.getGender(), "     " + user.getEmail(), "     " + user.getPhone() });
+					
+					// This statement will only be true for the first student, this will be the values to studentInfoPanel by default
+					if (count < 1) {
+						selectedStudent = user;
+						setSelectedStudent();
 					}
+					// Inorder to avoid studentInfoPanel being repainted only once
+					count++;
 				}
+			}
 			
 			table.addMouseListener(new MouseAdapter() {
+				/*
+				 * Method mouseClicked to handle mouse click events
+				 * studentInfoPanel will be repainted with selected(clicked) exam on mouse click
+				 * @param mouseEvent to get information about the mosue click
+				 */
 				@Override
 				public void mouseClicked(MouseEvent mouseEvent) {
 					if (table.getSelectedRow() != -1) {
 						try {
-							 if (mouseEvent.getClickCount() == 2) {
-						           
+							// If click count is > 2, if block will execute and else if not
+							 if (mouseEvent.getClickCount() == 2) { 
+								/* 
+								 * Method getGradedDatasetByStudent accepts 2 parameters, Submission and a Module object
+								 * student id from the submission object, hence submission object is create and student id is set
+								 * lecturer id from the module object, hence module object is create and lecturer id is set
+								 */
 						        Submission submission = new Submission();
 						        submission.setStudentId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
-								
 								Module module = new Module();
 								module.setTeacherId(UniScoreClient.authUser.getUserId());
-															
+											
+								// Plotting a bar chart of the student's marks for the most recent exams of signed-in lecturer's allocated modules 
 								BarChartFrame studentStats = new BarChartFrame(table.getModel().getValueAt(table.getSelectedRow(), 2).toString().trim()+" "+table.getModel().getValueAt(table.getSelectedRow(), 3).toString().trim()+"'s Statistics", "Recent Performance", "Modules", "No of Marks", UniScoreClient.uniscoreInterface.getGradedDatasetByStudent(module, submission));
 
+								// Defining JFrame properties
 								studentStats.setSize(950, 600);
 								studentStats.setLocationRelativeTo(null);
 								studentStats.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 								studentStats.setVisible(true);
 								
+								// Adding a record to the database of the display of academic performances for the selected student followed by the lecturer id under activities table
 								UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Academic performance of "+Identification.getFormatedId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString(), "S")+" was viewed from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));	
 						         
 							} else if (mouseEvent.getClickCount() == 1) {
+								
+								// Method getModule will retrieve all the student properties, method accepts a User object with user id set
 								User selectedTempUser = new User();
 								selectedTempUser.setUserId(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
+								
+								// Setting existing values with selected student properties to repaint the studentInfoPanel
 								selectedStudent = (User) UniScoreClient.uniscoreInterface.getUser(selectedTempUser);
+								
+								// Repainting studentInfoPanel with the selected student
 								setSelectedStudent();
 							}
 							 
+						 /*
+						 * If there was exception thrown when executing the retrieval of student properties or plotting the graph for the selected student,
+						 * following catch statements will handle the paticular exception and show a error notification with a unique number to identify the error
+						 */
 						} catch (RemoteException e) {
 							ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve selected student details.\nError refferance : "+ExceptionList.REMOTE);
 							en.setVisible(true);
@@ -293,6 +358,7 @@ public class StudentContentPanel extends ContentPanel {
 			});
 		
 			
+			// Styling ContentTable to enhance UX
 			table.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 			table.setUpdateSelectionOnSort(false);
 			table.setFocusTraversalKeysEnabled(false);
@@ -303,31 +369,36 @@ public class StudentContentPanel extends ContentPanel {
 			table.setRequestFocusEnabled(false);
 			table.setVerifyInputWhenFocusTarget(false);
 			table.setBorder(null);
-
+	
+			// Adding model(DefaultTableModel) the the ContentTable
 			table.setModel(model);
 			
-			// Setting column width
+			// Setting width of 'SID' column
 			table.getColumn("SID").setMinWidth(0);
 			table.getColumn("SID").setMaxWidth(120);
 			table.getColumn("SID").setWidth(120);
 
-			// To align text to center in a column
-			DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
-			centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);
+			// DefaultTableCellRenderer object created to add alignment. In this case, setting the cloumn content alignment to center
+	        DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
+	        centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);
 
-			// Setting width to colums in JTable
-			TableColumnModel columnModel = table.getColumnModel();
-
-			// Removing question id column, but will still be able to access by column index
-            columnModel.removeColumn(columnModel.getColumn(0));
+	        // TableColumnModel object created to get the column structure in the ContentTable
+	        TableColumnModel columnModel = table.getColumnModel();
+	       
+	        // Removing exam id column from the ContentTable, but will still be able to access by column index
+	        columnModel.removeColumn(columnModel.getColumn(0));
             
+            // Aligning cloumns by their index
 			columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
 			columnModel.getColumn(3).setCellRenderer(centerAlingedCell);
 
 			// Removing horizontal cell borders
-			table.setShowHorizontalLines(false);
-
-			// Setting cursor type on table hover
+	        table.setShowHorizontalLines(false);
+	        
+	        // Setting cursor type to pointer
+			table.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
+			
+			// Styling ContentTable to enhance UX
 			table.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 			table.setFillsViewportHeight(true);
 			table.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
@@ -344,6 +415,10 @@ public class StudentContentPanel extends ContentPanel {
 			studentBodyPanel.add(scrollPane);
 			scrollPane.setViewportView(table);
 			
+		/*
+		 * If there was exception thrown when executing the retrieval of students,
+		 * following catch statements will handle the paticular exception and show a error notification with a unique number to identify the error
+		 */
 		} catch (RemoteException e) {
 			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve available students.\nError refferance : "+ExceptionList.REMOTE);
 			en.setVisible(true);
@@ -359,12 +434,22 @@ public class StudentContentPanel extends ContentPanel {
 		}
 	}
 	
+	/*
+	 * Method addSearchField adds UI layout(styling) to studentBodyPanel below the studentInfoPanel
+	 * searchText and searchLabel are a sub element under studentBodyPanel
+	 * UI layout categorized as JLabel text/text-color/font-size/boundaries, JTextField text/text-color/font-size/boundaries/columns/background-color
+	 */
 	private void setSearchField() {
 		searchText = new JTextField();
 		searchText.addKeyListener(new KeyAdapter() {
+			/*
+			 * Method keyTyped to handle keyboard type events
+			 * displayStudentList method will be executed(repainted) on keyboard press to search of the typed text in the JTextField
+			 * @param arg0 to get information about the key press event 
+			 */
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				addStudentListTable(searchText.getText().trim());	
+				displayStudentList(searchText.getText().trim());	
 			}
 		});
 		searchText.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
@@ -381,8 +466,8 @@ public class StudentContentPanel extends ContentPanel {
 	}
 	
 	/*
-	 * returns the JPanel inside ContentPanel
-	 * @returns JPanel
+	 * Method getContent is implemented to return JPanel inside ContentPanel
+	 * @returns JPanel 	Contains completed layout of with the add sub elements 
 	 */
 	public JPanel getContent() {
 		return contentPanel;

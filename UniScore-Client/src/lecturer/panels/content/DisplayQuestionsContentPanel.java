@@ -30,8 +30,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import com.panels.ContentPanel;
-import com.utils.ErrorNotifier;
 import com.utils.ContentTable;
+import com.utils.ErrorNotifier;
 import com.utils.ExceptionList;
 import com.utils.UI;
 
@@ -45,33 +45,61 @@ import models.Question;
 @SuppressWarnings("serial")
 public class DisplayQuestionsContentPanel extends ContentPanel{
 	
+	// Declaring and initializing new JPanel to act as an wrapper to contain navigationIndicatorPanel and questionBodyPanel
 	private JPanel contentPanel = new JPanel();
-	private ContentTable table = new ContentTable();
-	private JScrollPane scrollPane = new JScrollPane();
+		
+	// Declaring and initializing new JPanel to act as an wrapper to contain examInfoPanel and scrollPane
 	private JPanel questionBodyPanel = new JPanel();
+	
+	// Declaring and initializing new JPanel to act as an wrapper to contain the elements which is responsible to display selected exam/module information. Located below navigationIndicatorPanel
 	private JPanel examInfoPanel = new JPanel();
 	
+	// Declaring and initializing new ContentTable(JTable with overridden methods) to display all the questions for the selected exam
+	private ContentTable table = new ContentTable();
+	
+	// Declaring and initializing new JScrollPane to contain the ContentTable in an overflow 
+	private JScrollPane scrollPane = new JScrollPane();
+	
+	// Declaring JTextField to act as the search field to lookup for any paticular question by question title
 	private JTextField searchText;
 	
+	// Declaring properties to get required information to display all questions under a paticular exam
 	private Module module;
 	private Exam exam;
+	
+	// Declaring and initializing questionCount, questionCount will be used to determine whether a lecturer is allowed to create a new question or not depending on allowed (questions - available question)
 	private Integer questionCount = -1;
 
+	/*
+	 * DisplayQuestionsContentPanel method : used to initialize ContentPanel, required properties and add UI elements to the ContentPanel
+	 * @param module 			Module object contains the necessary module information about the selected exam
+	 * @param exam  			Exam object contains the necessary information about the selected exam
+	 */
 	public DisplayQuestionsContentPanel(Module module, Exam exam) {
+		// Initializing properties required to display the information of the selected exam and filter questions accordingly
 		this.module = module;
 		this.exam = exam;
 		
+		// Adding elements to the ContentPanel
 		setContentPanel();
 	}
 
+	/*
+	 * Method setContentPanel adds swing/awt and other elements to the ContentPanel
+	 */
 	private void setContentPanel() {
 		initializeContentPanel();
 		addNavigationIndicator();
 		addExamInfoPanel();
 		addSearchField();
-		addQuestionListTable("");
+		// Calling displayQuestionList method with an empty string to retrieve all questions without filtering
+		displayQuestionList("");
 	}
 	
+	/*
+	 * Method initializeContentPanel adds the necessary UI layout(styling) to the ContentPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color
+	 */
 	private void initializeContentPanel(){
 		contentPanel.setLayout(null);
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
@@ -83,6 +111,11 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		questionBodyPanel.setLayout(null);
 	}
 
+	/*
+	 * Method addNavigationIndicator adds UI layout(styling) to navigationIndicatorPanel which shows the current navigated panel on the top of ContentPanel
+	 * navigationIndicatorPanel is a sub element under ContentPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color, JLabel text/text-color/font-size/boundaries 
+	 */
 	private void addNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
@@ -110,33 +143,14 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 	
-	
-	public void setRemaningQuestionCount() {
-		
-		try {
-			Question q = new Question();
-			q.setExamId(exam.getExamId());
-			questionCount = (int)UniScoreClient.uniscoreInterface.getExaminationQuestionCount(q);
-			
-		} catch (RemoteException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : "+ExceptionList.REMOTE);
-			en.setVisible(true);
-			System.out.println("RemoteException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
-		} catch (ClassNotFoundException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
-			en.setVisible(true);
-			System.out.println("ClassNotFoundException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
-		} catch (SQLException e) {
-			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : "+ExceptionList.SQL);
-			en.setVisible(true);
-			System.out.println("SQLException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
-		}
-	}
-	
+	/*
+	 * Method addExamInfoPanel adds UI layout(styling) to examInfoPanel which holds selected exam/module information on the top of questionBodyPanel
+	 * examInfoPanel is a sub element under questionBodyPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color/border, JLabel text/text-color/font-size/boundaries, JSeparator orientation/backgroung-color/boundaries
+	 */
 	private void addExamInfoPanel() {
-		
-		setRemaningQuestionCount();
-		
+		// Method setQuestionCount called to change the default -1 figure to the actual question cout for the selected exam
+		setQuestionCount();
 		examInfoPanel.removeAll();
 		examInfoPanel = new JPanel();
 		examInfoPanel.setLayout(null);
@@ -244,9 +258,13 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		examInfoPanel.add(questionCountPanel);
 		questionCountPanel.setLayout(null);
 		
+		/*
+		 * Calculating the number of remaning questions for the selected exam out of 30
+		 */
 		Integer remaningQuestionCount = (30-questionCount);
 		String remaningQuestionCountStr = "";
 		
+		// If the number is less than 10, 0 is being added at the front of the number. If greater than 10, number will be displayed as it is
 		if(remaningQuestionCount.toString().length() < 2) {
 			remaningQuestionCountStr = "0"+remaningQuestionCount.toString();
 		} else {
@@ -264,6 +282,11 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		goBackButtonPanel.setBorder(new MatteBorder(0, 1, 0, 0, (Color) UI.APPLICATION_THEME_PRIMARY_COLOR));
 		goBackButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		goBackButtonPanel.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * Lecturer will be navigated to QuestionnaireContentPanel on mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
@@ -283,15 +306,22 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		goBackButtonLabel.setBounds(0, 0, 153, 138);
 		goBackButtonPanel.add(goBackButtonLabel);
 		
-		
+		/*
+		 * If remaningQuestionCount is equal to 0, then lecturer will not be allowed to create a new question for the selected exam, hence the else block will be executed
+		 * and if not, lecturer will be directed to CreateQuestionContentPanel on mouseClick event 
+		 */
 		if(remaningQuestionCount != 0) {
 			
 			JPanel createQuestionPanel = new JPanel();
 			createQuestionPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 			createQuestionPanel.addMouseListener(new MouseAdapter() {
+				/*
+				 * Method mouseClicked to handle mouse click events
+				 * Lecturer will be navigated to CreateQuestionContentPanel on mouse click
+				 * @param arg0 to get information about the mosue click 
+				 */
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					
 					LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
 					LecturerPanel.selectedContent = new CreateQuestionContentPanel(module, exam, questionCount);
 					LecturerPanel.setSelectedPanel();
@@ -329,49 +359,74 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 		examInfoPanel.repaint();
 	}
 	
-	
-	private void addSearchField() {
-		searchText = new JTextField();
-		searchText.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				addQuestionListTable(searchText.getText().trim());
-			}
-		});
-		searchText.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
-		searchText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) UI.APPLICATION_THEME_SECONDARY_COLOR));
-		searchText.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
-		searchText.setBounds(978, 172, 219, 31);
-		questionBodyPanel.add(searchText);
-		searchText.setColumns(10);
-
-		JLabel searchLabel = new JLabel("Search    :");
-		searchLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
-		searchLabel.setBounds(908, 172, 60, 31);
-		questionBodyPanel.add(searchLabel);
+	/*
+	 * Method setQuestionCount retrieves the question count for a paticular exam
+	 */
+	public void setQuestionCount() {
+		
+		try {
+			/*
+			 * Method getExaminationQuestionCount accepts a Question object which has the exam id set, hence a new Question object is created to set the selected exam id
+			 * Method will return an integer of the question count recoreded from the database for a paticular exam
+			 */
+			Question q = new Question();
+			q.setExamId(exam.getExamId());
+			questionCount = (int)UniScoreClient.uniscoreInterface.getExaminationQuestionCount(q);
+			
+		/*
+		 * If there was exception thrown when executing the retrieval of question count for the selected exam,
+		 * following catch statements will handle the paticular exception and show a error notification with a unique number to identify the error
+		 */
+		} catch (RemoteException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : "+ExceptionList.REMOTE);
+			en.setVisible(true);
+			System.out.println("RemoteException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		} catch (ClassNotFoundException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : "+ExceptionList.CLASS_NOT_FOUND);
+			en.setVisible(true);
+			System.out.println("ClassNotFoundException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		} catch (SQLException e) {
+			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve remaning question count.\nError refferance : "+ExceptionList.SQL);
+			en.setVisible(true);
+			System.out.println("SQLException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
+		}
 	}
 	
-	private void addQuestionListTable(String searchText) {
+	/*
+	 * Method displayQuestionList adds UI layout(styling) to questionBodyPanel below the examInfoPanel
+	 * @param searchText contains the text which is used to filter the question list by question title
+	 * scrollPane which acts as an wrapper to the ContentTable is a sub element underquestionBodyPanel
+	 * UI layout categorized as ContentTable text/text-color/font-size/columns/background-color
+	 */
+	private void displayQuestionList(String searchText) {
 			
 		try {
-			
+			// Creating a new DefaultTableModel to declare the column names  
 			DefaultTableModel model = new DefaultTableModel(new String[] {"ID", "Question", "Option 1", "Option 2", "Option 3", "Option 4", "Answer"}, 0);
-				
+			
+			// Method getExamQuestionsBySearch will retrieve all the questions for the selected exam filtered through the searched keyword, initially the search text will be empty to retrieve all questions without filtering
 			List<Question> questionList  = (List<Question>) UniScoreClient.uniscoreInterface.getExamQuestionsBySearch(searchText);
 			
+			// Looping the retrieved list of questions through a foreach loop to add rows to the model(DefaultTableModel). One database record is equal to one row in the model(DefaultTableModel)
 			for (Question qes : questionList) {
 				if(qes.getExamId() == exam.getExamId()) {
-					// Adding a exam record to the table each time the loop executes
+					// When adding a row to the model, make sure than column values are parallel(relevant) to the column headers. White spaces are added to enhance UX and not required by default
 					model.addRow(new Object[] {qes.getQuestionId(), "     "+qes.getQuestion(),  "     "+qes.getOption1(), "     "+qes.getOption2(),  "     "+qes.getOption3(),   "     "+qes.getOption4(), qes.getAnswer()});
 				}
 			}
-				
 
 			table.addMouseListener(new MouseAdapter() {
+				/*
+				 * Method mouseClicked to handle mouse click events
+				 * Lecturer will be navigated to DisplayQuestionContentPanel on double mouse click
+				 * @param mouseEvent to get information about the mosue click
+				 */
 				@Override
 				public void mousePressed(MouseEvent mouseEvent) {
+					// Checking if the click event has a count > 2 to execute the following, and selected row is not empty/null
 			        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
 
+			        	// New question object is created and the selected question properties will be set accordingly to be updated on the DisplayQuestionContentPanel
 			            Question selectedQuestion = new Question();
 			            selectedQuestion.setQuestionId(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString()));
 			            selectedQuestion.setQuestion(table.getModel().getValueAt(table.getSelectedRow(), 1).toString().trim());
@@ -381,6 +436,7 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			            selectedQuestion.setOption4(table.getModel().getValueAt(table.getSelectedRow(), 5).toString().trim());
 			            selectedQuestion.setAnswer(Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 6).toString()));
 			            
+			            // Navigating the lecturer to the DisplayQuestionContentPanel to update the selected question
 			            LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
 						LecturerPanel.selectedContent = new DisplayQuestionContentPanel(module, exam, selectedQuestion);
 						LecturerPanel.setSelectedPanel();
@@ -388,6 +444,7 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			    }
 			});
 			
+			// Styling ContentTable to enhance UX
 			table.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 			table.setUpdateSelectionOnSort(false);
 			table.setFocusTraversalKeysEnabled(false);
@@ -399,32 +456,36 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			table.setVerifyInputWhenFocusTarget(false);
 			table.setBorder(null);
 			
+			// Adding model(DefaultTableModel) the the ContentTable
 			table.setModel(model);
 			
-			// Setting column width
+			// Setting width of 'Answers' column
 			table.getColumn("Answer").setMinWidth(0);
 			table.getColumn("Answer").setMaxWidth(120);
 			table.getColumn("Answer").setWidth(120);
 
 			
-			//  To align text to center in a column 
+			// DefaultTableCellRenderer object created to add alignment. In this case, setting the cloumn content alignment to center
             DefaultTableCellRenderer centerAlingedCell = new DefaultTableCellRenderer();
             centerAlingedCell.setHorizontalAlignment(JLabel.CENTER);
             
-            // Setting width to colums in JTable
+            // TableColumnModel object created to get the column structure in the ContentTable
             TableColumnModel columnModel = table.getColumnModel();
             
+            // Aligning cloumns by their index
             columnModel.getColumn(0).setCellRenderer(centerAlingedCell);
             columnModel.getColumn(6).setCellRenderer(centerAlingedCell);
             
-            // Removing question id column, but will still be able to access by column index
+            // Removing question id column from the ContentTable, but will still be able to access by column index
             columnModel.removeColumn(columnModel.getColumn(0));
 			
             // Removing horizontal cell borders
             table.setShowHorizontalLines(false);
             
-            // Setting cursor type on table hover
+            // Setting cursor type to pointer
 			table.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
+			
+			// Styling ContentTable to enhance UX
 			table.setFillsViewportHeight(true);
 			table.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 			table.getTableHeader().setOpaque(false);
@@ -440,6 +501,10 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			questionBodyPanel.add(scrollPane);
 			scrollPane.setViewportView(table);
 		
+		/*
+		 * If there was exception thrown when executing the retrieval of questions for the selected exam,
+		 * following catch statements will handle the paticular exception and show a error notification with a unique number to identify the error
+		 */
 		} catch (RemoteException e) {
 			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve exam questions.\nError refferance : "+ExceptionList.REMOTE);
 			en.setVisible(true);
@@ -454,11 +519,41 @@ public class DisplayQuestionsContentPanel extends ContentPanel{
 			System.out.println("SQLException execution thrown on DisplayQuestionsContentPanel.java file. Error : "+e.getCause());
 		} 
 	}
+	
+	/*
+	 * Method addSearchField adds UI layout(styling) to questionBodyPanel below the examInfoPanel
+	 * searchText and searchLabel are a sub element under questionBodyPanel
+	 * UI layout categorized as JLabel text/text-color/font-size/boundaries, JTextField text/text-color/font-size/boundaries/columns/background-color
+	 */
+	private void addSearchField() {
+		searchText = new JTextField();
+		searchText.addKeyListener(new KeyAdapter() {
+			/*
+			 * Method keyTyped to handle keyboard type events
+			 * displayQuestionList method will be executed(repainted) on keyboard press to search of the typed text in the JTextField
+			 * @param arg0 to get information about the key press event 
+			 */
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				displayQuestionList(searchText.getText().trim());
+			}
+		});
+		searchText.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		searchText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) UI.APPLICATION_THEME_SECONDARY_COLOR));
+		searchText.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		searchText.setBounds(978, 172, 219, 31);
+		questionBodyPanel.add(searchText);
+		searchText.setColumns(10);
 
+		JLabel searchLabel = new JLabel("Search    :");
+		searchLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
+		searchLabel.setBounds(908, 172, 60, 31);
+		questionBodyPanel.add(searchLabel);
+	}
 
 	/*
-	 * returns the JPanel inside ContentPanel
-	 * @returns JPanel
+	 * Method getContent is implemented to return JPanel inside ContentPanel
+	 * @returns JPanel 	Contains completed layout of with the add sub elements 
 	 */
 	public JPanel getContent() {
 		return contentPanel;

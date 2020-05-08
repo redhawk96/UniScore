@@ -26,8 +26,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import com.utils.ErrorNotifier;
-import com.utils.SuccessNotifier;
 import com.utils.ExceptionList;
+import com.utils.SuccessNotifier;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
@@ -40,20 +40,25 @@ import models.Question;
 @SuppressWarnings("serial")
 public class RemoveQuestionNotifier extends JFrame {
 
-	private JPanel contentPane;
-
+	/*
+	 * RemoveQuestionNotifier method : used to initialize JFrame, required properties and add UI elements to the JFrame
+	 * @param module 	Module object contains the necessary module information about the selected exam
+	 * @param exam 		Exam object contains the necessary exam information about the selected exam
+	 * @param question 	Question object contains the question information from the selected exam
+	 */
 	public RemoveQuestionNotifier(Module module, Exam exam, Question question) {
+		// Defining the JFrame properties
 		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		setTitle("WARNING");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 443, 177);
-		contentPane = new JPanel();
-		contentPane.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
 		setLocationRelativeTo(null); 
 		setResizable(false);
 		
+		// Creating a JPanel to containt all the sub elements, panel buttons, message and icon
+		JPanel contentPane = new JPanel();
+		contentPane.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
@@ -62,6 +67,7 @@ public class RemoveQuestionNotifier extends JFrame {
 		scrollPane.setBounds(102, 11, 325, 75);
 		contentPane.add(scrollPane);
 		
+		// Adding a JTextPane to display the confirmation message
 		JTextPane errorText = new JTextPane();
 		errorText.setText("Are you sure that you want to remove question "+question.getQuestionId()+" from "+exam.getExamName()+" questionnaire ?");
 		errorText.setEditable(false);
@@ -75,6 +81,7 @@ public class RemoveQuestionNotifier extends JFrame {
 		errorIconLabel.setBounds(21, 21, 50, 50);
 		contentPane.add(errorIconLabel);
 		
+		// Adding a new JPanel to set the look and feel of the pop-up like native windows pop-up(UX)
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 92, 437, 56);
 		contentPane.add(panel);
@@ -96,36 +103,66 @@ public class RemoveQuestionNotifier extends JFrame {
 		okButtonPanel.add(okButtonLabel);
 		
 		okButtonPanel.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseEntered to handle mouse click events
+			 * okButtonPanel and okButtonLabel will change color accordingly on mouse exit to enhance UX, user will know that panel can be clicked 
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				okButtonPanel.setBorder(new LineBorder(new Color(240, 240, 240)));
 				okButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 				okButtonLabel.setForeground(new Color(240, 240, 240));
 			}
+			
+			/*
+			 * Method mouseExited to handle mouse click events
+			 * okButtonPanel and okButtonLabel will change color accordingly on mouse exit to enhance UX, user will know that mouse is not in click range
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseExited(MouseEvent e) {
 				okButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
 				okButtonPanel.setBackground(new Color(240, 240, 240));
 				okButtonLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 			}
+			
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * SubmissionMailer will execute the following mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
+					// Method removeQuestion will remove the question with the defined question id form the database and return the execution status as true for succesfull and false if not 
 					boolean executionStatus = (boolean) UniScoreClient.uniscoreInterface.removeQuestion(question);
 	
+					// If question was successfullt remove if block will execute and if not else block will execute
 					if(executionStatus) {
-						SuccessNotifier sn = new SuccessNotifier("Question was successfully removed.\nRecord refferance : Question ID - "+question.getQuestionId(), new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
-						
+						// Adding a record to the database of the question removal with the lecturer id under activities table
 						UniScoreClient.uniscoreInterface.addLogActivity(new Activity("Question "+question.getQuestionId()+" was removed in exam "+exam.getExamId()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
 						
+						// Calling SuccessNotifier pop-up alert to indicate lecturer that question has been removed successfully 
+						SuccessNotifier sn = new SuccessNotifier("Question was successfully removed.\nRecord refferance : Question ID - "+question.getQuestionId(), new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
 						sn.setVisible(true);
+						
+						// Closing the JFrame
 						dispose();
+						
 					} else {
+						// Calling ErrorNotifier pop-up alert to indicate lecturer that there was an error occured while trying to remove question 
 						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.SQL_FAILED_EXECUTION);
 						en.setVisible(true);
+						
+						// Closing the JFrame
 						dispose();
 					}
-					
+			
+				/*
+				 * If there was exception thrown when executing the removal of the question,
+				 * following catch statements will handle the paticular exception and show a error notification with a unique number to identify the error
+				 */
 				} catch (RemoteException e ) {
 					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to remove question.\nRecord refferance : Question ID - "+question.getQuestionId()+"\nError refferance : "+ExceptionList.REMOTE);
 					en.setVisible(true);
@@ -142,7 +179,6 @@ public class RemoveQuestionNotifier extends JFrame {
 			}
 		});
 		
-		
 		JButton cancelButtonPanel = new JButton();
 		cancelButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		cancelButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
@@ -158,18 +194,35 @@ public class RemoveQuestionNotifier extends JFrame {
 		cancelButtonPanel.add(cancelButtonLabel);
 		
 		cancelButtonPanel.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseEntered to handle mouse click events
+			 * cancelButtonPanel and cancelButtonLabel will change color accordingly on mouse exit to enhance UX, user will know that panel can be clicked 
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				cancelButtonPanel.setBorder(new LineBorder(new Color(240, 240, 240)));
 				cancelButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 				cancelButtonLabel.setForeground(new Color(240, 240, 240));
 			}
+			
+			/*
+			 * Method mouseExited to handle mouse click events
+			 * cancelButtonPanel and cancelButtonLabel will change color accordingly on mouse exit to enhance UX, user will know that mouse is not in click range
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseExited(MouseEvent e) {
 				cancelButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
 				cancelButtonPanel.setBackground(new Color(240, 240, 240));
 				cancelButtonLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 			}
+			
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * JFrame will close on mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				dispose();

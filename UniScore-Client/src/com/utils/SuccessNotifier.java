@@ -29,28 +29,32 @@ import main.panels.LecturerPanel;
 
 @SuppressWarnings("serial")
 public class SuccessNotifier extends JFrame {
-
-	private JPanel contentPane;
-
+	/*
+	 * SuccessNotifier method : used to initialize JPanel and required properties and add UI elements to the JFrame, JFrame will be used as a pop-up windows for success messages/confirmation messages
+	 * @param confirmMessage    String is accepted to display the type of the success/confirmation message according to different situvations 
+	 */
 	public SuccessNotifier(String confirmMessage, NavigationPanel navigationRouter, ContentPanel contentRouter) {
+		// Defining the JFrame properties
 		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		setTitle("SUCCESS");
 		setBounds(100, 100, 443, 177);
-		contentPane = new JPanel();
+		
+		// Creating a JPanel to containt all the sub elements, panel buttons, message and icon
+		JPanel contentPane = new JPanel();
 		contentPane.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
 		setLocationRelativeTo(null); 
 		setResizable(false);
-		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		// Adding a JScrollPane incase of an overflow with the message
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(102, 24, 325, 62);
 		contentPane.add(scrollPane);
 		
+		// Defining error message in JTextPane
 		JTextPane errorText = new JTextPane();
 		errorText.setText(confirmMessage);
 		errorText.setEditable(false);
@@ -59,16 +63,19 @@ public class SuccessNotifier extends JFrame {
 		scrollPane.setViewportView(errorText);
 		errorText.setFont(UI.APPLICATION_THEME_FONT_13_PLAIN);
 		
+		// Adding icon 
 		JLabel errorIconLabel = new JLabel("");
 		errorIconLabel.setIcon(new ImageIcon(SuccessNotifier.class.getResource("/resources/success_icon.png")));
 		errorIconLabel.setBounds(21, 21, 50, 50);
 		contentPane.add(errorIconLabel);
 		
+		// Adding a new JPanel to set the look and feel of the pop-up like native windows pop-up(UX)
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 92, 437, 56);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
+		// Styling JPanel as a button 
 		JPanel okButtonPanel = new JPanel();
 		okButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		okButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
@@ -86,18 +93,35 @@ public class SuccessNotifier extends JFrame {
 		
 		
 		okButtonPanel.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseEntered to handle mouse click events
+			 * SuccessNotifier JFrame okButtonPanel and okButtonLabel will change color accordingly on mouse enter to enhance UX, user will know that panel can be clicked 
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				okButtonPanel.setBorder(new LineBorder(new Color(240, 240, 240)));
 				okButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 				okButtonLabel.setForeground(new Color(240, 240, 240));
 			}
+			
+			/*
+			 * Method mouseExited to handle mouse click events
+			 * SuccessNotifier JFrame okButtonPanel and okButtonLabel will change color accordingly on mouse exit to enhance UX, user will know that mouse is not in click range
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseExited(MouseEvent e) {
 				okButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
 				okButtonPanel.setBackground(new Color(240, 240, 240));
 				okButtonLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 			}
+			
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * SuccessNotifier JFrame will be either disposed(closed) or redirected to a ContentPanel on mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(navigationRouter != null && contentRouter != null) {

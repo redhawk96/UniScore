@@ -1,3 +1,10 @@
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
+ * Group		: 19
+ * @author		: Uditha Silva (UOB-1938086)
+ */
+
 package lecturer.panels.content;
 
 import java.awt.Color;
@@ -24,8 +31,8 @@ import javax.swing.plaf.basic.ComboPopup;
 
 import com.panels.ContentPanel;
 import com.utils.ErrorNotifier;
-import com.utils.SuccessNotifier;
 import com.utils.ExceptionList;
+import com.utils.SuccessNotifier;
 import com.utils.UI;
 
 import connectivity.UniScoreClient;
@@ -39,10 +46,16 @@ import models.Question;
 @SuppressWarnings("serial")
 public class CreateQuestionContentPanel extends ContentPanel{
 	
+	// Declaring and initializing new JPanel to act as an wrapper to contain navigationIndicatorPanel and questionBodyPanel
 	private JPanel contentPanel = new JPanel();
+	
+	// Declaring and initializing new JPanel to act as an wrapper to contain examInfoPanel and displayQuestionPanel
 	private JPanel questionBodyPanel = new JPanel();
+	
+	// Declaring and initializing new JPanel to act as an wrapper to contain the elements which is responsible to show currently selected exam/module information. Located below navigationIndicatorPanel
 	private JPanel examInfoPanel = new JPanel();
 	
+	// Declaring element properties needed to create a new question
 	private JTextField questionText;
 	private JTextField optionOneText;
 	private JTextField optionTwoText;
@@ -50,19 +63,32 @@ public class CreateQuestionContentPanel extends ContentPanel{
 	private JTextField optionFourText;
 	private JComboBox<Object> answersComboBox;
 	
+	// Declaring properties to get required information to create a question under a paticular exam
 	private Module module;
 	private Exam exam;
+	
+	// Declaring questionCount property to hold the number of questions added for a paticular exam out of 30
 	private int questionCount;
 	
+	/*
+	 * CreateQuestionContentPanel method : used to initialize ContentPanel, required properties and add UI elements to the ContentPanel
+	 * @param module 			Module object contains the necessary module information about the selected exam
+	 * @param exam  			Exam object contains the necessary information about the selected exam 
+	 * @param questionCount 	questionCount integer contains the number of already added questions for the selected exam
+	 */
 	public CreateQuestionContentPanel(Module module, Exam exam, int questionCount) {
+		// Initializing properties required to create a new question
 		this.module = module;
 		this.exam = exam;
 		this.questionCount = questionCount;
 		
+		// Adding elements to the ContentPanel
 		setContentPanel();
 	}
 	
-	
+	/*
+	 * Method setContentPanel adds swing/awt and other elements to the ContentPanel
+	 */
 	private void setContentPanel() {
 		initializeContentPanel();
 		addNavigationIndicator();
@@ -70,6 +96,10 @@ public class CreateQuestionContentPanel extends ContentPanel{
 		addCreateQuestionPanel();
 	} 
 	
+	/*
+	 * Method initializeContentPanel adds the necessary UI layout(styling) to the ContentPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color
+	 */
 	private void initializeContentPanel() {
 		contentPanel.setLayout(null);
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
@@ -81,7 +111,11 @@ public class CreateQuestionContentPanel extends ContentPanel{
 		questionBodyPanel.setLayout(null);
 	}
 	
-	
+	/*
+	 * Method addNavigationIndicator adds UI layout(styling) to navigationIndicatorPanel which shows the current navigated panel on the top of ContentPanel
+	 * navigationIndicatorPanel is a sub element under ContentPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color, JLabel text/text-color/font-size/boundaries 
+	 */
 	private void addNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
@@ -115,7 +149,11 @@ public class CreateQuestionContentPanel extends ContentPanel{
 		navigationIndicatorPanel.add(navigationIndicatorActiveLabel);
 	}
 	
-	
+	/*
+	 * Method addExamInfoPanel adds UI layout(styling) to examInfoPanel which selected exam/module information on the top of questionBodyPanel
+	 * examInfoPanel is a sub element under questionBodyPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color/border, JLabel text/text-color/font-size/boundaries, JSeparator orientation/backgroung-color/boundaries
+	 */
 	private void addExamInfoPanel() {
 		examInfoPanel.setLayout(null);
 		examInfoPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
@@ -221,9 +259,13 @@ public class CreateQuestionContentPanel extends ContentPanel{
 		examInfoPanel.add(questionCountPanel);
 		questionCountPanel.setLayout(null);
 		
+		/*
+		 * Calculating the number of remaning questions for the selected exam out of 30
+		 */
 		Integer remaningQuestionCount = (30-questionCount);
 		String remaningQuestionCountStr = "";
 		
+		// If the number is less than 10, 0 is being added at the front of the number. If greater than 10, number will be displayed as it is
 		if(remaningQuestionCount.toString().length() < 2) {
 			remaningQuestionCountStr = "0"+remaningQuestionCount.toString();
 		} else {
@@ -240,6 +282,11 @@ public class CreateQuestionContentPanel extends ContentPanel{
 		JPanel goBackButtonPanel = new JPanel();
 		goBackButtonPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		goBackButtonPanel.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * Lecturer will be navigated to DisplayQuestionsContentPanel on mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				LecturerPanel.selectedNavigation = new QuestionNavigationPanel();
@@ -263,9 +310,18 @@ public class CreateQuestionContentPanel extends ContentPanel{
 		JPanel saveQuestionPanel = new JPanel();
 		saveQuestionPanel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		saveQuestionPanel.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * Process to create new question will be executed on mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
+				/*
+				 * Validating question fields for character length > 1
+				 * If validation fails error message will be shown pointing the missing field
+				 */
 				if(questionText.getText().trim().length() < 1) {
 					
 					ErrorNotifier en = new ErrorNotifier("Question title is a required field");
@@ -298,6 +354,7 @@ public class CreateQuestionContentPanel extends ContentPanel{
 					
 				} else {
 
+					// If Validation check passes then new question object will be created to add lecturer entered question to the database
 					Question newQuestion = new Question();
 					newQuestion.setExamId(exam.getExamId());
 					newQuestion.setQuestion(questionText.getText());
@@ -305,32 +362,53 @@ public class CreateQuestionContentPanel extends ContentPanel{
 					newQuestion.setOption2(optionTwoText.getText());
 					newQuestion.setOption3(optionThreeText.getText());
 					newQuestion.setOption4(optionFourText.getText());
+					/*
+					 * Index of answersComboBox will start with 0, Inorder to keep the option from range 1-4, 1 is added to the lecturer selected option
+					 * Eg: If 'Option 1' was selected, its index would be 0, hence 1 is added to maintain the range
+					 */
 					newQuestion.setAnswer(answersComboBox.getSelectedIndex()+1);
 
 					try {
 						
+						// Adding question to the database and getting a boolean as result, 1 if added and 0 if not
 						boolean executionStatus = (boolean) UniScoreClient.uniscoreInterface.addQuestion(newQuestion);
 		
+						// Notification message will be added accordingly to the result obtained from question insertion
 						if(executionStatus) {
 							
+							// Since question has being added into the database, adding 1 to questionCount to avoid executing a read from database again
 							int updatedQuestionCount = questionCount + 1;
 							
 							if(updatedQuestionCount == 30) {	
+								/*
+								 *  If question was successfully added into the database success message will be shown in a new JFrame	
+								 *  On closing the notification JFrame, lecturer will the redirected to DisplayQuestionsContentPanel since allowed number of questions for the selected exam is filled
+								 */
 								SuccessNotifier sn = new SuccessNotifier("Question was successfully created.", new QuestionNavigationPanel(), new DisplayQuestionsContentPanel(module, exam));
 								
+								// Adding a record to the database of the question creation with the lecturer id under activities table
 								UniScoreClient.uniscoreInterface.addLogActivity(new Activity("New question was added to exam "+exam.getExamId()+" from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
 							
 								sn.setVisible(true);
 							}else {	
+								/*
+								 *  If question was successfully added into the database success message will be shown in a new JFrame	
+								 *  On closing the notification JFrame, lecturer will the redirected to back to the same CreateQuestionContentPanel since allowed number of questions for the selected exam is not filled
+								 */
 								SuccessNotifier sn = new SuccessNotifier("Question was successfully created.", new QuestionNavigationPanel(), new CreateQuestionContentPanel(module, exam, updatedQuestionCount));
 								sn.setVisible(true);
 							}
 							
+						// If there was an error adding question into the database, Error message will be shown in a new JFrame
 						} else {
 							ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : "+ExceptionList.SQL_FAILED_EXECUTION);
 							en.setVisible(true);
 						}
 						
+					/*
+					 * If there was exception thrown when executing the creation of question,
+					 * following catch statements will handle the paticular exception and show a error notification with a unique number to identify the error
+					 */
 					} catch (RemoteException e) {
 						ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to create question.\nError refferance : "+ExceptionList.REMOTE);
 						en.setVisible(true);
@@ -361,7 +439,11 @@ public class CreateQuestionContentPanel extends ContentPanel{
 		saveQuestionPanel.add(saveQuestionLabel);
 	}
 	
-	
+	/*
+	 * Method addCreateQuestionPanel adds UI layout(styling) to displayQuestionPanel below the examInfoPanel
+	 * displayQuestionPanel is a sub element under questionBodyPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color/border, JLabel text/text-color/font-size/boundaries, JTextField text/text-color/font-size/boundaries/columns/background-color, JComboBox
+	 */
 	private void addCreateQuestionPanel() {
 		JPanel displayQuestionPanel = new JPanel();
 		displayQuestionPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
@@ -448,6 +530,7 @@ public class CreateQuestionContentPanel extends ContentPanel{
 		
 		answersComboBox = new JComboBox<Object>();
 	
+		// Adding styling to the default JComboBox 
 		answersComboBox.setRenderer(new DefaultListCellRenderer() {
 	      @Override 
 	      public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean hasFocus) {
@@ -482,8 +565,8 @@ public class CreateQuestionContentPanel extends ContentPanel{
 	}
 
 	/*
-	 * returns the JPanel inside ContentPanel
-	 * @returns JPanel
+	 * Method getContent is implemented to return JPanel inside ContentPanel
+	 * @returns JPanel 	Contains completed layout of with the add sub elements 
 	 */
 	public JPanel getContent() {
 		return contentPanel;

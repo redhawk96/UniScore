@@ -7,6 +7,9 @@
 
 package com.utils;
 
+/*
+ * ExceptionList class is defined to keep a unique number to identify the exceptions thrown and to establish a common pattern to handling exceptions in all cases
+ */
 public class ExceptionList {
 	public static int REMOTE = 100;
 	public static int CLASS_NOT_FOUND = 200;
