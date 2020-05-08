@@ -8,7 +8,6 @@
 package com.utils;
 
 public class ExceptionList {
-
 	public static int REMOTE = 100;
 	public static int CLASS_NOT_FOUND = 200;
 	public static int SQL = 300;

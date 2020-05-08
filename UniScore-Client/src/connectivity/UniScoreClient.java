@@ -24,52 +24,66 @@ import models.User;
 
 public class UniScoreClient {
 
+	// Declaring uniscoreInterface, this instance is used access (add, retrieve, update, remove from the database) the remote connection 
 	public static UniScoreInterface uniscoreInterface;
+	
+	// Declaring LoginPanel, lecturerPanel and studentPanel to be used any where in the application either to load or dispose relevant JFrame without creating multiple JFrames for the same purpose
 	public static LecturerPanel lecturerPanel;
 	public static StudentPanel studentPanel;
 	public static LoginPanel loginPanel;
+	
+	// Declaring authUser to act as an cookie, the cookie stores the information of the currently signed-in lecturer/student, and can be accessed from any where within the application
 	public static User authUser;
+	
+	// Declaring authLocation used to store the signed-in lecturer's/student's IP address, and can be accessed from any where within the application incase if needed 
 	public static String authLocation;
 
-	public UniScoreClient() {
-	}
+	/*
+	 * UniScoreClient class constructor, not required to define necessarly but declared if needed for further development
+	 */
+	public UniScoreClient() {}
 
+	/*
+	 * UniScoreClient main method : used to initialize ContentPanel, required properties and add UI elements to the ContentPanel
+	 * @param args   required but not used
+	 */
 	public static void main(String args[]) {
-
 		try {
 			/*
 			 * Error occured while trying to start the client server. Error -> no security manager: RMI class loader disabled Solution -> Both client and server packages which uses RMI server should be named the same. 
-			 * Source refferance : https://stackoverflow.com/questions/6322107/java-no-security-manager-rmi-class-loader-disabled. Answered by erickson, edited by Paulo Ebermann
+			 * @link https://stackoverflow.com/questions/6322107/java-no-security-manager-rmi-class-loader-disabled. Answered by erickson, edited by Paulo Ebermann
 			 */
+			
+			// Creating a registry obeject with a specific port to be looked-up
 			Registry registry = LocateRegistry.getRegistry(1417);
 			System.out.println("Registry located");
+			
+			// Checking and establishing remote connection if the below url can be accessed using the pre-defined port
 			UniScoreClient.uniscoreInterface = (UniScoreInterface) registry.lookup("rmi://localhost/UniScoreServer");
 			System.out.println("Server located");
 
+			// If connection to database establisedm if block will execute and else block if not
 			if (UniScoreClient.uniscoreInterface.getServer()) {
 				System.out.println("Database connectied");
 				
+				// Getting user's IP address using a WEB API
 				UniScoreClient.authLocation = UniScoreClient.uniscoreInterface.getLocation();
 				System.out.println("User Located");
 				
+				// Opening up loginPanel if not exception or error was thrown 
 				UniScoreClient.loginPanel = new LoginPanel();
 				UniScoreClient.loginPanel.setVisible(true);
 
-				/*
-				 * For development purposes
-				 */
-//				User user = new User();
-//				user.setUserId("000015");
-//				user.setFirstName("");
-//				user.setLastName("");
-//				UniScoreClient.authUser = user;
-//				UniScoreClient.lecturerPanel = new LecturerPanel();
-//				UniScoreClient.lecturerPanel.setVisible(true);
-
 			} else {
+				// Error message will be popped-up if there was a error in connecting to the databse
 				ErrorNotifier en = new ErrorNotifier("Failed to establish connection to the server !\nPlease contact the administrator");
 				en.setVisible(true);
 			}
+			
+		/*
+		 * If there was exception thrown when establishing the remote connection, connecting to the databse, or retrieving user's IP address
+		 * following catch statements will handle the paticular exception and show a error notification with a unique number to identify the error
+		 */
 		} catch (RemoteException e) {
 			ErrorNotifier en = new ErrorNotifier("Failed to establish connection to the server !\nPlease contact the administrator\nError refferance : "+ExceptionList.REMOTE);
 			en.setVisible(true);
@@ -91,6 +105,5 @@ public class UniScoreClient {
 			en.setVisible(true);
 			System.out.println("JRException execution thrown on UniScoreClient.java file. Error : "+e.getCause());
 		}
-
 	}
 }
