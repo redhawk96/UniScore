@@ -5,7 +5,7 @@
  * @author		: Uditha Silva (UOB-1938086)
  */
 
-package com.panels.content;
+package com.utils;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -21,8 +21,6 @@ import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-
-import com.utils.UI;
 
 @SuppressWarnings("serial")
 public class ErrorNotifier extends JFrame {
@@ -82,18 +80,35 @@ public class ErrorNotifier extends JFrame {
 		okButtonPanel.add(okButtonLabel);
 		
 		okButtonPanel.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseEntered to handle mouse click events
+			 * ErrorNotifier JFrame okButtonPanel and okButtonLabel will change color accordingly on mouse enter to enhance UX, user will know that panel can be clicked 
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				okButtonPanel.setBorder(new LineBorder(new Color(240, 240, 240)));
 				okButtonPanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 				okButtonLabel.setForeground(new Color(240, 240, 240));
 			}
+			
+			/*
+			 * Method mouseExited to handle mouse click events
+			 * ErrorNotifier JFrame okButtonPanel and okButtonLabel will change color accordingly on mouse exit to enhance UX, user will know that mouse is not in click range
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseExited(MouseEvent e) {
 				okButtonPanel.setBorder(new LineBorder(UI.APPLICATION_THEME_SECONDARY_COLOR));
 				okButtonPanel.setBackground(new Color(240, 240, 240));
 				okButtonLabel.setForeground(UI.APPLICATION_THEME_SECONDARY_COLOR);
 			}
+			
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * ErrorNotifier JFrame will be disposed(closed) on mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				dispose();

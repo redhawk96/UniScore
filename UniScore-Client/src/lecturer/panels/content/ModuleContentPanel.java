@@ -20,7 +20,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.panels.ContentPanel;
-import com.panels.content.ErrorNotifier;
+import com.utils.ErrorNotifier;
 import com.utils.ExceptionList;
 import com.utils.UI;
 

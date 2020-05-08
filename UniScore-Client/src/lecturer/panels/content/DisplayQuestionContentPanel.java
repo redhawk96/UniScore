@@ -30,8 +30,8 @@ import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 
 import com.panels.ContentPanel;
-import com.panels.content.ErrorNotifier;
-import com.panels.content.SuccessNotifier;
+import com.utils.ErrorNotifier;
+import com.utils.SuccessNotifier;
 import com.utils.ExceptionList;
 import com.utils.UI;
 

@@ -14,7 +14,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
 
-import com.panels.content.ErrorNotifier;
+import com.utils.ErrorNotifier;
 import com.utils.ExceptionList;
 
 import main.panels.LecturerPanel;

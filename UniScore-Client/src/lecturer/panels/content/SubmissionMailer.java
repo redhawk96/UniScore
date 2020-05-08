@@ -24,8 +24,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import com.panels.content.ErrorNotifier;
-import com.panels.content.SuccessNotifier;
+import com.utils.ErrorNotifier;
+import com.utils.SuccessNotifier;
 import com.utils.ExceptionList;
 import com.utils.UI;
 

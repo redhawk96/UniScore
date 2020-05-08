@@ -25,6 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import com.panels.ContentPanel;
+import com.utils.ErrorNotifier;
 import com.utils.ExceptionList;
 import com.utils.UI;
 
