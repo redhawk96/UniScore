@@ -28,8 +28,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import com.panels.ContentPanel;
-import com.panels.content.ErrorNotifier;
-import com.panels.content.SuccessNotifier;
+import com.utils.ErrorNotifier;
+import com.utils.SuccessNotifier;
 import com.utils.BarChartFrame;
 import com.utils.ContentTable;
 import com.utils.ExceptionList;

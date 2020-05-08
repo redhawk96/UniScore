@@ -5,7 +5,7 @@
  * @author		: Uditha Silva (UOB-1938086)
  */
 
-package com.panels.content;
+package com.utils;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -24,7 +24,6 @@ import javax.swing.border.LineBorder;
 
 import com.panels.ContentPanel;
 import com.panels.NavigationPanel;
-import com.utils.UI;
 
 import main.panels.LecturerPanel;
 

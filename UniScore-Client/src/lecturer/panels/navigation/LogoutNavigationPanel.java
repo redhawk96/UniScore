@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.panels.NavigationPanel;
-import com.panels.content.ErrorNotifier;
+import com.utils.ErrorNotifier;
 import com.utils.ExceptionList;
 import com.utils.Identification;
 import com.utils.UI;
