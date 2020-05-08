@@ -23,9 +23,8 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.ui.RectangleInsets;
 
+@SuppressWarnings("serial")
 public class BarChartFrame extends JFrame {
-
-	private static final long serialVersionUID = 1L;
 
 	public BarChartFrame(String chartFrameTitle, String chartTitle, String xAxis, String yAxis, CategoryDataset dataset) {
 		super(chartFrameTitle);

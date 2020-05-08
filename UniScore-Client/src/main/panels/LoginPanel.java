@@ -20,37 +20,24 @@ public class LoginPanel extends JFrame{
 	
 	public LoginPanel() {
 		
+		// Setting LoginPanel JFrame's icon
 		setIconImage(new ImageIcon(getClass().getResource("/resources/logo-2.png")).getImage());
 		
-		/*
-		 * Setting JFrame title text
-		 */
+		// Setting JFrame title text
 		setTitle("UNISCORE | Client Login");
 		
-		/*
-		 * Setting the size of the application screen
-		 */
+		// Setting the size of the application screen
 		setSize(UI.LOGIN_FRAME_WIDTH, UI.LOGIN_FRAME_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
-		/*
-		 * setLocationRelativeTo set to null inorder to start the application center of the screen
-		 */
+		// setLocationRelativeTo set to null inorder to start the application center of the screen
 		setLocationRelativeTo(null); 
 		
-		/*
-		 * Disabling frame resizing
-		 */
+		// Disabling frame resizing
 		setResizable(false);
 		
-		/*
-		 * Adding login screen to JFrame
-		 */
+		// Adding login screen to JFrame
 		getContentPane().add(contentPanel.getContent());
-	}
-	
-	public void navigateToDashboard() {
-		
 	}
 }
