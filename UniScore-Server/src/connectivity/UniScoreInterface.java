@@ -1,18 +1,25 @@
-/*
- * Institute	: SLIIT
- * Module		: Comparative Integrated Systems
- * Project Name	: UniScore
- * Project		: Online Examination Management System
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
  * Group		: 19
- * Author		: Uditha Silva (UOB-1938086)
+ * @author		: Uditha Silva (UOB-1938086)
  */
 
 package connectivity;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.List;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
+import org.jfree.data.category.CategoryDataset;
 
 import models.Activity;
 import models.Exam;
@@ -21,6 +28,7 @@ import models.Module;
 import models.Question;
 import models.Submission;
 import models.User;
+import net.sf.jasperreports.engine.JRException;
 
 public interface UniScoreInterface extends Remote {
 
@@ -139,6 +147,14 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	public List<Exam> getExams() throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getExamCountByModules : retrieves count of all available exams filtered by allocated modules for an user
+	 * @params {User} obtains user id from user object
+	 * @return {int} returns returns an integer representing the number of exams if found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getExamCountByModules(User user) throws RemoteException, ClassNotFoundException, SQLException;
 
 	/*
 	 * Ending declaration of exam methods
@@ -240,6 +256,14 @@ public interface UniScoreInterface extends Remote {
 	 * @throws RemoteException, ClassNotFoundException, SQLException
 	 */
 	public List<Module> getModulesByRelevance(Module module, int year, int semester) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getModuleCountByUser : retrieves count of all available modules filtered by an user
+	 * @params {User} obtains user id from user object
+	 * @return {int} returns returns an integer representing the number of modules if found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getModuleCountByUser(User user) throws RemoteException, ClassNotFoundException, SQLException;
 
 	/*
 	 * Ending declaration of module methods
@@ -300,6 +324,23 @@ public interface UniScoreInterface extends Remote {
 	public List<Question> getExamQuestions(Question question) throws RemoteException, ClassNotFoundException, SQLException;
 	
 	/*
+	 * getExaminationQuestionCount : retrieves the count for questions for the paticular exam
+	 * @params {Question} Obtains exam id from question object
+	 * @return {int} returns an integer representing the number of questions for a paticular exam if exam is found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getExaminationQuestionCount(Question question) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	
+	/*
+	 * getExamQuestionsBySearch : retrieves all available questions filtered by either question id or tile
+	 * @params {String} obtains a string to base the search 
+	 * @return {List<Question>} returns a list of filtered questions by either question id or tile if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public List<Question> getExamQuestionsBySearch(String searchString) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
 	 * Ending declaration of question methods
 	 */
 	
@@ -341,6 +382,38 @@ public interface UniScoreInterface extends Remote {
 	 */
 	public List<Submission> getSubmissions() throws RemoteException, ClassNotFoundException, SQLException;
 
+	/*
+	 * getExaminationSubmissionCount : retrieves the count for submissions for the paticular exam
+	 * @params {Submission} Obtains exam id from submission object
+	 * @return {int} returns an integer representing the number of submissions for a paticular exam if exam is found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getExaminationSubmissionCount(Submission submission) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getSubmissionDatasetByExam : generates a new dataset based on a specific exam
+	 * @params {Submission} Obtains exam id from submission object
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the submission scores of a specific exam successfully generated and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public CategoryDataset getSubmissionDatasetByExam(Submission submission) throws RemoteException, ClassNotFoundException, SQLException;
+	
+
+	/*
+	 * getGradedDatasetByStudent : generates a new dataset based on a specific student's last submission on all modules, modules will be filtered according to the logged in lecturer
+	 * @params {Module, Submission} Obtains teacher id from module object and student id from submission object
+	 * @return {CategoryDataset} returns a categoryDataset contaning all the scores of last submission on each module is successfully generated and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public CategoryDataset getGradedDatasetByStudent(Module module, Submission submission) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getSubmissionTableByExam : returns a string contaning html table of all the submissions for a paticular exam of a paticular module
+	 * @params {Exam} Obtains exam id and module id from exam object
+	 * @return {String} returns a string contaning html table if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public String getSubmissionTableByExam(Exam exam) throws RemoteException, ClassNotFoundException, SQLException;
 	/*
 	 * Ending declaration of submission methods
 	 */
@@ -407,6 +480,21 @@ public interface UniScoreInterface extends Remote {
 	public List<User> getUsersByType(User user) throws RemoteException, ClassNotFoundException, SQLException;
 	
 	/*
+	 * getUsersBySearch : retrieves all available users filtered by either user id, first name or last name with status active
+	 * @params {String, User} obtains a string to base the search and role from user object 
+	 * @return {List<User>} returns a list of filtered users by either user id, first name or last name with status active if found and null if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public List<User> getUsersBySearch(String searchString) throws RemoteException, ClassNotFoundException, SQLException;
+	
+	/*
+	 * getUserCountByRole : retrieves count of all available active users filtered by user type
+	 * @params {User} obtains a user role from user object 
+	 * @return {int} returns returns an integer representing the number of users filtered by user type if found and -1 if not
+	 * @throws RemoteException, ClassNotFoundException, SQLException
+	 */
+	public int getUserCountByRole(User user) throws RemoteException, ClassNotFoundException, SQLException;
+	/*
 	 * Ending declaration of user methods
 	 */
 	
@@ -423,6 +511,34 @@ public interface UniScoreInterface extends Remote {
 	 */
 	public boolean isUserAvailable(User user) throws RemoteException, ClassNotFoundException, SQLException;
 	
+	/*
+	 * encrypt : encrypts the password text provided by the user using combined algorithms and receives the encrypted password in return
+	 * @params {User} obtains username and password from the user object
+	 * @return {String} returns the encrypted password
+	 * @throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException
+	 */
+	public String encrypt(User user) throws RemoteException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, NoSuchProviderException;
+
+	/*
+	 * printSubmissionReport : prints a report for a given exam. Report will contain all the submissions for that given exam with gradings 
+	 * @params {int, String, String} exam id as an int, exam name as a string and module id as a string
+	 * @throws RemoteException, ClassNotFoundException, SQLException, JRException
+	 */
+	public void printSubmissionReport(int examId, String examName, String moduleId) throws RemoteException, ClassNotFoundException, SQLException, JRException;
+	
+	/*
+	 * getLocation : locates the IP4 of the current user through an public web API call
+	 * @return {String} returns the IP4 of the current user through an public web API call
+	 * @throws RemoteException, ClassNotFoundException, MalformedURLException, IOException 
+	 */
+	public String getLocation() throws RemoteException, ClassNotFoundException, MalformedURLException, IOException;
+	
+	/*
+	 * sendMail : send mails with user specified recepients, subject and body 
+	 * @params {String, String, String} multiple recepients as a string, email subject as a string, email body in html format as a string
+	 * @throws RemoteException,  AddressException, MessagingException
+	 */
+	public void sendMail(String recepients, String subject, String htmlBody) throws RemoteException,  AddressException, MessagingException;
 	/*
 	 * Ending declaration of common methods
 	 */

@@ -1,3 +1,10 @@
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
+ * Group		: 19
+ * @author		: Uditha Silva (UOB-1938086)
+ */
+
 package lecturer.panels.navigation;
 
 import java.awt.Cursor;
@@ -17,21 +24,29 @@ import main.panels.LecturerPanel;
 @SuppressWarnings("serial")
 public class ModuleNavigationPanel extends NavigationPanel {
 
+	// Declaring and initializing new JPanel to act as an wrapper to contain the sub UI elements and their properties and styling
 	private JPanel panel = new JPanel();
 	
+	/*
+	 * ModuleNavigationPanel method : used to initialize JPanel, required properties and add UI elements to the JPanel
+	 */
 	public ModuleNavigationPanel() {
-
 		/*
 		 * Adding navigation button to NavigationPanel
 		 * JPanel name is set to identify navigation panel when selected
 		 */
 		panel.setName("module");
-		panel.setBackground(UI.NAVIGATION_PANEL_BUTTON_COLOR);
-		panel.setBounds(0, 315, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
+		panel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
+		panel.setBounds(0, 375, UI.NAVIGATION_PANEL_WIDTH, UI.NAVIGATION_PANEL_BUTTON_HEIGHT);
 		panel.setLayout(null);
-		panel.setCursor(Cursor.getPredefinedCursor(UI.NAVIGATION_PANEL_BUTTON_CURSOR));
+		panel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		
 		panel.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * Lecturer will be navigated to ModuleContentPanel on mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				/*
@@ -44,18 +59,14 @@ public class ModuleNavigationPanel extends NavigationPanel {
 			}
 		});
 
-		/*
-		 * Adding navigation button text to NavigationPanel
-		 */
+		// Adding navigation button(JPanel) text to panel
 		JLabel navigationLabel = new JLabel("MODULES");
-		navigationLabel.setForeground(UI.NAVIGATION_PANEL_BUTTON_TEXT_COLOR);
-		navigationLabel.setFont(UI.NAVIGATION_PANEL_BUTTON_FONT);
+		navigationLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
+		navigationLabel.setFont(UI.APPLICATION_THEME_FONT_14_BOLD);
 		navigationLabel.setBounds(UI.NAVIGATION_PANEL_BUTTON_TEXT_X_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_Y_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_WIDTH, UI.NAVIGATION_PANEL_BUTTON_TEXT_HEIGHT);
 		panel.add(navigationLabel);
 
-		/*
-		 * Adding navigation button icon to NavigationPanel
-		 */
+		// Adding navigation button(JPanel) icon to panel
 		JLabel navigationIcon = new JLabel("");
 		navigationIcon.setIcon(new ImageIcon(LecturerPanel.class.getResource("/resources/modules_icon.png")));
 		navigationIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -64,6 +75,10 @@ public class ModuleNavigationPanel extends NavigationPanel {
 
 	}
 
+	/*
+	 * getNavigation : Method is used to return the JPanel which wrapped by NavigationPanel 
+	 * @return JPanel which contains the sub elements with added styling 
+	 */
 	@Override
 	public JPanel getNavigation() {
 		return panel;

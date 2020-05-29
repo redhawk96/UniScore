@@ -18,6 +18,8 @@ import java.util.List;
 
 import connectivity.DBConnection;
 import models.Exam;
+import models.Module;
+import models.User;
 
 public class ExamConnector implements ConnectorInterface<Exam> {
 
@@ -174,7 +176,7 @@ public class ExamConnector implements ConnectorInterface<Exam> {
 	}
 	
 	/*
-	 * getByAvailability : retrieves all available exams filtered by a paticular module and active status
+	 * getByAvailability : retrieves all available exams filtered by a paticular module and exam status
 	 * @params {Exam} obtains module id and status from exam object
 	 * @return {List<Exam>} returns a list of exams of a paticular module with an active status if found and null if not
 	 * @throws ClassNotFoundException, SQLException
@@ -182,7 +184,7 @@ public class ExamConnector implements ConnectorInterface<Exam> {
 	public List<Exam> getByAvailability(Exam exam) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "SELECT * FROM `exams`  WHERE `exams`.`examId` = 'active' AND `exams`.`moduleId` = ?";
+			String sql = "SELECT * FROM `exams` WHERE  `exams`.`moduleId` = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, exam.getModuleId());
 			ResultSet rs = ps.executeQuery();
@@ -217,7 +219,7 @@ public class ExamConnector implements ConnectorInterface<Exam> {
 	public List<Exam> getByModule(Exam exam) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
-			String sql = "SELECT * FROM `exams` WHERE `exams`.`moduleId` = ?";
+			String sql = "SELECT * FROM `exams` WHERE `exams`.`moduleId` = ?  ORDER BY `exams`.`examId` DESC";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, exam.getModuleId());
 			ResultSet rs = ps.executeQuery();
@@ -241,6 +243,36 @@ public class ExamConnector implements ConnectorInterface<Exam> {
 			return examList;
 		}
 		return null;
+	}
+	
+	/*
+	 * getCountByModules : retrieves count of all available exams filtered by allocated modules for an user
+	 * @params {User} obtains user id from user object
+	 * @return {int} returns returns an integer representing the number of exams if found and -1 if not
+	 * @throws ClassNotFoundException, SQLException
+	 */
+	public int getCountByModules(User user) throws ClassNotFoundException, SQLException {
+		
+		if (DBConnection.getDBConnection() != null) {
+			ModuleConnector mc = new ModuleConnector();
+			Module m = new Module();
+			m.setTeacherId(user.getUserId());
+			List<Module> moduleList = mc.getByYearAndUser(m, 0, 0);
+			
+			int eCount = 0;
+			
+			for (Module module : moduleList) {
+				Exam tempExam = new Exam();
+				tempExam.setModuleId(module.getModuleId());
+				List<Exam> examList = getByModule(tempExam);
+
+				for (@SuppressWarnings("unused") Exam e : examList) {
+					eCount = eCount + 1;
+				}
+			}
+			return eCount;
+		}
+		return -1;
 	}
 
 }
