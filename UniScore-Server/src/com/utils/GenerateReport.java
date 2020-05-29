@@ -1,3 +1,10 @@
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
+ * Group		: 19
+ * @author		: Uditha Silva (UOB-1938086)
+ */
+
 package com.utils;
 
 import java.io.File;
@@ -22,8 +29,16 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 public class GenerateReport {
 	
+	// Declaring and initializing currentDate property to hold the present date
 	private static Date currentDate = new Date();
 	
+	/*
+	 * Method GenerateReport : used to generate a report using Jasper Report
+	 * @params reportName 	   Name of the report template that needs to be printed
+	 * @params fileName		   Name of the file(pdf) that should be saved as a report
+	 * @params query		   Query to retrieve the dataset from the database
+	 * @params folderPath	   System path of the where the report should be saved 
+	 */
 	public GenerateReport(String reportName, String fileName, String query, String folderPath) throws ClassNotFoundException, SQLException, JRException {
 		
 		if (DBConnection.getDBConnection() != null) {
@@ -56,19 +71,30 @@ public class GenerateReport {
         }
 	}
 	
-
+	/*
+	 * Method getDate : used to return the day of the month
+	 * @returns  day of the month in a 2 digit numerical figure
+	 */
     public static String getDate() {
         DateFormat date_Format = new SimpleDateFormat("dd");
         String date = date_Format.format(currentDate);
         return date;
     }
 
+    /*
+	 * Method getMonth : used to return the day of the month
+	 * @returns  month of the year in a 2 digit numerical figure
+	 */
     public static String getMonth() {
         DateFormat month_Format = new SimpleDateFormat("MM");
         String month = month_Format.format(currentDate);
         return month;
     }
 
+    /*
+	 * Method getYear : used to return the current year
+	 * @returns  year in a numerical 4 digit figure
+	 */
     public static String getYear() {
         DateFormat year_Format = new SimpleDateFormat("yyyy");
         String year = year_Format.format(currentDate);

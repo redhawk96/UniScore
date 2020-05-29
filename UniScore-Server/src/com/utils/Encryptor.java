@@ -1,3 +1,10 @@
+/* 
+ * Module		: Comparative Integrated Systems(SLIIT) 19-20SEM2OTSLI009-3 
+ * Project		: UniScore - Online Examination Management System
+ * Group		: 19
+ * @author		: Uditha Silva (UOB-1938086)
+ */
+
 package com.utils;
 
 import java.security.MessageDigest;
@@ -7,29 +14,22 @@ import java.security.NoSuchProviderException;
 import models.User;
 
 public class Encryptor {
-
-/*
- * For development purposes only
- */
-//	public static void main(String args[]) {
-//		try {
-//			User user = new User();
-//			user.setEmail("uditha@uniscore.com");
-//			user.setPassword("123456");
-//	        
-//			System.out.println(getEncryptedPassword(user));
-//			System.out.println(getEncryptedPassword(user));
-//			System.out.println(getEncryptedPassword(user));
-//			System.out.println(getEncryptedPassword(user));	
-//		}catch(Exception e) {
-//			System.out.println(e);
-//		}
-//	}
 	
+
+	/*
+	 * Method getEncryptedPassword : used to return the encrypted password
+	 * @params user	Password property from user object will be used to encrypt unsecure password
+	 */
 	public static String getEncryptedPassword(User user) throws NoSuchAlgorithmException, NoSuchProviderException {
 		return securePassword(user.getPassword().toString());
     }
      
+
+	/*
+	 * Method securePassword : used to encrypt a password using MD% algorithms
+	 * @params passwordToHash		 	Password that needs to be encrypted
+	 * @returns generatedPassword		Encrypted password using MD5 algorithm
+	 */
 	private static String securePassword(String passwordToHash) throws NoSuchAlgorithmException {
 		String generatedPassword = null;
 		// Create MessageDigest instance for MD5
