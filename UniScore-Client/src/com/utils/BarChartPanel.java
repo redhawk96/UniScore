@@ -11,6 +11,7 @@ import java.awt.BasicStroke;
 import java.awt.Paint;
 
 import javax.swing.ImageIcon;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
@@ -24,14 +25,21 @@ import org.jfree.ui.RectangleInsets;
 
 public class BarChartPanel {
 
+	// Declaring chart, used to create a image once the chart has been plotted and styled
 	JFreeChart chart;
 
+	/*
+	 * Method BarChartPanel : used to initialize JFrame, required properties and add UI elements to the JFrame
+	 * @params chartTitle		The title used to name the graph, heading
+	 * @params xAxis		 	Title at the bottom of the graph
+	 * @params dataset		 	Title at the left grid line of the graph
+	 */
 	public BarChartPanel(String chartTitle, String xAxis, String yAxis, CategoryDataset dataset) {
-		// Create chart
+		// Plotting a new chart object with, graph title, x-axis title, y-axis title, and dataset which is provided
 		chart = ChartFactory.createBarChart(chartTitle, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
-
+				
+		// Styling the chart	
 		StandardChartTheme theme = (StandardChartTheme) org.jfree.chart.StandardChartTheme.createJFreeTheme();
-
 		theme.setTitlePaint(UI.APPLICATION_THEME_SECONDARY_COLOR);
 		theme.setExtraLargeFont(UI.APPLICATION_THEME_FONT_18_PLAIN); // title
 		theme.setLargeFont(UI.APPLICATION_THEME_FONT_17_PLAIN); // axis-title
@@ -65,7 +73,12 @@ public class BarChartPanel {
 		chart.removeLegend();
 	}
 
+	/*
+	 * Method getChart : used to return a image of the plotted and style graph with the provided dataset
+	 * @returns ImageIcon	Image contaning the finalized graph
+	 */
 	public ImageIcon getChart() {
+		// Creating a new ImageIcon with a with of 1197 and height of 657
 		 return new ImageIcon(chart.createBufferedImage(1197,657));
 	}
 }

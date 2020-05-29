@@ -12,8 +12,8 @@ import javax.swing.SwingConstants;
 import com.panels.NavigationPanel;
 import com.utils.UI;
 
-import student.panels.content.ExamContentPanel;
 import main.panels.StudentPanel;
+import student.panels.content.ExamContentPanel;
 
 @SuppressWarnings("serial")
 public class ExamNavigationPanel extends NavigationPanel {

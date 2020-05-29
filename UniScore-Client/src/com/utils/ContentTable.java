@@ -13,9 +13,10 @@ import javax.swing.JTable;
 public class ContentTable extends JTable{
 
 	/*
-	 * isCellEditable : This is to override the default cell editable method on a Jtable to return false;
-	 * @params {int, int}
-	 * @returns {false}
+	 * Method isCellEditable : This is to override the default cell editable method on a Jtable to return false;
+	 * @params row		 required but not used
+	 * @params col		 required but not used
+	 * @returns boolean  will always return false
 	 */
 	@Override
 	public boolean isCellEditable(int row, int col) {

@@ -30,19 +30,33 @@ import models.Module;
 @SuppressWarnings("serial")
 public class ModuleContentPanel extends ContentPanel {
 
+	// Declaring and initializing new JPanel to act as an wrapper to contain navigationIndicatorPanel and modulesBodyPanel
 	private JPanel contentPanel = new JPanel();
+			
+	// Declaring and initializing new JPanel to act as an wrapper to contain module trees
 	private JPanel modulesBodyPanel = new JPanel();
 
+	/*
+	 * ModuleContentPanel method : used to initialize ContentPanel, required properties and add UI elements to the ContentPanel
+	 */
 	public ModuleContentPanel() {
+		// Adding elements to the ContentPanel
 		setContentPanel();
 	}
 
+	/*
+	 * Method setContentPanel adds swing/awt and other elements to the ContentPanel
+	 */
 	private void setContentPanel() {
 		initializeContentPanel();
 		addNavigationIndicator();
 		addModuleTrees();
 	}
 	
+	/*
+	 * Method initializeContentPanel adds the necessary UI layout(styling) to the ContentPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color
+	 */
 	private void initializeContentPanel() {
 		contentPanel.setBounds(UI.CONTENT_PANEL_X_AXIS, UI.CONTENT_PANEL_Y_AXIS, UI.CONTENT_PANEL_WIDTH, UI.CONTENT_PANEL_HEIGHT);
 		contentPanel.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
@@ -54,6 +68,11 @@ public class ModuleContentPanel extends ContentPanel {
 		modulesBodyPanel.setLayout(null);
 	}
 	
+	/*
+	 * Method addNavigationIndicator adds UI layout(styling) to navigationIndicatorPanel which shows the current navigated panel on the top of ContentPanel
+	 * navigationIndicatorPanel is a sub element under ContentPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color, JLabel text/text-color/font-size/boundaries 
+	 */
 	private void addNavigationIndicator() {
 		JPanel navigationIndicatorPanel = new JPanel();
 		navigationIndicatorPanel.setBorder(UI.NAVIGATION_INDICATOR_PANEL_BORDER);
@@ -76,6 +95,11 @@ public class ModuleContentPanel extends ContentPanel {
 		
 	}
 	
+	/*
+	 * Method addModuleTrees adds UI layout(styling) to modulesBodyPanel below the navigationIndicatorPanel
+	 * addModuleTrees is a sub element under modulesBodyPanel
+	 * UI layout categorized as JPanel layout/boundaries/background-color/border, JLabel text/text-color/font-size/boundaries, JTree text/text-color/font-size/boundaries/border, JSeparator orientation/backgroung-color/boundaries
+	 */
 	private void addModuleTrees() {
 		JPanel yearOnePanel = new JPanel();
 		yearOnePanel.setBackground(UI.APPLICATION_THEME_SECONDARY_COLOR);
@@ -130,7 +154,8 @@ public class ModuleContentPanel extends ContentPanel {
 		yearFourPanel.add(yearFourPanelLabel);
 		
 		JTree yearOneTree = new JTree();
-		yearOneTree.setModel(setTreeValues(1)); // Setting values to tree
+		// Calling method setTreeValues to set allocated modules for the academic year 01  
+		yearOneTree.setModel(setTreeValues(1));
 		yearOneTree.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		yearOneTree.setRowHeight(30);
 		yearOneTree.setBorder(null);
@@ -140,7 +165,8 @@ public class ModuleContentPanel extends ContentPanel {
 		
 		
 		JTree yearTwoTree = new JTree();
-		yearTwoTree.setModel(setTreeValues(2)); // Setting values to tree
+		// Calling method setTreeValues to set allocated modules for the academic year 02  
+		yearTwoTree.setModel(setTreeValues(2));
 		yearTwoTree.setVisibleRowCount(30);
 		yearTwoTree.setRowHeight(30);
 		yearTwoTree.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
@@ -150,7 +176,8 @@ public class ModuleContentPanel extends ContentPanel {
 
 		
 		JTree yearThreeTree = new JTree();
-		yearThreeTree.setModel(setTreeValues(3)); // Setting values to tree
+		// Calling method setTreeValues to set allocated modules for the academic year 03  
+		yearThreeTree.setModel(setTreeValues(3));
 		yearThreeTree.setVisibleRowCount(30);
 		yearThreeTree.setRowHeight(30);
 		yearThreeTree.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
@@ -159,7 +186,8 @@ public class ModuleContentPanel extends ContentPanel {
 		modulesBodyPanel.add(yearThreeTree);
 		
 		JTree yearFourTree = new JTree();
-		yearFourTree.setModel(setTreeValues(4)); // Setting values to tree
+		// Calling method setTreeValues to set allocated modules for the academic year 04
+		yearFourTree.setModel(setTreeValues(4));
 		yearFourTree.setVisibleRowCount(30);
 		yearFourTree.setRowHeight(30);
 		yearFourTree.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
@@ -222,32 +250,52 @@ public class ModuleContentPanel extends ContentPanel {
 		
 	}
 	
+	/*
+	 * Method DefaultTreeModel used to draw a DefaultTreeModel
+	 * @param year contains the academic year which the tree needs to plotted to
+	 * @return DefaultTreeModel contaning the allocated modules for the signed-in lecturer for the given year
+	 */
 	private DefaultTreeModel setTreeValues(int year) {
+		// Creating a new DefaultMutableTreeNode with passed year from the parameter
 		return new DefaultTreeModel(new DefaultMutableTreeNode("Year 0" + year) {
 			{
+				// Method getModulesByRelevance accepts a Module object with the lecturer id set and 2 more integers(academic year and semester)	
 				Module module = new Module();
 				module.setTeacherId(UniScoreClient.authUser.getUserId());
 				
+				// node_1 is to hold the title of the semester, and node_2 to hold title 'Modules'
 				DefaultMutableTreeNode node_1;
 				DefaultMutableTreeNode node_2;
 
 				try {
+					// Creating a for loop to retrieve modules for both semesters, loop will be running 2 times for a given year
 					for (int i = 1; i <= 2; i++) {
+						// Setting titles to nodes
 						node_1 = new DefaultMutableTreeNode("Semester 0"+i);
 						node_2 = new DefaultMutableTreeNode("Modules");
 
+						// Method getModulesByRelevance will retrieve all the allocated modules for the signed-in lecturer filtered by year and semester
 						List<Module> moduleList = (List<Module>) UniScoreClient.uniscoreInterface.getModulesByRelevance(module, year, i);
+						
+						// Incase of the moduleList is empty, if block will execute to show that no modules are allocated the paticular semester in the provided year and else block if not
 						if (moduleList.isEmpty()) {
 							node_2.add(new DefaultMutableTreeNode("No modules"));
 						} else {
+							// Looping the retrieved list of modules through a foreach loop and adding one after the other to node_2
 							for (Module mod : moduleList) {
+								// node_2 will hold all the allocated modules as its sub elements
 								node_2.add(new DefaultMutableTreeNode(mod.getModuleId()));
 							}
 						}
+						// node_1 will hold node_2 as its sub element
 						node_1.add(node_2);
 						add(node_1);
 					}
 
+				/*
+				 * If there was exception thrown when executing the retrieval of allocated modules filtered through signed in lecturer, academic year and semester
+				 * following catch statements will handle the paticular exception and show a error notification with a unique number to identify the error
+				 */
 				} catch (RemoteException e) {
 					ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying to retrieve allocated modules.\nError refferance : "+ExceptionList.REMOTE);
 					en.setVisible(true);
@@ -266,8 +314,8 @@ public class ModuleContentPanel extends ContentPanel {
 	}
 	
 	/*
-	 * returns the JPanel inside ContentPanel
-	 * @returns JPanel
+	 * Method getContent is implemented to return JPanel inside ContentPanel
+	 * @returns JPanel 	Contains completed layout of with the add sub elements 
 	 */
 	public JPanel getContent() {
 		return contentPanel;

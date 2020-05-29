@@ -13,12 +13,12 @@ import com.panels.ContentPanel;
 import com.utils.ContentTable;
 import com.utils.UI;
 
+import main.panels.StudentPanel;
 import student.panels.content.ExamContentPanel;
 import student.panels.content.ModuleContentPanel;
 import student.panels.navigation.ExamNavigationPanel;
 import student.panels.navigation.ModuleNavigationPanel;
 import student.panels.navigation.SubmissionNavigationPanel;
-import main.panels.StudentPanel;
 
 @SuppressWarnings("serial")
 public class DashboardContentPanel extends ContentPanel{

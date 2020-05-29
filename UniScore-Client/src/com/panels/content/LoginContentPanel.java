@@ -40,9 +40,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
-public class LoginContentPanel  extends ContentPanel{
+public class LoginContentPanel  extends ContentPanel {
 
+	// Declaring and initializing new JPanel to act as an wrapper to contain the sub elements with their styling and properties
 	private JPanel contentPanel = new JPanel();
+	
+	// Declaring element properties need to sign-in a user
 	private JTextField usernameTextField;
 	private JPasswordField passwordField;
 	private JLabel usernameLabel;
@@ -54,6 +57,12 @@ public class LoginContentPanel  extends ContentPanel{
 	private JLabel loadingLabel;
 	private JLabel errorLabel;
 
+	/*
+	 * Method BarChartPanel : used to initialize JFrame, required properties and add UI elements to the JFrame
+	 * @params chartTitle		The title used to name the graph, heading
+	 * @params xAxis		 	Title at the bottom of the graph
+	 * @params dataset		 	Title at the left grid line of the graph
+	 */
 	public LoginContentPanel() {
 		/*
 		 * Adding elements to login content panel
@@ -64,17 +73,13 @@ public class LoginContentPanel  extends ContentPanel{
 		contentPanel.setBounds(0, 0, UI.LOGIN_FRAME_WIDTH, UI.LOGIN_FRAME_HEIGHT);
 		contentPanel.setBackground(Color.WHITE);
 		
-		/*
-		 * Adding username label
-		 */
+		// Adding username label
 		usernameLabel = new JLabel("Username");
 		usernameLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		usernameLabel.setBounds(760, 260, 67, 22);
 		contentPanel.add(usernameLabel);
 		
-		/*
-		 * Adding username text-field
-		 */
+		// Adding username text-field
 		usernameTextField = new JTextField();
 		usernameTextField.setForeground(UI.APPLICATION_THEME_QUATERNARY_COLOR);
 		usernameTextField.setMargin(new Insets(2, 10, 2, 2));
@@ -83,21 +88,23 @@ public class LoginContentPanel  extends ContentPanel{
 		contentPanel.add(usernameTextField);
 		usernameTextField.setColumns(10);
 
-		/*
-		 * Adding password label
-		 */
+		// Adding password label
 		passwordLabel = new JLabel("Password");
 		passwordLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		passwordLabel.setBounds(760, 343, 67, 22);
 		contentPanel.add(passwordLabel);
 		
-		/*
-		 * Adding password field
-		 */
+		// Adding password field
 		passwordField = new JPasswordField();
 		passwordField.addKeyListener(new KeyAdapter() {
+			/*
+			 * Method keyPressed to handle keyboard press events
+			 * The key listner will listed whether the key pressed is the 'Enter' key on key press, to  execute the if block
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void keyPressed(KeyEvent e) {
+				// 10 == 'Enter' key
 				if(e.getKeyCode() == 10) {
 					authenticateUser();
 				}
@@ -110,9 +117,7 @@ public class LoginContentPanel  extends ContentPanel{
 		passwordField.setColumns(10);
 		contentPanel.add(passwordField);
 		
-		/*
-		 * Adding signin button
-		 */
+		// Adding signin button
 		loginButton = new JPanel();
 		loginButton.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 		loginButton.setBorder(new LineBorder(UI.APPLICATION_THEME_PRIMARY_COLOR));
@@ -121,18 +126,14 @@ public class LoginContentPanel  extends ContentPanel{
 		contentPanel.add(loginButton);
 		loginButton.setLayout(null);
 		
-		/*
-		 * Adding singin text inside signin button
-		 */
+		// Adding singin text inside signin button
 		signinLabel = new JLabel("Sign In");
 		signinLabel.setBounds(31, 11, 63, 20);
 		signinLabel.setFont(UI.APPLICATION_THEME_FONT_17_PLAIN);
 		signinLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 		loginButton.add(signinLabel);
 		
-		/*
-		 * Adding loading label
-		 */
+		// Adding loading label
 		loadingLabel = new JLabel("Error authenticating...");
 		loadingLabel.setFont(UI.APPLICATION_THEME_FONT_12_PLAIN);
 		loadingLabel.setIcon(new ImageIcon(LoginPanel.class.getResource("/resources/loading.gif")));
@@ -140,9 +141,7 @@ public class LoginContentPanel  extends ContentPanel{
 		loadingLabel.setVisible(false);
 		contentPanel.add(loadingLabel);
 		
-		/*
-		 * Adding error label
-		 */
+		// Adding error label
 		errorLabel = new JLabel("Please re-check your credentials");
 		errorLabel.setFont(UI.APPLICATION_THEME_FONT_14_PLAIN);
 		errorLabel.setForeground(Color.RED);
@@ -156,36 +155,49 @@ public class LoginContentPanel  extends ContentPanel{
 		 * Signin implementation to validate user credentials added on mouse click
 		 */
 		loginButton.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseEntered to handle mouse click events
+			 * loginButton and signinLabel will change color accordingly on mouse exit to enhance UX, user will know that panel can be clicked 
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				loginButton.setBorder(new LineBorder(UI.APPLICATION_THEME_PRIMARY_COLOR));
 				loginButton.setBackground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 				signinLabel.setForeground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 			}
+			
+			/*
+			 * Method mouseExited to handle mouse click events
+			 * loginButton and signinLabel will change color accordingly on mouse exit to enhance UX, user will know that mouse is not in click range
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseExited(MouseEvent e) {
 				loginButton.setBorder(new LineBorder(UI.APPLICATION_THEME_PRIMARY_COLOR));
 				loginButton.setBackground(UI.APPLICATION_THEME_TERTIARY_COLOR);
 				signinLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 			}
+			
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * Method authenticateUser will be called on mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				authenticateUser();
 			}
 		});
 		
-		/*
-		 * Adding login background, again to make the application more user-friendly
-		 */
+		// Adding login background, again to make the application more user-friendly
 		loginBackground = new JLabel("");
 		loginBackground.setIcon(new ImageIcon(LoginPanel.class.getResource("/resources/login-background.jpg")));
 		loginBackground.setHorizontalAlignment(SwingConstants.CENTER);
 		loginBackground.setBounds(0, 0, 708, 672);
 		contentPanel.add(loginBackground);
 		
-		/*
-		 * Adding logo
-		 */
+		// Adding logo
 		logo = new JLabel("");
 		logo.setIcon(new ImageIcon(LoginPanel.class.getResource("/resources/logo.png")));
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -194,6 +206,9 @@ public class LoginContentPanel  extends ContentPanel{
 		
 	}
 
+	/*
+	 * Method authenticateUser : used to validate the credentials of the signing in user and direct him/her accordingly to their roles and if not display relevant error messages
+	 */
 	public void authenticateUser() {
 		try {
 			/*
@@ -203,27 +218,19 @@ public class LoginContentPanel  extends ContentPanel{
 			errorLabel.setVisible(false);
 			loadingLabel.setVisible(true);
 			
-			/*
-			 * Validating whether the user to be authenticated is of type lecturer or student 
-			 */
+			// Validating whether the user to be authenticated is of type lecturer or student 
 			if (usernameTextField.getText().trim().charAt(0) == 'L' || usernameTextField.getText().trim().charAt(0) == 'l' || usernameTextField.getText().trim().charAt(0) == 'S' || usernameTextField.getText().trim().charAt(0) == 's') {
 
-				/*
-				 * Setting user inputed values to user object
-				 */
+				// Setting user inputed values to user object
 				User user = new User();
 
 				user.setUserId(usernameTextField.getText().trim().substring(1));
 				user.setPassword(new String(passwordField.getPassword()));
 
-				/*
-				 * Encrypting user provided password
-				 */
+				// Encrypting user provided password
 				user.setPassword((String) UniScoreClient.uniscoreInterface.encrypt(user));
 
-				/*
-				 * Checking if the provided credentials match a user in the database
-				 */
+				// Checking if the provided credentials match a user in the database
 				boolean authUser = (boolean) UniScoreClient.uniscoreInterface.isUserAvailable(user);
 
 				if (authUser) {
@@ -234,9 +241,7 @@ public class LoginContentPanel  extends ContentPanel{
 					UniScoreClient.authUser = (User) UniScoreClient.uniscoreInterface.getUser(user);
 					loadingLabel.setVisible(false);
 
-					/*
-					 * Opening up lecturer or student panel accordingly
-					 */
+					// Opening up lecturer or student panel accordingly
 					if (UniScoreClient.authUser.getRole().toString().equalsIgnoreCase("Lecturer") && (usernameTextField.getText().trim().charAt(0) == 'L' || usernameTextField.getText().trim().charAt(0) == 'l')) {
 						UniScoreClient.loginPanel.dispose();
 						UniScoreClient.uniscoreInterface.addLogActivity(new Activity(usernameTextField.getText()+" logged in to the system from "+UniScoreClient.authLocation, UniScoreClient.authUser.getUserId()));
@@ -281,7 +286,10 @@ public class LoginContentPanel  extends ContentPanel{
 				loadingLabel.setVisible(false);
 			}
 			
-			
+		/*
+		 * If there was exception thrown when trying to authenticate user,
+		 * following catch statements will handle the paticular exception and show a error notification with a unique number to identify the error
+		 */
 		} catch (RemoteException e) {
 			ErrorNotifier en = new ErrorNotifier("Failed. Unexpected Error occured while trying authenticate user.\nError refferance : "+ExceptionList.REMOTE);
 			en.setVisible(true);
@@ -305,7 +313,10 @@ public class LoginContentPanel  extends ContentPanel{
 		}
 	}
 	
-	
+	/*
+	 * Method getContent is implemented to return JPanel inside ContentPanel
+	 * @returns JPanel 	Contains completed layout of with the add sub elements 
+	 */
 	@Override
 	public JPanel getContent() {
 		return contentPanel;

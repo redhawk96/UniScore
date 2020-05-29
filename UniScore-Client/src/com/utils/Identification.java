@@ -8,7 +8,13 @@
 package com.utils;
 
 public class Identification {
-
+	
+	/*
+	 * getFormatedId : to format a given id
+	 * @param unformattedId   unformatted id
+	 * @param prefix		  prefix to format id, either L, S or A
+	 * @returns String		  formatted id
+	 */
 	public static String getFormatedId(String unformattedId, String prefix) {
 		String id = prefix;
 		switch(unformattedId.length()) {

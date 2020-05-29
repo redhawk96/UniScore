@@ -33,8 +33,7 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 	 * 
 	 * @params {Submission}
 	 * 
-	 * @return {boolen} returns true if the submission was added to the database and
-	 * false if not
+	 * @return {boolen} returns true if the submission was added to the database and false if not
 	 * 
 	 * @throws ClassNotFoundException, SQLException
 	 */
@@ -291,8 +290,7 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 	 * @return {CategoryDataset} returns a categoryDataset contaning all the scores of last submission on each module is successfully generated and null if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
-	public CategoryDataset getDatasetByStudent(Module module, Submission submission)
-			throws ClassNotFoundException, SQLException {
+	public CategoryDataset getDatasetByStudent(Module module, Submission submission) throws ClassNotFoundException, SQLException {
 		ModuleConnector mc = new ModuleConnector();
 		List<Module> moduleList = mc.getByYearAndUser(module, 0, 0);
 
@@ -310,8 +308,7 @@ public class SubmissionConnector implements ConnectorInterface<Submission> {
 	 * @return {int} returns the score of last exam followed by a module if found and 0 if not
 	 * @throws ClassNotFoundException, SQLException
 	 */
-	private int getLastSubmissionByModule(Module module, Submission submission)
-			throws ClassNotFoundException, SQLException {
+	private int getLastSubmissionByModule(Module module, Submission submission) throws ClassNotFoundException, SQLException {
 		if (DBConnection.getDBConnection() != null) {
 			Connection con = DBConnection.getDBConnection();
 			String sql = "SELECT `overallScore` FROM `submissions` WHERE `moduleId` = ? AND `studentId` = ? ORDER BY `examId` DESC LIMIT 1";

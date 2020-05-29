@@ -25,10 +25,13 @@ import main.panels.LecturerPanel;
 @SuppressWarnings("serial")
 public class DashboardNavigationPanel extends NavigationPanel {
 
+	// Declaring and initializing new JPanel to act as an wrapper to contain the sub UI elements and their properties and styling
 	private JPanel panel = new JPanel();
-
+	
+	/*
+	 * DashboardNavigationPanel method : used to initialize JPanel, required properties and add UI elements to the JPanel
+	 */
 	public DashboardNavigationPanel() {
-
 		/*
 		 * Adding navigation button to NavigationPanel
 		 * JPanel name is set to identify navigation panel when selected
@@ -40,6 +43,11 @@ public class DashboardNavigationPanel extends NavigationPanel {
 		panel.setCursor(Cursor.getPredefinedCursor(UI.APPPLICATION_THEME_SELECT_CURSOR));
 
 		panel.addMouseListener(new MouseAdapter() {
+			/*
+			 * Method mouseClicked to handle mouse click events
+			 * Lecturer will be navigated to DashboardContentPanel on mouse click
+			 * @param arg0 to get information about the mosue click 
+			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				/*
@@ -52,18 +60,14 @@ public class DashboardNavigationPanel extends NavigationPanel {
 			}
 		});
 
-		/*
-		 * Adding navigation button text to NavigationPanel
-		 */
+		// Adding navigation button(JPanel) text to panel
 		JLabel navigationLabel = new JLabel("DASHBOARD");
 		navigationLabel.setForeground(UI.APPLICATION_THEME_PRIMARY_COLOR);
 		navigationLabel.setFont(UI.APPLICATION_THEME_FONT_14_BOLD);
 		navigationLabel.setBounds(UI.NAVIGATION_PANEL_BUTTON_TEXT_X_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_Y_AXIS, UI.NAVIGATION_PANEL_BUTTON_TEXT_WIDTH, UI.NAVIGATION_PANEL_BUTTON_TEXT_HEIGHT);
 		panel.add(navigationLabel);
 
-		/*
-		 * Adding navigation button icon to NavigationPanel
-		 */
+		// Adding navigation button(JPanel) icon to panel
 		JLabel navigationIcon = new JLabel("");
 		navigationIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		navigationIcon.setIcon(new ImageIcon(LecturerPanel.class.getResource("/resources/dashboard_icon.png")));
@@ -71,6 +75,10 @@ public class DashboardNavigationPanel extends NavigationPanel {
 		panel.add(navigationIcon);
 	}
 
+	/*
+	 * getNavigation : Method is used to return the JPanel which wrapped by NavigationPanel 
+	 * @return JPanel which contains the sub elements with added styling 
+	 */
 	@Override
 	public JPanel getNavigation() {
 		return panel;
