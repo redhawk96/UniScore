@@ -1,5 +1,13 @@
 # UniScore
 
+### Live Screens
+<table>
+ <tr>
+   <td><img src="Screenshots/Lecturer%20Panel/Dashboard.PNG"></td>
+   <td><img src="Screenshots/Lecturer%20Panel/Examination%20Questions.PNG"></td>
+ </tr>
+</table>
+
 ### Getting Started
 * Clone the UniScore repository as follow, 
 ```
