@@ -192,9 +192,9 @@
   --
 
   INSERT INTO `users` (`userId`, `firstName`, `lastName`, `gender`, `email`, `nic`, `phone`, `address`, `role`, `registeredDate`, `password`, `status`) VALUES
-  ('ishani@uniscore.com', 'Ishani', 'Welagedara', 'Female', 'ishani@uniscore.com', '950457789V', 715478965, 'No 4, Wayward Pl, Colombo 03', 'Student', '2020-03-10 03:00:00', '123456', 'Active'),
-  ('subarshan@uniscore.com', 'subarshan', 'Thiyagarajah', 'Male', 'subarshan@uniscore.com', '950457410V', 770452014, 'No 8, Ward St, Colombo 02', 'Admin', '2020-03-10 03:00:00', '123456', 'Active'),
-  ('uditha@uniscore.com', 'Uditha', 'Silva', 'Male', 'uditha@uniscore.com', '950452374V', 774102354, 'No 6, Park St Avenue, Colombo 01', 'Lecturer', '2020-03-10 03:00:00', '123456', 'Active');
+  ('ishani@uniscore.com', 'Ishani', 'Welagedara', 'Female', 'ishani@uniscore.com', '950457789V', 715478965, 'No 4, Wayward Pl, Colombo 03', 'Student', '2020-03-10 03:00:00', 'e10adc3949ba59abbe56e057f20f883e', 'Active'),
+  ('subarshan@uniscore.com', 'subarshan', 'Thiyagarajah', 'Male', 'subarshan@uniscore.com', '950457410V', 770452014, 'No 8, Ward St, Colombo 02', 'Admin', '2020-03-10 03:00:00', 'e10adc3949ba59abbe56e057f20f883e', 'Active'),
+  ('uditha@uniscore.com', 'Uditha', 'Silva', 'Male', 'uditha@uniscore.com', '950452374V', 774102354, 'No 6, Park St Avenue, Colombo 01', 'Lecturer', '2020-03-10 03:00:00', 'e10adc3949ba59abbe56e057f20f883e', 'Active');
 
   --
   -- Indexes for dumped tables
@@ -323,3 +323,5 @@ UniScore-Server > src > connectivity > UniScoreServer.java > right-click > Run A
 ```
 UniScore-Client > src > connectivity > UniScoreClient.java > right-click > Run As > Java Application
 ```
+
+* Login Instructions > Username - ``L000015`` | Password ``123456``
